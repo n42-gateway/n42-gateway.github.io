@@ -1,0 +1,1510 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js" data-theme-init>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  html[data-theme-init] * { transition: none !important; }
+</style>
+
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+<meta name="robots" content="index, follow">
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-512x512.png" sizes="512x512">
+
+<title>Command-line options | N42 Gateway</title>
+<meta name="description" content="Static command-line configuration options.">
+<meta property="og:url" content="/docs/configuration/command-line/">
+	<meta property="og:site_name" content="N42 Gateway">
+	<meta property="og:title" content="Command-line options">
+	<meta property="og:description" content="Static command-line configuration options.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="docs">
+		<meta property="article:modified_time" content="2026-06-14T09:20:40-03:00">
+
+	<meta itemprop="name" content="Command-line options">
+	<meta itemprop="description" content="Static command-line configuration options.">
+	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
+	<meta itemprop="wordCount" content="5227">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Command-line options">
+	<meta name="twitter:description" content="Static command-line configuration options.">
+<link rel="preload" href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" as="style" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<link href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" rel="stylesheet" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-page">
+    <header>
+      <nav class="td-navbar js-navbar-scroll">
+<div class="td-navbar-container container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="6075 6474 5665 6417" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="$fill" stroke="none" d="M9324 7360c-58 71-132 125-217 159v488l856 857v362l738-738c-4-9-8-18-11-26-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-42-7-83-20-122-37L9963 9791v578l-4e2 4e2V9029l-456-456v589l-4e2 4e2V7519c-5-2-9-4-14-6L7115 9091c3 7 6 14 9 21 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 44 8 87 21 127 39L8410 7230c-3-8-7-16-10-24-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254zm-2e2-165c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM64e2 9123c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm5014-672c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM8490 12004c58-71 132-125 217-159v-488l-856-857v-362l-738 738c4 9 8 18 11 26 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 42 7 83 20 122 37L7851 9573V8995l4e2-4e2v1740l456 456v-589l4e2-4e2v2043c5 2 9 4 14 6l1578-1578c-3-7-6-14-9-21-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-44-8-87-21-127-39L9404 12134c3 8 7 16 10 24 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254zm2e2 165c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm2724-1928c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zm-5014 672c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85z"/></g></g></g></svg></span><span class="navbar-brand__name">N42 Gateway</span></a>
+  <div class="td-navbar__main td-navbar-nav-scroll td-navbar-nav-scroll--indicator" id="main_navbar">
+    <div class="scroll-indicator scroll-left"></div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/docs/"><span>Docs</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/examples/"><span>Examples</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item td-navbar__version-menu">
+        <div class="td-version-menu dropdown">
+  <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="td-version-menu__title-text">v0.17</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+        <a class="dropdown-item" href="/docs">Latest</a>
+        
+      </li>
+    
+  </ul>
+</div>
+</li>
+      <li class="nav-item td-navbar__light-dark-menu">
+        <div class="td-light-dark-menu dropdown"><svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu" aria-labelledby="bd-theme">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+</div>
+
+      </li>
+      </ul>
+    <div class="scroll-indicator scroll-right"></div>
+  </div>
+  <div class="td-navbar__search d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main" data-bs-spy="scroll" data-bs-target=".td-toc" data-bs-root-margin="0px 0px -10%">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-docs-li">
+    <a href="/docs/" title="Documentation" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-docs"><span class="">Docs</span></a>
+    <ul class="ul-1">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsoverview-li">
+    <a href="/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsoverview"><span class="">Overview</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsgetting-started-li">
+    <a href="/docs/getting-started/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsgetting-started"><span class="">Getting Started</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsmigration-guide-li">
+    <a href="/docs/migration-guide/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsmigration-guide"><span class="">Migration Guide</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-docsconfiguration-li">
+    <a href="/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsconfiguration"><span class="">Configuration</span></a>
+    <ul class="ul-2 foldable">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationgateway-api-li">
+    <a href="/docs/configuration/gateway-api/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationgateway-api"><span class="">Gateway API</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationkeys-li">
+    <a href="/docs/configuration/keys/" title="Configuration keys" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationkeys"><span class="">Keys</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-docsconfigurationcommand-line-li">
+    <a href="/docs/configuration/command-line/" title="Command-line options" class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationcommand-line"><span class="td-sidebar-nav-active-item">Command-line</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationtemplate-li">
+    <a href="/docs/configuration/template/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationtemplate"><span class="">Template</span></a>
+  </li>
+    </ul>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsfaq-li">
+    <a href="/docs/faq/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsfaq"><span class="">FAQ</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docscontribution-guidelines-li">
+    <a href="/docs/contribution-guidelines/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docscontribution-guidelines"><span class="">Contribution Guidelines</span></a>
+  </li>
+    </ul>
+  </li>
+    </ul>
+  </nav>
+</div>
+          </aside>
+          <aside class="td-sidebar-toc">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/n42-gateway/n42-gateway/tree/master/docs/content/en/docs/configuration/command-line.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/edit/master/docs/content/en/docs/configuration/command-line.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/new/master/docs/content/en/docs/configuration?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60get-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/issues/new?title=Command-line%20options" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc" data-proofer-ignore>
+<div class="td-toc-title">
+      <span class="td-toc-title__text">On this page</span>
+      <a class="td-toc-title__link" title="Top of page" href="#"></a>
+    </div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#options">Options</a>
+      <ul>
+        <li><a href="#acme">Acme</a></li>
+        <li><a href="#allow-cross-namespace">allow-cross-namespace</a></li>
+        <li><a href="#annotations-prefix">annotations-prefix</a></li>
+        <li><a href="#apiserver-host">apiserver-host</a></li>
+        <li><a href="#backend-shards">backend-shards</a></li>
+        <li><a href="#buckets-response-time">buckets-response-time</a></li>
+        <li><a href="#configmap">configmap</a></li>
+        <li><a href="#default-backend-service">default-backend-service</a></li>
+        <li><a href="#default-ssl-certificate">default-ssl-certificate</a></li>
+        <li><a href="#disable-api-warnings">disable-api-warnings</a></li>
+        <li><a href="#disable-config-keywords">disable-config-keywords</a></li>
+        <li><a href="#disable-external-name">disable-external-name</a></li>
+        <li><a href="#disable-pod-list">disable-pod-list</a></li>
+        <li><a href="#election-id">election-id</a></li>
+        <li><a href="#enable-endpointslices-api">enable-endpointslices-api</a></li>
+        <li><a href="#force-namespace-isolation">force-namespace-isolation</a></li>
+        <li><a href="#haproxy-grace-period">haproxy-grace-period</a></li>
+        <li><a href="#ingress-class">Ingress Class</a></li>
+        <li><a href="#ip-mode">ip-mode</a></li>
+        <li><a href="#kubeconfig">kubeconfig</a></li>
+        <li><a href="#local-filesystem-prefix">local-filesystem-prefix</a></li>
+        <li><a href="#logging">Logging</a></li>
+        <li><a href="#master-socket">master-socket</a></li>
+        <li><a href="#master-worker">master-worker</a></li>
+        <li><a href="#max-old-config-files">max-old-config-files</a></li>
+        <li><a href="#publish-address">publish-address</a></li>
+        <li><a href="#publish-service">publish-service</a></li>
+        <li><a href="#rate-limit-update">rate-limit-update</a></li>
+        <li><a href="#reload-interval">reload-interval</a></li>
+        <li><a href="#reload-retry">reload-retry</a></li>
+        <li><a href="#reload-strategy">reload-strategy</a></li>
+        <li><a href="#report-node-internal-ip-address">report-node-internal-ip-address</a></li>
+        <li><a href="#shutdown-timeout">shutdown-timeout</a></li>
+        <li><a href="#sort-backends">sort-backends</a></li>
+        <li><a href="#sort-endpoints-by">sort-endpoints-by</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="#sync-period">sync-period</a></li>
+        <li><a href="#tcp-services-configmap">tcp-services-configmap</a></li>
+        <li><a href="#timeout">Timeout</a></li>
+        <li><a href="#track-old-instances">track-old-instances</a></li>
+        <li><a href="#update-status">update-status</a></li>
+        <li><a href="#update-status-on-shutdown">update-status-on-shutdown</a></li>
+        <li><a href="#validate-config">validate-config</a></li>
+        <li><a href="#verify-hostname">verify-hostname</a></li>
+        <li><a href="#version">version</a></li>
+        <li><a href="#wait-before-shutdown">wait-before-shutdown</a></li>
+        <li><a href="#wait-before-update">wait-before-update</a></li>
+        <li><a href="#watch-gateway">watch-gateway</a></li>
+        <li><a href="#watch-ingress">watch-ingress</a></li>
+        <li><a href="#watch-namespace">watch-namespace</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/docs/">Docs</a></li>
+  <li class="breadcrumb-item">
+    <a href="/docs/configuration/">Configuration</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Command-line</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>Command-line options</h1>
+	<div class="lead">Static command-line configuration options.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>The following command-line options are supported:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Name</th>
+					<th>Type</th>
+					<th>Default</th>
+					<th>Since</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><a href="#acme"><code>--acme-check-period</code></a></td>
+					<td>time</td>
+					<td><code>24h</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-election-id</code></a></td>
+					<td>[namespace]/configmap-name</td>
+					<td><code>acme-leader</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-fail-initial-duration</code></a></td>
+					<td>time</td>
+					<td><code>5m</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-fail-max-duration</code></a></td>
+					<td>time</td>
+					<td><code>8h</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-secret-key-name</code></a></td>
+					<td>[namespace]/secret-name</td>
+					<td><code>acme-private-key</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-server</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-token-configmap-name</code></a></td>
+					<td>[namespace]/configmap-name</td>
+					<td><code>acme-validation-tokens</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#acme"><code>--acme-track-tls-annotation</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.9</td>
+			</tr>
+			<tr>
+					<td><a href="#allow-cross-namespace"><code>--allow-cross-namespace</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#annotations-prefix"><code>--annotations-prefix</code></a></td>
+					<td>prefix list without <code>/</code></td>
+					<td><code>n42-gateway.github.io,</code><br/><code>haproxy-ingress.github.io,</code><br/><code>ingress.kubernetes.io</code></td>
+					<td>v0.8</td>
+			</tr>
+			<tr>
+					<td><a href="#apiserver-host"><code>--apiserver-host</code></a></td>
+					<td>address of K8s API server</td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#backend-shards"><code>--backend-shards</code></a></td>
+					<td>int</td>
+					<td><code>0</code></td>
+					<td>v0.11</td>
+			</tr>
+			<tr>
+					<td><a href="#buckets-response-time"><code>--buckets-response-time</code></a></td>
+					<td>float64 slice</td>
+					<td><code>.0005,.001,.002,.005,.01</code></td>
+					<td>v0.10</td>
+			</tr>
+			<tr>
+					<td><a href="#configmap"><code>--configmap</code></a></td>
+					<td>namespace/configmapname</td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#timeout"><code>--connection-timeout</code></a></td>
+					<td>duration</td>
+					<td><code>30s</code></td>
+					<td>v0.14.11</td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--controller-class</code></a></td>
+					<td>suffix</td>
+					<td><code>&quot;&quot;</code></td>
+					<td>v0.12</td>
+			</tr>
+			<tr>
+					<td><a href="#default-backend-service"><code>--default-backend-service</code></a></td>
+					<td>namespace/servicename</td>
+					<td>haproxy&rsquo;s 404 page</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#default-ssl-certificate"><code>--default-ssl-certificate</code></a></td>
+					<td>namespace/secretname</td>
+					<td>fake, auto generated</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#disable-api-warnings"><code>--disable-api-warnings</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.12</td>
+			</tr>
+			<tr>
+					<td><a href="#disable-config-keywords"><code>--disable-config-keywords</code></a></td>
+					<td>comma-separated list of keywords</td>
+					<td><code>&quot;&quot;</code></td>
+					<td>v0.10</td>
+			</tr>
+			<tr>
+					<td><a href="#disable-external-name"><code>--disable-external-name</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.10</td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--disable-ingress-class-api</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.16</td>
+			</tr>
+			<tr>
+					<td><a href="#disable-pod-list"><code>--disable-pod-list</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.11</td>
+			</tr>
+			<tr>
+					<td><a href="#election-id"><code>--election-id</code></a></td>
+					<td>identifier</td>
+					<td><code>class-%s.n42-gateway.github.io</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#enable-endpointslices-api"><code>--enable-endpointslices-api</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#force-namespace-isolation"><code>--force-namespace-isolation</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--full-controller-name</code></a></td>
+					<td>fully qualified name</td>
+					<td></td>
+					<td>v0.17</td>
+			</tr>
+			<tr>
+					<td><a href="#haproxy-grace-period"><code>--haproxy-grace-period</code></a></td>
+					<td>time</td>
+					<td><code>20s</code></td>
+					<td>v0.16</td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--health-check-path</code></a></td>
+					<td>path</td>
+					<td><code>/healthz</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--healthz-addr</code></a></td>
+					<td>tcp address</td>
+					<td><code>:10254</code></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--healthz-port</code></a></td>
+					<td>port number</td>
+					<td><code>10254</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--ingress-class</code></a></td>
+					<td>name</td>
+					<td><code>n42</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--ingress-class-precedence</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.13.5</td>
+			</tr>
+			<tr>
+					<td><a href="#ip-mode"><code>--ip-mode</code></a></td>
+					<td>[v4|v6|v4v6|lo|node|auto]</td>
+					<td><code>auto</code></td>
+					<td>v0.17</td>
+			</tr>
+			<tr>
+					<td><a href="#kubeconfig"><code>--kubeconfig</code></a></td>
+					<td>/path/to/kubeconfig</td>
+					<td>in cluster config</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#local-filesystem-prefix"><code>--local-filesystem-prefix</code></a></td>
+					<td>temporary base directory</td>
+					<td></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-zap</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-dev</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-caller</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-enable-stacktrace</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-encoder</code></a></td>
+					<td>encoder name</td>
+					<td><code>json</code> (prod), <code>console</code> (dev)</td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--log-encode-time</code></a></td>
+					<td>encoder name</td>
+					<td><code>rfc3339nano</code> (prod), <code>iso8601</code> (dev)</td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#master-socket"><code>--master-socket</code></a></td>
+					<td>socket path</td>
+					<td>use embedded haproxy</td>
+					<td>v0.12</td>
+			</tr>
+			<tr>
+					<td><a href="#master-worker"><code>--master-worker</code></a></td>
+					<td>[true|false]</td>
+					<td>false</td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#max-old-config-files"><code>--max-old-config-files</code></a></td>
+					<td>num of files</td>
+					<td><code>0</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--profiling</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#publish-address"><code>--publish-address</code></a></td>
+					<td>list of hostname/IP</td>
+					<td></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#publish-service"><code>--publish-service</code></a></td>
+					<td>namespace/servicename</td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#rate-limit-update"><code>--rate-limit-update</code></a></td>
+					<td>uploads per second (float)</td>
+					<td><code>0.5</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--ready-check-path</code></a></td>
+					<td>path</td>
+					<td><code>/readyz</code></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#reload-interval"><code>--reload-interval</code></a></td>
+					<td>time</td>
+					<td><code>0</code></td>
+					<td>v0.13</td>
+			</tr>
+			<tr>
+					<td><a href="#reload-retry"><code>--reload-retry</code></a></td>
+					<td>time</td>
+					<td><code>30s</code></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#reload-strategy"><code>--reload-strategy</code></a></td>
+					<td>[native|reusesocket]</td>
+					<td><code>reusesocket</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#report-node-internal-ip-address"><code>--report-node-internal-ip-address</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#sort-backends"><code>--sort-backends</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#shutdown-timeout"><code>--shutdown-timeout</code></a></td>
+					<td>time</td>
+					<td><code>25s</code></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#sort-endpoints-by"><code>--sort-endpoints-by</code></a></td>
+					<td>[endpoint|ip|name|random]</td>
+					<td><code>endpoint</code></td>
+					<td>v0.11</td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--stats-collect-processing-period</code></a></td>
+					<td>time</td>
+					<td><code>500ms</code></td>
+					<td>v0.10</td>
+			</tr>
+			<tr>
+					<td><a href="#stats"><code>--stop-handler</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.15</td>
+			</tr>
+			<tr>
+					<td><a href="#sync-period"><code>--sync-period</code></a></td>
+					<td>time</td>
+					<td><code>10m</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#tcp-services-configmap"><code>--tcp-services-configmap</code></a></td>
+					<td>namespace/configmapname</td>
+					<td>no tcp svc</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#track-old-instances"><code>--track-old-instances</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.14</td>
+			</tr>
+			<tr>
+					<td><a href="#update-status"><code>--update-status</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#update-status-on-shutdown"><code>--update-status-on-shutdown</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#logging"><code>--v</code></a></td>
+					<td>log level as integer</td>
+					<td><code>2</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#validate-config"><code>--validate-config</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#verify-hostname"><code>--verify-hostname</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#version"><code>--version</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#wait-before-shutdown"><code>--wait-before-shutdown</code></a></td>
+					<td>seconds as integer</td>
+					<td><code>0</code></td>
+					<td>v0.8</td>
+			</tr>
+			<tr>
+					<td><a href="#wait-before-update"><code>--wait-before-update</code></a></td>
+					<td>duration</td>
+					<td><code>200ms</code></td>
+					<td>v0.11</td>
+			</tr>
+			<tr>
+					<td><a href="#watch-gateway"><code>--watch-gateway</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td>v0.13</td>
+			</tr>
+			<tr>
+					<td><a href="#watch-ingress"><code>--watch-ingress</code></a></td>
+					<td>[true|false]</td>
+					<td><code>true</code></td>
+					<td>v0.17</td>
+			</tr>
+			<tr>
+					<td><a href="#ingress-class"><code>--watch-ingress-without-class</code></a></td>
+					<td>[true|false]</td>
+					<td><code>false</code></td>
+					<td>v0.12</td>
+			</tr>
+			<tr>
+					<td><a href="#watch-namespace"><code>--watch-namespace</code></a></td>
+					<td>namespace</td>
+					<td>all namespaces</td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="options">Options<a class="td-heading-self-link" href="#options" aria-label="Heading self-link"></a></h2>
+<h3 id="acme">Acme<a class="td-heading-self-link" href="#acme" aria-label="Heading self-link"></a></h3>
+<p>Configures the acme server and other static options used to authorize and sign certificates
+against a server which implements the acme protocol, version 2.</p>
+<p>Supported acme command-line options:</p>
+<ul>
+<li><code>--acme-check-period</code>: interval between checks for expiring certificates. Defaults to <code>24h</code>.</li>
+<li><code>--acme-election-id</code>: deprecated on v0.15, use <a href="#election-id"><code>--election-id</code></a> instead.</li>
+<li><code>--acme-fail-initial-duration</code>: the starting time to wait and retry after a failed authorization and sign process. Defaults to <code>5m</code>.</li>
+<li><code>--acme-fail-max-duration</code>: the time between retries of failed authorization will exponentially grow up to the max duration time. Defaults to <code>8h</code>.</li>
+<li><code>--acme-secret-key-name</code>: secret name used to store the client private key. Defaults to <code>acme-private-key</code>. A new key, hence a new client, is created if the secret does not exist.</li>
+<li><code>--acme-server</code>: mandatory, starts a local server used to answer challenges from the acme environment. This option should be provided on all N42 Gateway instances to the certificate signing work properly.</li>
+<li><code>--acme-token-configmap-name</code>: the ConfigMap name used to store temporary tokens generated during the challenge. Defaults to <code>acme-validation-tokens</code>. Such tokens need to be stored in k8s because any N42 Gateway instance might receive the request from the acme environment.</li>
+<li><code>--acme-track-tls-annotation</code>: defines if ingress objects with annotation <code>kubernetes.io/tls-acme: &quot;true&quot;</code> should also be tracked. Defaults to <code>false</code>.</li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#acme">acme configuration keys</a> doc, which has also an overview on how acme works on N42 Gateway</li>
+</ul>
+<hr>
+<h3 id="allow-cross-namespace">allow-cross-namespace<a class="td-heading-self-link" href="#allow-cross-namespace" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--allow-cross-namespace</code></li>
+</ul>
+<p><code>--allow-cross-namespace</code> argument, if added, will allow reading secrets from one namespace to an
+ingress resource of another namespace. The default behavior is to deny such cross namespace reading.
+This adds a breaking change from <code>v0.4</code> to <code>v0.5</code> on <code>n42-gateway.github.io/auth-tls-secret</code>
+annotation, where cross namespace reading were allowed without any configuration.</p>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#cross-namespace">cross namespace</a> configuration keys.</li>
+</ul>
+<hr>
+<h3 id="annotations-prefix">annotations-prefix<a class="td-heading-self-link" href="#annotations-prefix" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--annotations-prefix</code></li>
+</ul>
+<p>Configures a comma-separated list of annotations prefix that the controller should look for when
+parsing services and ingress objects. The default value is <code>n42-gateway.github.io,haproxy-ingress.github.io,ingress.kubernetes.io</code>.
+The default configuration means that any of the following configurations will declare SSL Redirect as <code>true</code>:</p>
+<ul>
+<li><code>n42-gateway.github.io/ssl-redirect: &quot;true&quot;</code></li>
+<li><code>haproxy-ingress.github.io/ssl-redirect: &quot;true&quot;</code></li>
+<li><code>ingress.kubernetes.io/ssl-redirect: &quot;true&quot;</code></li>
+</ul>
+<p>The order of the declaration is used to prioritize one of them if the same configuration key is
+declared twice - if two distinct prefix is used to configure the same key in the same ingress or
+service resource, the value of the annotation with the prefix that was configured first in this
+command-line option is used.</p>
+<p>Annotations with other prefix or without any prefix are ignored. This allows to use N42 Gateway
+with other ingress controllers that shares ingress and service resources without conflicting each
+other.</p>
+<hr>
+<h3 id="apiserver-host">apiserver-host<a class="td-heading-self-link" href="#apiserver-host" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--apiserver-host</code></li>
+</ul>
+<p>Allows you to specify an explicit host for the Kubernetes API server, in the format of
+<code>protocol://address:port</code>, e.g., <code>http://localhost:8080</code>.  If this value isn&rsquo;t specified, the
+assumption is that the binary is running inside a Kubernetes cluster and local discovery will be
+attempted.</p>
+<hr>
+<h3 id="backend-shards">backend-shards<a class="td-heading-self-link" href="#backend-shards" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--backend-shards</code></li>
+</ul>
+<p>Defines how many files should be used to configure the haproxy backends. The default value is
+0 (zero) which uses one single file to configure the whole haproxy process. Values greater than
+0 (zero) splits the backend configuration into separated files. Only files with changed backends
+are parsed and written to disk, reducing io and cpu usage on big clusters - about 1000 or more
+services.</p>
+<hr>
+<h3 id="buckets-response-time">buckets-response-time<a class="td-heading-self-link" href="#buckets-response-time" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--buckets-response-time</code></li>
+</ul>
+<p>Configures the buckets of the histogram <code>haproxyingress_haproxy_response_time_seconds</code>, used to compute the response time of the haproxy&rsquo;s admin socket. The response time unit is in seconds. The default value is <code>.0005,.001,.002,.005,.01</code> (<code>500µs</code>, <code>1ms</code>, <code>2ms</code>, <code>5ms</code>, <code>10ms</code>) if not configured.</p>
+<hr>
+<h3 id="configmap">configmap<a class="td-heading-self-link" href="#configmap" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--configmap</code></li>
+</ul>
+<p>The name of the ConfigMap that contains the custom configuration to use, in the format
+<code>namespace/configmapname</code>.  Beware that in version 0.12 and below, an incorrect value here will
+silently fail.  Version 0.13 and later will crash if the ConfigMap is unreadable or nonexistent.</p>
+<p>See also:</p>
+<ul>
+<li><a href="https://github.com/n42-gateway/n42-gateway/blob/master/examples/custom-configuration/README.md"target="_blank" rel="noopener">custom-configuration example using <code>--configmap</code></a></li>
+</ul>
+<hr>
+<h3 id="default-backend-service">default-backend-service<a class="td-heading-self-link" href="#default-backend-service" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--default-backend-service</code></li>
+</ul>
+<p>Defines the <code>namespace/servicename</code> that should be used if the incoming request doesn&rsquo;t match any
+hostname, or the requested path doesn&rsquo;t match any location within the desired hostname. An internal
+404 error page is used if not declared.</p>
+<hr>
+<h3 id="default-ssl-certificate">default-ssl-certificate<a class="td-heading-self-link" href="#default-ssl-certificate" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--default-ssl-certificate</code></li>
+</ul>
+<p>Defines the <code>namespace/secretname</code> of the default certificate that should be used if ingress
+resources using TLS configuration doesn&rsquo;t provide its own certificate.  A filename prefixed
+with <code>file://</code> can be used, containing both certificate and private key in PEM format, eg
+<code>file:///dir/crt.pem</code>.</p>
+<p>A self-signed fake certificate is used if not declared, the secret or the file is not found.</p>
+<hr>
+<h3 id="disable-api-warnings">disable-api-warnings<a class="td-heading-self-link" href="#disable-api-warnings" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--disable-api-warnings</code></li>
+</ul>
+<p>Since v0.12.4</p>
+<p>Disable warning logs sent from the API server. Most of the warnings are related with API
+deprecation. The default behavior is to log all API server warnings.</p>
+<hr>
+<h3 id="disable-config-keywords">disable-config-keywords<a class="td-heading-self-link" href="#disable-config-keywords" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--disable-config-keywords</code></li>
+</ul>
+<p>Since v0.10.9</p>
+<p>Defines a comma-separated list of HAProxy keywords that should not be used on annotation based configuration snippets. Configuration snippets added as a global config does not follow this option. Use an asterisk <code>*</code> to disable configuration snippets using annotations.</p>
+<p>Every keyword in the configuration will be compared with the first token of every configuration line, ignoring tabs and spaces. If a match occur, all the configuration snippet will be ignored and a warning is logged.</p>
+<p>The default value is an empty string, enabling the configuration and accepting any HAProxy keyword.</p>
+<hr>
+<h3 id="disable-external-name">disable-external-name<a class="td-heading-self-link" href="#disable-external-name" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--disable-external-name</code></li>
+</ul>
+<p>Since v0.10.9</p>
+<p>Services of type ExternalName uses DNS lookup to define the target server IP list. Declare <code>--disable-external-name</code> to disable a DNS based target IP list, refusing services of type ExternalName.</p>
+<hr>
+<h3 id="disable-pod-list">disable-pod-list<a class="td-heading-self-link" href="#disable-pod-list" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--disable-pod-list</code></li>
+</ul>
+<p>Since v0.11, deprecated since v0.15</p>
+<p>Disables in memory pod list and also pod watch for changes. Pod list and watch is used by the <code>drain-support</code> and <code>assign-backend-server-id</code> options, which will not work if pod list is disabled. Blue/green and <code>session-cookie-value-strategy</code> set to <code>pod-uid</code> also use pod list if enabled; otherwise, k8s api is called if needed. The default value is <code>false</code>, which means pods will be watched and listed in memory. Since v0.15 all the listers are managed by controller-runtime, making this option deprecated.</p>
+<hr>
+<h3 id="election-id">election-id<a class="td-heading-self-link" href="#election-id" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--election-id</code></li>
+</ul>
+<p>The ID to be used for electing ingress controller leader. A leader needs to be elected in the following use cases:</p>
+<ul>
+<li>Address update on Ingress and Gateway API status, see <a href="#update-status"><code>--update-status</code></a></li>
+<li>Embedded Acme signer, see <a href="#acme">acme</a></li>
+<li>Gateway API, see <a href="#watch-gateway"><code>--watch-gateway</code></a></li>
+</ul>
+<p>Election ID configuration has no effect if none of Address status update, Embedded Acme signer, or Gateway API are enabled.</p>
+<p>Since v0.15 a <code>%s</code> placeholder is used to define where the IngressClass value should be added to the election ID. Up to v0.14 the IngressClass was concatenated in the end of the provided value to compose the real election ID value. Ingress class is added to the election ID name to avoid conflict when two or more N42 Gateway controllers are running in the same cluster.</p>
+<p>Election ID defaults to <code>class-%s.n42-gateway.github.io</code> if not configured, which is rendered to <code>class-n42.n42-gateway.github.io</code> if the IngressClass is not changed from the default value.</p>
+<hr>
+<h3 id="enable-endpointslices-api">enable-endpointslices-api<a class="td-heading-self-link" href="#enable-endpointslices-api" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--enable-endpointslices-api</code></li>
+</ul>
+<p>Since v0.14, deprecated since v0.16</p>
+<p>Uses EndpointSlices API info, rather than Endpoints API, to fetch service endpoints info.</p>
+<p>Endpoints API is deprecated since Kubernetes 1.33, and N42 Gateway only supports EndpointSlices API since v0.16. This option is ignored if configured.</p>
+<hr>
+<h3 id="force-namespace-isolation">force-namespace-isolation<a class="td-heading-self-link" href="#force-namespace-isolation" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--force-namespace-isolation</code></li>
+</ul>
+<p>Deprecated since v0.15</p>
+<p>Whether to force namespace isolation.  This flag is required to avoid the reference of secrets,
+configmaps or the default backend service located in a different namespace than specified in the
+flag <code>--watch-namespace</code> (which defaults to all namespaces, so you will probably want to set that
+flag, too). Since v0.15 isolation is controlled by the <a href="#allow-cross-namespace"><code>--allow-cross-namespace</code></a>
+and <a href="#watch-namespace"><code>--watch-namespace</code></a> command-line options, making <code>--force-namespace-isolation</code>
+deprecated.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#allow-cross-namespace"><code>--allow-cross-namespace</code></a> command-line option</li>
+<li><a href="#watch-namespace"><code>--watch-namespace</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="haproxy-grace-period">haproxy-grace-period<a class="td-heading-self-link" href="#haproxy-grace-period" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--haproxy-grace-period</code></li>
+</ul>
+<p>Since v0.16</p>
+<p>Defines the duration HAProxy should wait all requests to finish before terminates its process. This option is only used on embedded, master-worker configured proxy, see <a href="#master-worker"><code>--master-worker</code></a>. Daemon mode cannot have grace period configured, and external mode should be configured directly on HAProxy container. Defaults to <code>20s</code>.</p>
+<p>This option should be below the controller shutdown timeout, since it will terminate the controller process despite any other internal grace period.</p>
+<p>On <a href="/examples/external-haproxy/">External HAProxy</a>, its container already uses SIGUSR1 as the stop signal, which makes HAProxy to wait for active connections to finish, just need to configure the container&rsquo;s grace period if need to change from its default of 30s.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#shutdown-timeout"><code>--shutdown-timeout</code></a> command-line option.</li>
+</ul>
+<hr>
+<h3 id="ingress-class">Ingress Class<a class="td-heading-self-link" href="#ingress-class" aria-label="Heading self-link"></a></h3>
+<p>More than one ingress controller is supported per Kubernetes cluster. These options allow to
+override the class of ingress resources that this instance of the controller should listen to.
+Classes that match will be used in the HAProxy configuration, other classes will be ignored.
+Ingress resources without class name and without class annotation is also ignored since v0.12,
+add the command-line option <code>--watch-ingress-without-class</code> to also listen to these ingress.</p>
+<p>These options have a new behavior since v0.12, see the corresponding documentation if using an
+older controller version.</p>
+<ul>
+<li><code>--ingress-class</code>: defines the value of <code>kubernetes.io/ingress.class</code> annotation this controller
+should listen to. The default value is <code>n42</code> if not declared.</li>
+<li><code>--controller-class</code>: by default, N42 Gateway will watch IngressClasses whose
+<code>spec.controller</code> name is <code>n42-gateway.github.io/controller</code>. All ingress resources that
+link to these IngressClasses will be added to the configuration. The <code>--controller-class</code>
+command-line option customizes the controller name, allowing to run more than one N42 Gateway
+in the same cluster. Configuring <code>--controller-class=staging</code> would listen to IngressClasses whose
+controller name is <code>n42-gateway.github.io/controller/staging</code>.</li>
+<li><code>--full-controller-name</code>: Same as <code>--controller-class</code>, but defines the fully qualified controller
+name instead of just its suffix. <code>--controller-class</code> is ignored if this option is configured, and
+<code>n42-gateway.github.io/controller</code> is used by default if both options are missing.</li>
+<li><code>--ingress-class-precedence</code>: defines if IngressClass resource should take precedence over
+kubernetes.io/ingress.class annotation if both are defined and conflicting.</li>
+<li><code>--watch-ingress-without-class</code>: defines if this controller should also listen to ingress resources
+that doesn&rsquo;t declare neither the <code>kubernetes.io/ingress.class</code> annotation nor the
+<code>&lt;ingress&gt;.spec.ingressClassName</code> field. The default since v0.12 is to ignore ingress without class
+annotation and class name.</li>
+<li><code>--disable-ingress-class-api</code>: Since v0.16. Configures controller to not list or watch IngressClass API, useful on deployments that cannot allow controller to have cluster permission. If configured, the only way to watch ingress resources is using the deprecated, but still supported <code>kubernetes.io/ingress.class</code> annotation, or use <code>--watch-ingress-without-class</code>.</li>
+<li><code>--ignore-ingress-without-class</code>: this option is ignored since v0.12. Use
+<code>--watch-ingress-without-class</code> instead.</li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#class-matter">Class matter</a> in the Configuration Keys doc</li>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class"target="_blank" rel="noopener">https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class</a></li>
+</ul>
+<hr>
+<h3 id="ip-mode">ip-mode<a class="td-heading-self-link" href="#ip-mode" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--ip-mode</code></li>
+</ul>
+<p>Since v0.17</p>
+<p>Defines the IP mode used on frontends (listening bind) if not configured in the frontend binding, and loopback addresses created by N42 Gateway (auth-proxy and empty slots). Defaults to <code>auto</code> if not configured.</p>
+<p>The following options are available:</p>
+<ul>
+<li><code>v4</code>: uses only IPv4 on default listening bind configurations, and IPv4 on loopback addresses.</li>
+<li><code>v6</code>: uses only IPv6 on default listening bind configurations, and IPv6 on loopback addresses.</li>
+<li><code>v4v6</code>: uses both IPv4 and IPv6 on default listening bind configurations, and IPv4 on loopback addresses.</li>
+<li><code>lo</code>: uses IP addresses of the loopback interface to determine the IP mode. The initialization fails in case of a failure finding and reading the loopback interface.</li>
+<li><code>node</code>: uses both Internal and External IP addresses of the Node where controller is running to determine the IP mode. The initialization fails in case the node status cannot be read.</li>
+<li><code>auto</code>: same as node, but defaults to IPv4 instead of failing the initialization in case the node status cannot be read.</li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#bind">Bind</a> configuration keys</li>
+</ul>
+<hr>
+<h3 id="kubeconfig">kubeconfig<a class="td-heading-self-link" href="#kubeconfig" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--kubeconfig</code></li>
+</ul>
+<p>Ingress controller will try to connect to the Kubernetes master using environment variables and a
+service account. This behavior can be changed using <code>--kubeconfig</code> argument that reference a
+kubeconfig file with master endpoint and credentials. This is a mandatory argument if the controller
+is deployed outside of the Kubernetes cluster.</p>
+<hr>
+<h3 id="local-filesystem-prefix">local-filesystem-prefix<a class="td-heading-self-link" href="#local-filesystem-prefix" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--local-filesystem-prefix</code></li>
+</ul>
+<p>Since v0.14</p>
+<p>Enables N42 Gateway to run in local mode. Define <code>--local-filesystem-prefix</code> with a temporary
+directory N42 Gateway should create and maintain all the configuration files. Useful for local
+deployment. Start N42 Gateway in the root directory of the repository when using
+<code>--local-filesystem-prefix</code>, or simply use via <code>make run</code>.</p>
+<hr>
+<h3 id="logging">Logging<a class="td-heading-self-link" href="#logging" aria-label="Heading self-link"></a></h3>
+<p>Since v0.14</p>
+<p>Logging configuration options.</p>
+<ul>
+<li><code>--log-zap</code>: Configures <a href="https://pkg.go.dev/go.uber.org/zap"target="_blank" rel="noopener">zap</a> as the controller&rsquo;s logger sink. <a href="https://github.com/kubernetes/klog"target="_blank" rel="noopener">klog</a> output is used if not enabled. Most of the logging options need zap enabled.</li>
+<li><code>--log-dev</code>: Defines if development style logging should be used. Defaults to production. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-caller</code>: Defines if the log output should add a reference of the caller with file name and line number. Defaults to not add. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-enable-stacktrace</code>: Defines if error output should add stracktraces. Defaults to not add. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-encoder</code>: Defines the log encoder. Options are: <code>console</code> or <code>json</code>. Defaults to <code>json</code> if <code>--log-dev</code> is disabled and <code>console</code> if <code>--log-dev</code> is enabled. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-encode-time</code>: Configures the encode time used in the logs. Options are: <code>rfc3339nano</code>, <code>rfc3339</code>, <code>iso8601</code>, <code>millis</code>, <code>nanos</code>. Defaults to <code>rfc3339nano</code> if <code>--log-dev</code> is disabled and <code>iso8601</code> if <code>--log-dev</code> is enabled. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--v</code>: Number of the log level verbosity. 1: info; 2: add low verbosity debug. Defaults to 2.</li>
+</ul>
+<hr>
+<h3 id="master-socket">master-socket<a class="td-heading-self-link" href="#master-socket" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--master-socket</code></li>
+</ul>
+<p>Since v0.12</p>
+<p>Configures N42 Gateway to use an external haproxy deployment in master-worker mode. This option
+receives the unix socket of the master CLI. The default value is an empty string, which will
+instruct the controller to start and manage the embedded haproxy instead of an external instance.</p>
+<p>The following conditions should be satisfied in order to an external haproxy work properly:</p>
+<ol>
+<li>The following paths should be shared between N42 Gateway and the external haproxy: <code>/etc/haproxy</code>, <code>/var/lib/haproxy</code>, <code>/var/run/haproxy</code>. N42 Gateway must have write access to all of them, external haproxy should have write access to <code>/var/run/haproxy</code>. This can be made using a sidecar container and k8s&rsquo; emptyDir, or a remote file system provided that it updates synchronously and supports unix sockets</li>
+<li>Start the external haproxy with:</li>
+</ol>
+<ul>
+<li><code>-S /var/run/haproxy/master.sock,mode,600</code>. <code>mode 600</code> isn&rsquo;t mandatory but recommended;</li>
+<li><code>-f /etc/haproxy</code></li>
+</ul>
+<ol>
+<li>N42 Gateway image has a <code>--init</code> command-line option which creates an initial valid configuration file, this allows the external haproxy to bootstraps successfully. This option can be used as an init container.</li>
+</ol>
+<p>See also:</p>
+<ul>
+<li><a href="/examples/external-haproxy/">example</a> page.</li>
+<li><a href="/docs/configuration/keys/#external">External</a> and <a href="/docs/configuration/keys/#master-worker">Master-worker</a> configuration keys</li>
+</ul>
+<hr>
+<h3 id="master-worker">master-worker<a class="td-heading-self-link" href="#master-worker" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--master-worker</code></li>
+</ul>
+<p>Since v0.14</p>
+<p>Defines if haproxy should be configured in master-worker mode. If <code>false</code>, one single process
+is forked in the background. If <code>true</code>, a master process is started in the foreground and can
+be used to manage current and old worker processes. The default value is <code>false</code> in v0.14, which
+preserves historical behavior of N42 Gateway. v0.15 and newer defaults to <code>true</code> if not
+declared. External HAProxy deployment needs master-worker mode and will enforce
+<code>--master-worker</code> as <code>true</code> if configured.</p>
+<hr>
+<h3 id="max-old-config-files">max-old-config-files<a class="td-heading-self-link" href="#max-old-config-files" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--max-old-config-files</code></li>
+</ul>
+<p>Everytime a configuration change need to update HAProxy, a configuration file is rewritten even if
+dynamic update is used. By default the same file is recreated and the old configuration is lost.
+Use <code>--max-old-config-files</code> to configure after how much files Ingress controller should start to
+remove old configuration files. If <code>0</code>, the default value, a single <code>haproxy.cfg</code> is used.</p>
+<hr>
+<h3 id="publish-address">publish-address<a class="td-heading-self-link" href="#publish-address" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--publish-address</code></li>
+</ul>
+<p>Since v0.15</p>
+<p>Defines a comma separated list of hostname or IP addresses that should be used to configure address status
+on Ingress and Gateway API. This option cannot be used if <a href="#publish-service"><code>--publish-service</code></a> is configured.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#update-status"><code>--update-status</code></a> command-line option</li>
+<li><a href="#publish-service"><code>--publish-service</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="publish-service">publish-service<a class="td-heading-self-link" href="#publish-service" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--publish-service</code></li>
+</ul>
+<p>Some infrastructure tools like <code>external-DNS</code> relay in the address from Ingress or Gateway API status to created access routes to the services exposed with ingress object.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nn">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">status</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">loadBalancer</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ingress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">&lt;ingressControllerLoadbalancerFQDN&gt;</span><span class="w">
+</span></span></span></code></pre></div><p>Use <code>--publish-service=namespace/servicename</code> to indicate the service fronting the ingress controller. The controller mirrors the address of this service&rsquo;s endpoints to the load-balancer status of all Ingress objects it satisfies, as well as the addresses status from Gateway API resources. This option cannot be used if <a href="#publish-address"><code>--publish-address</code></a> is configured.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#update-status"><code>--update-status</code></a> command-line option</li>
+<li><a href="#publish-address"><code>--publish-address</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="rate-limit-update">rate-limit-update<a class="td-heading-self-link" href="#rate-limit-update" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--rate-limit-update</code></li>
+</ul>
+<p>Use <code>--rate-limit-update</code> to change how much time to wait between two consecutive configuration updates.
+A configuration update is the process of read all enqueued Kubernetes events, reflect in the HAProxy
+model and immediately apply everything that does not need a reload, eg server certificate endpoint
+updates. Note that the first configuration update is always immediate, the delay will only prevent
+two or more consecutive updates in the same time frame - the second update will be enqueued and
+processed later, satisfying the rate limit configuration. Moreover, updates will only happen if
+Kubernetes reports changing events. The default value is <code>0.5</code> which means to wait two seconds between
+two consecutive configuration changes.</p>
+<p>Up to v0.12 this was the only way to limit how often HAProxy would be reloaded, but this also prevents
+to dynamically update HAProxy as fast as possible. v0.13 adds <a href="#reload-interval"><code>--reload-interval</code></a>,
+which allows a higher rate limit update with a lower rate of reloads.</p>
+<p>See also <a href="#reload-interval"><code>--reload-interval</code></a>.</p>
+<hr>
+<h3 id="reload-interval">reload-interval<a class="td-heading-self-link" href="#reload-interval" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--reload-interval</code></li>
+</ul>
+<p>Since v0.13</p>
+<p>Configures the minimal time between two consecutive HAProxy reloads. The default value is <code>0</code>,
+which means to always reload HAProxy just after a configuration change requires a reload. The
+interval should be configured with a time suffix, e.g., <code>30s</code> means that if two distinct and
+consecutive configuration changes enforce a reload, the second reload will be enqueued until 30
+seconds have passed from the first one, applying every new configuration changes made between
+this interval.</p>
+<p>Higher values help to limit the number of active instances and save some memory on large clusters
+with long connections. Note however that, if two consecutive updates require a reload, the second
+one will delay up to the configured duration to be reflected by HAProxy.</p>
+<hr>
+<h3 id="reload-retry">reload-retry<a class="td-heading-self-link" href="#reload-retry" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--reload-retry</code></li>
+</ul>
+<p>How long N42 Gateway should wait before trying to reload HAProxy if an error happens. Defaults to <code>30s</code>.</p>
+<hr>
+<h3 id="reload-strategy">reload-strategy<a class="td-heading-self-link" href="#reload-strategy" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--reload-strategy</code></li>
+</ul>
+<p>The <code>--reload-strategy</code> command-line argument is used to select which reload strategy
+HAProxy should use. The following options are available:</p>
+<ul>
+<li><code>native</code>: Uses native HAProxy reload option <code>-sf</code>.</li>
+<li><code>reusesocket</code>: (starting on v0.6) Uses HAProxy <code>-x</code> command-line option to pass the listening sockets between old and new HAProxy process, allowing hitless reloads. This is the default option since v0.8.</li>
+<li><code>multibinder</code>: (deprecated on v0.6) Uses GitHub&rsquo;s <a href="https://github.com/github/multibinder"target="_blank" rel="noopener">multibinder</a>. <a href="https://githubengineering.com/glb-part-2-haproxy-zero-downtime-zero-delay-reloads-with-multibinder/"target="_blank" rel="noopener">GLB part 2: HAProxy zero-downtime, zero-delay reloads with multibinder</a>
+describes how it works.</li>
+</ul>
+<hr>
+<h3 id="report-node-internal-ip-address">report-node-internal-ip-address<a class="td-heading-self-link" href="#report-node-internal-ip-address" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--report-node-internal-ip-address</code></li>
+</ul>
+<p>Sets whether the node&rsquo;s IP address returned in the Ingress and Gateway API status should be the node&rsquo;s internal instead of the external IP address. Defaults to <code>false</code>. This option is ignored if either <a href="#publish-service"><code>--publish-service</code></a> or <a href="#publish-address"><code>--publish-address</code></a> are configured.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#update-status"><code>-update-status</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="shutdown-timeout">shutdown-timeout<a class="td-heading-self-link" href="#shutdown-timeout" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--shutdown-timeout</code></li>
+</ul>
+<p>Defines the amount of time the controller should wait, after receiving a SIGUSR1, SIGINT or SIGTERM, for all of its internal services to gracefully stop before shutting down the process. It starts to count after <a href="#wait-before-shutdown"><code>--wait-before-shutdown</code></a> has been passed, if configured. Defaults to <code>25s</code>.</p>
+<p>If changing its default value, consider also to change <a href="#haproxy-grace-period"><code>--haproxy-grace-period</code></a> to at most <code>1s</code> less than the shutdown timeout. If changing the shutdown timeout to <code>30s</code> or more, remember to also configure controller&rsquo;s pod grace period to at least <code>1s</code> more than the sum of the <code>--wait-before-shutdown</code> and the <code>--shutdown-timeout</code>.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#wait-before-shutdown"><code>--wait-before-shutdown</code></a> command-line option.</li>
+<li><a href="#haproxy-grace-period"><code>--haproxy-grace-period</code></a> command-line option.</li>
+</ul>
+<hr>
+<h3 id="sort-backends">sort-backends<a class="td-heading-self-link" href="#sort-backends" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--sort-backends</code></li>
+</ul>
+<p>Defines if backend&rsquo;s endpoints should be sorted by name. Since v0.8 the endpoints will stay in the
+same order found in the Kubernetes&rsquo; endpoint objects if <code>--sort-backends</code> is missing. This option
+has less precedence than <code>--sort-endpoints-by</code> if both are declared.</p>
+<p>In v0.7 and older version, if <code>--sort-backends</code> is missing, N42 Gateway randomly shuffle endpoints
+on each reload in order to avoid requesting always the same backends just after haproxy reloads.</p>
+<p>Sorting backends by name has a real effect only if using a distinct <a href="/docs/configuration/keys/#backend-server-naming">backend-server-naming</a>
+option, because the default value builds the server name using a numeric sequence.</p>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#backend-server-naming">backend-server-naming</a> configuration key</li>
+<li><a href="#sort-endpoints-by">sort-endpoints-by</a> command-line option</li>
+</ul>
+<hr>
+<h3 id="sort-endpoints-by">sort-endpoints-by<a class="td-heading-self-link" href="#sort-endpoints-by" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--sort-endpoints-by</code></li>
+</ul>
+<p>Since v0.11</p>
+<p>Defines in which order the endpoints of a backend should be sorted.</p>
+<ul>
+<li><code>endpoint</code>: this is the default value, uses the same order declared in the Kubernetes&rsquo; Endpoint objects. <code>ep</code> is an alias to <code>endpoint</code></li>
+<li><code>ip</code>: sort endpoints by the IP and port of the destination server</li>
+<li><code>name</code>: sort the endpoints by the name given to the server, see also <a href="/docs/configuration/keys/#backend-server-naming">backend-server-naming</a></li>
+<li><code>random</code>: randomly shuffle the endpoints every time haproxy needs to be reloaded, this option avoids to always send requests to the same endpoints depending on the balancing algorithm</li>
+</ul>
+<hr>
+<h3 id="stats">Stats<a class="td-heading-self-link" href="#stats" aria-label="Heading self-link"></a></h3>
+<p>Configures an endpoint with statistics, debugging and health checks. The following URIs are provided:</p>
+<ul>
+<li><code>/healthz</code>: a healthz URI for the N42 Gateway</li>
+<li><code>/readyz</code>: a readiness URI for the N42 Gateway</li>
+<li><code>/metrics</code>: Prometheus compatible metrics exporter</li>
+<li><code>/acme/check</code> (<code>POST</code>): starts check for missing, expiring or outdated certificates controlled by acme client. Should be issued in the leader.</li>
+<li><code>/debug/pprof</code>: profiling tools</li>
+<li><code>/build</code>: build information - controller name, version, git commit hash and repository</li>
+<li><code>/stop</code>: stops N42 Gateway controller</li>
+</ul>
+<p>Options:</p>
+<ul>
+<li><code>--health-check-path</code>: Defines the URL to be used as a health check for N42 Gateway. Defaults to <code>/healthz</code>.</li>
+<li><code>--health-addr</code>: Defines the address N42 Gateway should listen to. Defaults to <code>:10254</code>.</li>
+<li><code>--healthz-port</code>: (deprecated since v0.15) Defines the port number N42 Gateway should listen to. Use <code>--healthz-addr</code> instead. Defaults to <code>10254</code>.</li>
+<li><code>--profiling</code>: Configures if the profiling URI should be enabled. Defaults to <code>true</code>.</li>
+<li><code>--ready-check-path</code>: Defines the URL to be used as a readiness check for N42 Gateway. Defaults to <code>/readyz</code>.</li>
+<li><code>--stats-collect-processing-period</code>: Defines the interval between two consecutive readings of haproxy&rsquo;s <code>Idle_pct</code>, used to generate <code>haproxy_processing_seconds_total</code> metric. haproxy updates Idle_pct every <code>500ms</code>, which makes that the best configuration value, and it&rsquo;s also the default if not configured. Values greater than <code>500ms</code> will produce a less accurate collect. Change to 0 (zero) to disable this metric.</li>
+<li><code>--stop-handler</code>: Allows to stop the controller via a POST request to <code>&lt;host&gt;:&lt;healthzport&gt;/stop</code> endpoint. Default value is <code>false</code>.</li>
+</ul>
+<hr>
+<h3 id="sync-period">sync-period<a class="td-heading-self-link" href="#sync-period" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--sync-period</code></li>
+</ul>
+<p>Configures the default resync period of the Kubernetes client&rsquo;s informer factory. Defaults to 10
+minutes.</p>
+<hr>
+<h3 id="tcp-services-configmap">tcp-services-configmap<a class="td-heading-self-link" href="#tcp-services-configmap" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--tcp-services-configmap</code></li>
+</ul>
+<p>Configure <code>--tcp-services-configmap</code> argument with <code>namespace/configmapname</code> resource with TCP
+services and ports that HAProxy should listen to. Use the HAProxy&rsquo;s port number as the key of the
+ConfigMap.</p>
+<div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
+  <div class="td-alert-body">
+    <p>Starting on v0.13, <code>--tcp-services-configmap</code> is deprecated. Use <a href="/docs/configuration/keys/#tcp-services"><code>tcp-service-port</code></a> configuration key instead.</p>
+<p>The documentation refers to &ldquo;ConfigMap based TCP&rdquo; when taking about this configuration options, and it refers to &ldquo;TCP Service&rdquo; when talking about to the new, annotation based TCP configuration.</p>
+    </div>
+</div>
+<p>The value of the ConfigMap entry is a colon separated list of the following arguments:</p>
+<ol>
+<li><code>&lt;namespace&gt;/&lt;service-name&gt;</code>, mandatory, is the well known notation of the service that will receive incoming connections.</li>
+<li><code>&lt;portnumber&gt;</code>, mandatory, is the port number the upstream service is listening - this is not related to the listening port of HAProxy.</li>
+<li><code>&lt;in-proxy&gt;</code>, optional, should be defined as <code>PROXY</code> if HAProxy should expect requests using the <a href="https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt"target="_blank" rel="noopener">PROXY</a> protocol. Leave empty to not use PROXY protocol. This is usually used only if there is another load balancer in front of HAProxy which supports the PROXY protocol. PROXY protocol v1 and v2 are supported.</li>
+<li><code>&lt;out-proxy&gt;</code>, optional, should be defined as <code>PROXY</code> or <code>PROXY-V2</code> if the upstream service expect connections using the PROXY protocol v2. Use <code>PROXY-V1</code> instead if the upstream service only support v1 protocol. Leave empty to connect without using the PROXY protocol.</li>
+<li><code>&lt;namespace/secret-name&gt;</code>, optional, used to configure SSL/TLS over the TCP connection. Secret should have <code>tls.crt</code> and <code>tls.key</code> pair used on TLS handshake. Leave empty to not use ssl-offload. A filename prefixed with <code>file://</code> can be used containing both certificate and private key in PEM format, eg <code>file:///dir/crt.pem</code>.</li>
+<li><code>&lt;check-interval&gt;</code>, added in v0.10, optional and defaults to <code>2s</code>, configures a TCP check interval. Declare <code>-</code> (one single dash) as the time to disable it. Valid time is a number and a mandatory suffix: <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, <code>h</code> or <code>d</code>.</li>
+<li><code>&lt;namespace/secret-name&gt;</code>, added in v0.10, optional, used to configure SSL/TLS client verification over the TCP connection. Secret should have <code>ca.crt</code> and optional <code>ca.crl</code>. Leave empty to not use ssl client verification. A filename prefixed with <code>file://</code> can be used containing the CA bundle in PEM format, and optionally followed by a comma and the filename with the crl, eg <code>file:///dir/ca.pem</code> or <code>file:///dir/ca.pem,/dir/crl.pem</code>.</li>
+</ol>
+<p>Optional fields can be skipped using consecutive colons.</p>
+<p>In the example below:</p>
+<pre tabindex="0"><code>...
+data:
+  &#34;3306&#34;: &#34;default/mysql:3306::::-&#34;
+  &#34;5432&#34;: &#34;default/pgsql:5432::::1s&#34;
+  &#34;8000&#34;: &#34;system-prod/http:8000::PROXY-V1&#34;
+  &#34;9900&#34;: &#34;system-prod/admin:9900:PROXY::system-prod/tcp-9900&#34;
+  &#34;9990&#34;: &#34;system-prod/admin:9999::PROXY-V2&#34;
+  &#34;9995&#34;: &#34;system-prod/admin:9900:::system-prod/tcp-9995::system-prod/tcp-9995-ca&#34;
+  &#34;9999&#34;: &#34;system-prod/admin:9999:PROXY:PROXY&#34;
+</code></pre><p>HAProxy will listen 7 new ports:</p>
+<ul>
+<li><code>3306</code> will proxy to a <code>mysql</code> service on <code>default</code> namespace. Check interval is disabled.</li>
+<li><code>5432</code> will proxy to a <code>pgsql</code> service on <code>default</code> namespace. Check interval is defined to run on every second.</li>
+<li><code>8000</code> will proxy to <code>http</code> service, port <code>8000</code>, on the <code>system-prod</code> namespace. The upstream service will expect connections using the PROXY protocol but it only supports v1.</li>
+<li><code>9900</code> will proxy to <code>admin</code> service, port <code>9900</code>, on the <code>system-prod</code> namespace. Clients should connect using the PROXY protocol v1 or v2. Upcoming connections should be encrypted, HAProxy will ssl-offload data using crt/key provided by <code>system-prod/tcp-9900</code> secret.</li>
+<li><code>9990</code> and <code>9999</code> will proxy to the same <code>admin</code> service and <code>9999</code> port and the upstream service will expect connections using the PROXY protocol v2. The HAProxy frontend, however, will only expect PROXY protocol v1 or v2 on it&rsquo;s port <code>9999</code>.</li>
+<li><code>9995</code> will proxy to <code>admin</code> service, port <code>9900</code>, on the <code>system-prod</code> namespace. Upcoming connections should be encrypted, HAProxy will ssl-offload data using crt/key provided by <code>system-prod/tcp-9995</code> secret. Furthermore, clients must present a certificate that will be valid under the certificate authority (and optional certificate revocation list) provided in the <code>system-prod/tcp-9995-ca</code> secret.</li>
+</ul>
+<p>Note: Check interval was added in v0.10 and defaults to <code>2s</code>. All declared services has check interval enabled, except <code>3306</code> which disabled it.</p>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#tcp-services">TCP Services</a> configuration keys</li>
+</ul>
+<hr>
+<h3 id="timeout">Timeout<a class="td-heading-self-link" href="#timeout" aria-label="Heading self-link"></a></h3>
+<p>Timeout configuration.</p>
+<ul>
+<li><code>--connection-timeout</code>: (since v0.14.11) Defines the maximum amount of time N42 Gateway should wait for HAProxy responses when connecting to its master or admin sockets. This configuration is specially useful on HAProxy v2.7+ and large configurations, since its <code>reload</code> command became synchronous and should take some time to finish. Defaults to <code>30s</code> if not configured.</li>
+</ul>
+<hr>
+<h3 id="track-old-instances">track-old-instances<a class="td-heading-self-link" href="#track-old-instances" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--track-old-instances</code></li>
+</ul>
+<p>Since v0.14</p>
+<p>Creates an internal list of connections to old HAProxy instances. These connections are used to
+read or send data to stopping instances, which is usually serving long lived connections like
+TCP services or websockets.</p>
+<p>Enabling this option will make old HAProxy instances to not stop before <code>timeout-stop</code> timeout,
+even if all the remaining sessions finish, so only enable it if using a feature that requests
+it.</p>
+<p>See also:</p>
+<ul>
+<li><a href="/docs/configuration/keys/#close-sessions-duration"><code>close-sessions-duration</code></a> configuration key</li>
+</ul>
+<hr>
+<h3 id="update-status">update-status<a class="td-heading-self-link" href="#update-status" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--update-status</code></li>
+</ul>
+<p>Indicates whether the ingress controller should update the Address status attribute of all the Ingress
+and Gateway API resources that this controller is tracking. The default value is <code>true</code>. Ingress and
+GatewayAPI status are updated with the external IPs of the ingress endpoints, and these IPs can be
+generated on distinct ways:</p>
+<ul>
+<li>Configuring <a href="#publish-service"><code>--publish-service</code></a> with a Kubernetes service resource name
+fronting the ingress controller pods</li>
+<li>Configuring <a href="#publish-address"><code>--publish-address</code></a> with hostname and/or IP addresses of ingress hosts/pods</li>
+<li>Node IP where ingress controllers are running are used if neither <code>--publish-service</code> nor <code>--publish-address</code> are configured. Node&rsquo;s External IP is used by default, add <a href="#report-node-internal-ip-address"><code>--report-node-internal-ip-address</code></a> to use internal IP instead.</li>
+</ul>
+<p>When enabled, <code>--update-status</code> enforces a leader election. A leader must be elected to update
+Ingress and Gateway API. See also <a href="#election-id"><code>--election-id</code></a>.</p>
+<p>Note that other Gateway API status are always updated despite of the <code>--update-status</code> configuration.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#publish-service"><code>--publish-service</code></a> command-line option</li>
+<li><a href="#publish-address"><code>--publish-address</code></a> command-line option</li>
+<li><a href="#report-node-internal-ip-address"><code>--report-node-internal-ip-address</code></a> command-line option</li>
+<li><a href="#update-status-on-shutdown"><code>--update-status-on-shutdown</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="update-status-on-shutdown">update-status-on-shutdown<a class="td-heading-self-link" href="#update-status-on-shutdown" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--update-status-on-shutdown</code></li>
+</ul>
+<p>Indicates whether the ingress controller should update the <code>status</code> attribute of all the Ingress
+resources that this controller is tracking when the controller is being stopped.  Defaults to
+<code>true</code>.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#update-status"><code>--update-status</code></a> command-line option</li>
+</ul>
+<hr>
+<h3 id="validate-config">validate-config<a class="td-heading-self-link" href="#validate-config" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--validate-config</code></li>
+</ul>
+<p>Determines whether the resulting configuration files should be validated when a dynamic update was
+applied. Default value is <code>false</code>, which means the validation will only happen when HAProxy needs to
+be reloaded.</p>
+<p>If validation fails, N42 Gateway will log the error and set the metric
+<code>haproxyingress_update_success</code> to zero, indicating failure.</p>
+<hr>
+<h3 id="verify-hostname">verify-hostname<a class="td-heading-self-link" href="#verify-hostname" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--verify-hostname</code></li>
+</ul>
+<p>Ingress resources has <code>spec/tls[]/secretName</code> attribute to override the default X509 certificate.
+As a default behavior the certificates are validated against the hostname in order to match the
+SAN extension or CN (CN only up to <code>v0.4</code>). Invalid certificates, ie certificates which doesn&rsquo;t
+match the hostname are discarded and a warning is logged into the ingress controller logging.</p>
+<p>Use <code>--verify-hostname=false</code> argument to bypass this validation. If used, HAProxy will provide
+the certificate declared in the <code>secretName</code> ignoring if the certificate is or is not valid.</p>
+<hr>
+<h3 id="version">version<a class="td-heading-self-link" href="#version" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--version</code></li>
+</ul>
+<p>Show release information about the ingress controller.</p>
+<hr>
+<h3 id="wait-before-shutdown">wait-before-shutdown<a class="td-heading-self-link" href="#wait-before-shutdown" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--wait-before-shutdown</code></li>
+</ul>
+<p>If argument <code>--wait-before-shutdown</code> is defined, controller will wait defined time in seconds
+before it starts shutting down components when SIGTERM was received. By default, it&rsquo;s 0, which means
+the controller starts shutting down itself right after signal was sent.</p>
+<p>This option, along with <a href="#shutdown-timeout"><code>--shutdown-timeout</code></a>, should be less than the controller&rsquo;s pod grace period; otherwise, controller should be SIGKILLed before its timeout expires.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#shutdown-timeout"><code>--shutdown-timeout</code></a> command-line option.</li>
+</ul>
+<hr>
+<h3 id="wait-before-update">wait-before-update<a class="td-heading-self-link" href="#wait-before-update" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--wait-before-update</code></li>
+</ul>
+<p>Since v0.11</p>
+<p>Defines the amount of time to wait before start a reconciliation event and update haproxy.
+The purpose of this delay is to group all the notifications of a batch update and apply pending
+changes in one single shot. The default value is <code>200ms</code>.</p>
+<hr>
+<h3 id="watch-gateway">watch-gateway<a class="td-heading-self-link" href="#watch-gateway" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--watch-gateway</code></li>
+</ul>
+<p>Since v0.13</p>
+<p>Enables Gateway API watch and parse. This option is enabled by default since v0.14 and controller
+will start the listener only if the Gateway API CRDs are found. Add <code>--watch-gateway=false</code>
+option to instruct the controller to not try to listen to the CRDs. The controller should be
+restarted if the CRDs are installed after starting the controller. See also the Gateway API
+configuration <a href="/docs/configuration/gateway-api/">doc</a>.</p>
+<p>When enabled, <code>--watch-gateway</code> enforces a leader election. A leader must be elected to update Gateway API status. See also <a href="#election-id"><code>--election-id</code></a>.</p>
+<hr>
+<h3 id="watch-ingress">watch-ingress<a class="td-heading-self-link" href="#watch-ingress" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--watch-ingress</code></li>
+</ul>
+<p>Since v0.17</p>
+<p>Enables Ingress API watch and parse. This option is enabled by default. Add <code>--watch-ingress=false</code> option to instruct the controller to not watch, parse and synchronize any ingress resource. Disabling this configuration is similar to not have neither an ingress class nor the ingress class annotation configured, with the advantage of saving memory by not caching or watching ingress resources.</p>
+<hr>
+<h3 id="watch-namespace">watch-namespace<a class="td-heading-self-link" href="#watch-namespace" aria-label="Heading self-link"></a></h3>
+<ul>
+<li><code>--watch-namespace</code></li>
+</ul>
+<p>By default the proxy will be configured using all namespaces from the Kubernetes cluster. Use
+<code>--watch-namespace</code> with the name of a namespace to watch and build the configuration of a
+single namespace.</p>
+
+	<div class="td-page-meta__lastmod">
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3bc0856f1c9be9ef77c9ace895ac989793b81ce3">backport docs (3bc0856f)</a>
+</div>
+
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a href="https://kubernetes.slack.com/channels/n42-gateway" aria-label="Slack" target="_blank" rel="noopener">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Discussions" aria-label="Discussions">
+    <a href="https://github.com/n42-gateway/n42-gateway/discussions" aria-label="Discussions" target="_blank" rel="noopener">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a href="https://github.com/n42-gateway/n42-gateway" aria-label="GitHub" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The N42 Gateway Authors
+  | Image by <a href="https://www.pexels.com/@sejio402/" target="_blank" rel="noopener">Sergei Starostin</a>
+    from <a href="https://www.pexels.com/photo/grayscale-photo-of-a-circuit-board-6477212/" target="_blank" rel="noopener">Pexels</a>
+  <br/> HAProxy is a registered trademark of HAProxy Technologies SAS.
+</small>
+<p class="td-footer__about mt-2"><a href="/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/js/main.min.da14d55b9ce96f086acce3ee95771b035ea06985b6346778baacf2984c39a212.js" integrity="sha256-2hTVW5zpbwhqzOPulXcbA16gaYW2NGd4uqzymEw5ohI=" crossorigin="anonymous"></script>
+<script defer src="/js/click-to-copy.min.24576ff9fe9f85bb1948ecae52ce227cafce53757a3ad52301f2a79260f6b97d.js" integrity="sha256-JFdv&#43;f6fhbsZSOyuUs4ifK/OU3V6OtUjAfKnkmD2uX0=" crossorigin="anonymous"></script>
+<script src='/js/tabpane-persist.js'></script>
+
+  </body>
+</html>

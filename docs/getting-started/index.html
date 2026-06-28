@@ -1,0 +1,445 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js" data-theme-init>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  html[data-theme-init] * { transition: none !important; }
+</style>
+
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+<meta name="robots" content="index, follow">
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-512x512.png" sizes="512x512">
+
+<title>Getting Started | N42 Gateway</title>
+<meta name="description" content="How to install N42 Gateway and expose the first service.">
+<meta property="og:url" content="/docs/getting-started/">
+	<meta property="og:site_name" content="N42 Gateway">
+	<meta property="og:title" content="Getting Started">
+	<meta property="og:description" content="How to install N42 Gateway and expose the first service.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="website">
+
+	<meta itemprop="name" content="Getting Started">
+	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
+	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
+	<meta itemprop="wordCount" content="840">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Getting Started">
+	<meta name="twitter:description" content="How to install N42 Gateway and expose the first service.">
+<link rel="preload" href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" as="style" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<link href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" rel="stylesheet" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-section">
+    <header>
+      <nav class="td-navbar js-navbar-scroll">
+<div class="td-navbar-container container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="6075 6474 5665 6417" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="$fill" stroke="none" d="M9324 7360c-58 71-132 125-217 159v488l856 857v362l738-738c-4-9-8-18-11-26-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-42-7-83-20-122-37L9963 9791v578l-4e2 4e2V9029l-456-456v589l-4e2 4e2V7519c-5-2-9-4-14-6L7115 9091c3 7 6 14 9 21 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 44 8 87 21 127 39L8410 7230c-3-8-7-16-10-24-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254zm-2e2-165c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM64e2 9123c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm5014-672c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM8490 12004c58-71 132-125 217-159v-488l-856-857v-362l-738 738c4 9 8 18 11 26 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 42 7 83 20 122 37L7851 9573V8995l4e2-4e2v1740l456 456v-589l4e2-4e2v2043c5 2 9 4 14 6l1578-1578c-3-7-6-14-9-21-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-44-8-87-21-127-39L9404 12134c3 8 7 16 10 24 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254zm2e2 165c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm2724-1928c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zm-5014 672c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85z"/></g></g></g></svg></span><span class="navbar-brand__name">N42 Gateway</span></a>
+  <div class="td-navbar__main td-navbar-nav-scroll td-navbar-nav-scroll--indicator" id="main_navbar">
+    <div class="scroll-indicator scroll-left"></div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/docs/"><span>Docs</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/examples/"><span>Examples</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item td-navbar__version-menu">
+        <div class="td-version-menu dropdown">
+  <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="td-version-menu__title-text">v0.17</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+        <a class="dropdown-item" href="/docs">Latest</a>
+        
+      </li>
+    
+  </ul>
+</div>
+</li>
+      <li class="nav-item td-navbar__light-dark-menu">
+        <div class="td-light-dark-menu dropdown"><svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu" aria-labelledby="bd-theme">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+</div>
+
+      </li>
+      </ul>
+    <div class="scroll-indicator scroll-right"></div>
+  </div>
+  <div class="td-navbar__search d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main" data-bs-spy="scroll" data-bs-target=".td-toc" data-bs-root-margin="0px 0px -10%">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-docs-li">
+    <a href="/docs/" title="Documentation" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-docs"><span class="">Docs</span></a>
+    <ul class="ul-1">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsoverview-li">
+    <a href="/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsoverview"><span class="">Overview</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-docsgetting-started-li">
+    <a href="/docs/getting-started/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__section" id="m-docsgetting-started"><span class="td-sidebar-nav-active-item">Getting Started</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsmigration-guide-li">
+    <a href="/docs/migration-guide/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsmigration-guide"><span class="">Migration Guide</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-docsconfiguration-li">
+    <a href="/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsconfiguration"><span class="">Configuration</span></a>
+    <ul class="ul-2 foldable">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationgateway-api-li">
+    <a href="/docs/configuration/gateway-api/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationgateway-api"><span class="">Gateway API</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationkeys-li">
+    <a href="/docs/configuration/keys/" title="Configuration keys" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationkeys"><span class="">Keys</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationcommand-line-li">
+    <a href="/docs/configuration/command-line/" title="Command-line options" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationcommand-line"><span class="">Command-line</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsconfigurationtemplate-li">
+    <a href="/docs/configuration/template/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-docsconfigurationtemplate"><span class="">Template</span></a>
+  </li>
+    </ul>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsfaq-li">
+    <a href="/docs/faq/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsfaq"><span class="">FAQ</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docscontribution-guidelines-li">
+    <a href="/docs/contribution-guidelines/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docscontribution-guidelines"><span class="">Contribution Guidelines</span></a>
+  </li>
+    </ul>
+  </li>
+    </ul>
+  </nav>
+</div>
+          </aside>
+          <aside class="td-sidebar-toc">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/n42-gateway/n42-gateway/tree/master/docs/content/en/docs/getting-started/_index.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/edit/master/docs/content/en/docs/getting-started/_index.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/new/master/docs/content/en/docs/getting-started?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60get-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/issues/new?title=Getting%20Started" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc" data-proofer-ignore>
+<div class="td-toc-title">
+      <span class="td-toc-title__text">On this page</span>
+      <a class="td-toc-title__link" title="Top of page" href="#"></a>
+    </div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#deploy-and-expose">Deploy and expose</a></li>
+    <li><a href="#whats-next">What&rsquo;s next</a></li>
+  </ul>
+</nav>
+  </div>
+
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/docs/">Docs</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Getting Started</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>Getting Started</h1>
+  <div class="lead">How to install N42 Gateway and expose the first service.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>The following sections walk through steps to have N42 Gateway working, watching ingress resources and exposing services.</p>
+<h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
+<p>N42 Gateway needs a running Kubernetes cluster. Controller version v0.16 needs Kubernetes 1.21 or newer, see other supported versions in the <a href="https://github.com/n42-gateway/n42-gateway/#use-n42-gateway"target="_blank" rel="noopener">README</a> file. N42 Gateway also works fine on local k8s deployments like <a href="https://minikube.sigs.k8s.io"target="_blank" rel="noopener">minikube</a>, <a href="https://kind.sigs.k8s.io"target="_blank" rel="noopener">kind</a>, <a href="https://k3s.io"target="_blank" rel="noopener">k3s</a>, <a href="https://k3d.io"target="_blank" rel="noopener">k3d</a> or <a href="https://github.com/abiosoft/colima"target="_blank" rel="noopener">colima</a>.</p>
+<p>An ingress controller works exposing internal services to the external world, so another prerequisite is that at least one cluster node is accessible externally. On cloud environments, a cloud load balancer can be configured to reach the ingress controller nodes.</p>
+<p>N42 Gateway uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"target="_blank" rel="noopener">TLS SNI extension</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"target="_blank" rel="noopener">Host header</a> to associate requests and ingress&rsquo; <code>host</code>s. The easiest way to accomplish this on local environment is using <a href="https://nip.io"target="_blank" rel="noopener">nip.io</a>. A production environment should consider a <a href="https://en.wikipedia.org/wiki/Dynamic_DNS"target="_blank" rel="noopener">dynamic DNS</a> solution or a <a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record"target="_blank" rel="noopener">wildcard DNS record</a>.</p>
+<h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
+<p>N42 Gateway uses <a href="https://helm.sh"target="_blank" rel="noopener">Helm</a> chart to install and configure the controller. See below some deployment instructions:</p>
+<ol>
+<li>
+<p>Install <code>helm</code>, N42 Gateway requires version 3. See the <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">installation instructions</a>.</p>
+</li>
+<li>
+<p>Add the N42 Gateway&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
+<pre tabindex="0"><code>$ helm repo add n42-gateway https://n42-gateway.github.io/charts
+</code></pre></li>
+<li>
+<p>Check if kubeconfig points to the right cluster:</p>
+<pre tabindex="0"><code>$ kubectl cluster-info
+</code></pre><p>The default cluster can be changed either via <code>kubectl config set-context &lt;cluster-context&gt;</code> or adding <code>--kube-context &lt;cluster-context&gt;</code> in the helm command-line options.</p>
+<p>Note that the user needs administrative privileges in the cluster to properly install the controller.</p>
+</li>
+<li>
+<p>Create a <code>n42-gateway-values.yaml</code> file with custom parameters:</p>
+<blockquote>
+<p>Use the content below if N42 Gateway should expose HAProxy via a service loadbalancer, like ELB, kube-vip, ServiceLB (k3s), etc.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via a service loadbalancer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>Use the content below to expose HAProxy via host port on all cluster nodes.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via host port on all cluster nodes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">daemonset</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">useHostPort</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
+</span></span></span></code></pre></div><p>N42 Gateway chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md#configuration"target="_blank" rel="noopener">documentation</a> has all the available options. See also further documentation in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+</li>
+<li>
+<p>Install N42 Gateway using <code>n42-gateway</code> as the release name and <code>n42-gateway-values.yaml</code> file as the custom parameters:</p>
+<pre tabindex="0"><code>$ helm upgrade n42-gateway n42-gateway/n42-gateway\
+  --install\
+  --create-namespace --namespace ingress-controller\
+  --version 0.17.0-alpha.2 --devel\
+  -f n42-gateway-values.yaml
+</code></pre><blockquote>
+<p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;n42-gateway-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
+</blockquote>
+<div class="td-alert td-alert--md alert alert-nb" role="alert">
+  <div class="td-alert-body">
+    <p>See the <a href="/v0.17/docs/migration-guide/">migration guide</a> for alternatives if upgrading from a HAProxy Ingress cluster.</p>
+    </div>
+</div>
+</li>
+</ol>
+<p>The controller should be running in a few seconds. There are four important customizations made in the example above:</p>
+<ul>
+<li><code>--version</code>: a good practice, this will ensure that you&rsquo;ll have the same version installed even if a new release issued.</li>
+<li><code>--namespace</code>: we&rsquo;re instructing helm to install N42 Gateway in the <code>ingress-controller</code> namespace. This namespace will be created if it does not exist yet. The default behavior, if namespace is not provided, is to deploy the controller in the kubectl&rsquo;s current namespace.</li>
+<li><code>ingressClassResource.enabled</code>: This causes the helm chart to apply an <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class"target="_blank" rel="noopener">IngressClass</a> to your cluster. IngressClasses are how N42 Gateway knows which of your Ingresses it should control. IngressClasses replace the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation"target="_blank" rel="noopener">kubernetes.io/ingress.class</a> annotation used in Kubernetes versions before v1.18.</li>
+<li><code>kind</code>, <code>daemonset.useHostPort</code> and <code>service.type</code>, only used when service loadbalancer should not be used: disables service load balancer and exposes HAProxy via host port on all cluster nodes.</li>
+</ul>
+<p>N42 Gateway&rsquo; Helm chart has a few more configuration options, see all of them in the chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md"target="_blank" rel="noopener">documentation</a> and in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+<h2 id="deploy-and-expose">Deploy and expose<a class="td-heading-self-link" href="#deploy-and-expose" aria-label="Heading self-link"></a></h2>
+<p>The following steps deploy an echoserver image and exposes it in the current namespace using an Ingress resource. Learn how to expose using <a href="/docs/configuration/gateway-api/">Gateway API</a>.</p>
+<ol>
+<li>
+<p>Create the echoserver&rsquo;s deployment and service:</p>
+<pre tabindex="0"><code>$ kubectl --namespace default create deployment echoserver --image k8s.gcr.io/echoserver:1.3
+$ kubectl --namespace default expose deployment echoserver --port=8080
+</code></pre></li>
+<li>
+<p>Check if echoserver is up and running:</p>
+<pre tabindex="0"><code>$ kubectl -n default get pod -w
+NAME                          READY   STATUS    RESTARTS   AGE
+echoserver-5b6fb6dd96-68jwp   1/1     Running   0          27s
+</code></pre></li>
+<li>
+<p>Make N42 Gateway expose the echoserver service. Change <code>echoserver.local</code> value in the <code>--rule</code> option below to a hostname that resolves to an ingress controller node.</p>
+<blockquote>
+<p>Obs.: <a href="https://nip.io"target="_blank" rel="noopener"><code>nip.io</code></a> is a convenient service which converts a valid domain name to an IP, either public or local.</p>
+</blockquote>
+<pre tabindex="0"><code>$ kubectl --namespace default create ingress echoserver \
+  --class=haproxy \
+  --rule=&#34;echoserver.local/*=echoserver:8080,tls&#34;
+</code></pre></li>
+<li>
+<p>Send a request to our echoserver.</p>
+<pre tabindex="0"><code>$ curl -k https://echoserver.local
+$ wget -qO- --no-check-certificate https://echoserver.local
+</code></pre></li>
+</ol>
+<h2 id="whats-next">What&rsquo;s next<a class="td-heading-self-link" href="#whats-next" aria-label="Heading self-link"></a></h2>
+<p>Expose N42 Gateway metrics:</p>
+<ul>
+<li>See the <a href="/examples/metrics/">metrics example page</a></li>
+</ul>
+<p>See what differs to expose services using Gateway API:</p>
+<ul>
+<li><a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API introduction</a> from Kubernetes&rsquo; SIG-Network documentation</li>
+<li><a href="/docs/configuration/gateway-api/">Getting started</a> with Gateway API and N42 Gateway</li>
+</ul>
+<p>Learn more about Ingress and IngressClass resources:</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/"target="_blank" rel="noopener">Ingress and IngressClass resources</a> from Kubernetes docs</li>
+</ul>
+<p>N42 Gateway has lots of configuration options. See the following tips to get started faster:</p>
+<ul>
+<li>Follow some configuration instruction from the <a href="/examples/">examples</a> page</li>
+<li>See how N42 Gateway uses ingress objects: <a href="/docs/configuration/keys/">configuration keys</a></li>
+<li>Get started with all the configuration options: <a href="/docs/configuration/">configuration</a></li>
+</ul>
+
+	<div class="section-index">
+    
+    
+    </div>
+<div class="td-page-meta__lastmod">
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3bc0856f1c9be9ef77c9ace895ac989793b81ce3">backport docs (3bc0856f)</a>
+</div>
+</div>
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a href="https://kubernetes.slack.com/channels/n42-gateway" aria-label="Slack" target="_blank" rel="noopener">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Discussions" aria-label="Discussions">
+    <a href="https://github.com/n42-gateway/n42-gateway/discussions" aria-label="Discussions" target="_blank" rel="noopener">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a href="https://github.com/n42-gateway/n42-gateway" aria-label="GitHub" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The N42 Gateway Authors
+  | Image by <a href="https://www.pexels.com/@sejio402/" target="_blank" rel="noopener">Sergei Starostin</a>
+    from <a href="https://www.pexels.com/photo/grayscale-photo-of-a-circuit-board-6477212/" target="_blank" rel="noopener">Pexels</a>
+  <br/> HAProxy is a registered trademark of HAProxy Technologies SAS.
+</small>
+<p class="td-footer__about mt-2"><a href="/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/js/main.min.da14d55b9ce96f086acce3ee95771b035ea06985b6346778baacf2984c39a212.js" integrity="sha256-2hTVW5zpbwhqzOPulXcbA16gaYW2NGd4uqzymEw5ohI=" crossorigin="anonymous"></script>
+<script defer src="/js/click-to-copy.min.24576ff9fe9f85bb1948ecae52ce227cafce53757a3ad52301f2a79260f6b97d.js" integrity="sha256-JFdv&#43;f6fhbsZSOyuUs4ifK/OU3V6OtUjAfKnkmD2uX0=" crossorigin="anonymous"></script>
+<script src='/js/tabpane-persist.js'></script>
+
+  </body>
+</html>
