@@ -51,12 +51,12 @@
 	<meta itemprop="name" content="Gateway API">
 	<meta itemprop="description" content="Configure HAProxy using Gateway API resources.">
 	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
-	<meta itemprop="wordCount" content="697">
+	<meta itemprop="wordCount" content="863">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Gateway API">
 	<meta name="twitter:description" content="Configure HAProxy using Gateway API resources.">
-<link rel="preload" href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" as="style" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
-<link href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" rel="stylesheet" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<link rel="preload" href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
 <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -102,11 +102,15 @@
         <div class="td-version-menu dropdown">
   <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="td-version-menu__title-text">v0.17</span>
+    <span class="td-version-menu__title-text">v0.16 (latest)</span>
   </a>
   <ul class="dropdown-menu">
     <li>
-        <a class="dropdown-item" href="/docs">Latest</a>
+        <a class="dropdown-item" href="/v0.17/docs">v0.17 (alpha)</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16 (latest)</a>
         
       </li>
     
@@ -191,8 +195,6 @@
     <a href="/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsoverview"><span class="">Overview</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsgetting-started-li">
     <a href="/docs/getting-started/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsgetting-started"><span class="">Getting Started</span></a>
-  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsmigration-guide-li">
-    <a href="/docs/migration-guide/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsmigration-guide"><span class="">Migration Guide</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-docsconfiguration-li">
     <a href="/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsconfiguration"><span class="">Configuration</span></a>
     <ul class="ul-2 foldable">
@@ -233,23 +235,19 @@
     </div>
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#installation">Installation</a>
-      <ul>
-        <li><a href="#command-line-tool">Command-line tool</a></li>
-      </ul>
-    </li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#conformance">Conformance</a>
       <ul>
-        <li><a href="#ingress-api-support">Ingress API support</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
       </ul>
     </li>
+    <li><a href="#ingress">Ingress</a></li>
     <li><a href="#getting-started">Getting started</a>
       <ul>
         <li><a href="#deploy-http-workload">Deploy HTTP workload</a></li>
         <li><a href="#deploy-tcp-workload">Deploy TCP workload</a></li>
       </ul>
     </li>
-    <li><a href="#whats-next">What&rsquo;s next</a></li>
   </ul>
 </nav>
   </div>
@@ -275,76 +273,60 @@
 	<header class="article-meta">
 		
 </header>
-	<p><a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API</a> is a collection of Kubernetes resources that can be installed as <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/"target="_blank" rel="noopener">Custom Resource Definitions</a>. Just like Ingress resources, Gateway API resources are used to configure incoming HTTP/s, TLS and TCP requests to the in cluster applications.</p>
+	<p><a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API</a> is a collection of Kubernetes resources that can be installed as <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/"target="_blank" rel="noopener">Custom Resource Definitions</a>. Just like Ingress resources, Gateway API resources are used to configure incoming HTTP/s and TCP requests to the in cluster applications. N42 Gateway v0.16 partially supports the Gateway API spec, <code>v1alpha2</code>, <code>v1beta1</code> and <code>v1</code> versions.</p>
 <h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
 <p>The following steps configure the Kubernetes cluster and N42 Gateway to read and parse Gateway API resources:</p>
 <ul>
-<li>Manually install the Gateway API CRDs, see instructions in the Gateway API <a href="https://gateway-api.sigs.k8s.io/guides/getting-started/#installing-gateway-api"target="_blank" rel="noopener">documentation</a>
-<blockquote>
-<p>Use the experimental channel if need the TCPRoute API, all the other APIs are on the standard channel</p>
-</blockquote>
+<li>Manually install the Gateway API CRDs from the experimental channel - N42 Gateway supports TCPRoute which is not included in the standard channel. See the Gateway API <a href="https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api"target="_blank" rel="noopener">documentation</a>
+<ul>
+<li>&hellip; or simply <code>kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml</code></li>
+<li><code>v1.0.0</code> is just a reference for a fresh new deployment, Gateway API <code>v0.4.0</code> or any newer versions are supported.</li>
+</ul>
 </li>
-<li><a href="/docs/getting-started/">Install</a> or restart the controller</li>
+<li>Start (or restart) the controller</li>
 </ul>
 <p>See below the <a href="#getting-started">getting started steps</a>.</p>
-<h3 id="command-line-tool">Command-line tool<a class="td-heading-self-link" href="#command-line-tool" aria-label="Heading self-link"></a></h3>
-<p>Gateway API has also a command-line tool, see how it works and installation instructions: <a href="https://github.com/kubernetes-sigs/gwctl"target="_blank" rel="noopener">https://github.com/kubernetes-sigs/gwctl</a></p>
 <h2 id="conformance">Conformance<a class="td-heading-self-link" href="#conformance" aria-label="Heading self-link"></a></h2>
-<p>N42 Gateway is a Gateway API conformant implementation. The following APIs have all their core features implemented:</p>
+<p>Gateway API <code>v1alpha2</code>, <code>v1beta1</code> and <code>v1</code> specs are partially implemented in v0.16 release. The following list describes what is (or is not) supported:</p>
 <ul>
-<li>Gateway</li>
-<li>HTTPRoute</li>
-<li>TLSRoute</li>
-<li>TCPRoute</li>
-<li>ReferenceGrant</li>
+<li>Target Services can be annotated with <a href="/docs/configuration/keys/#scope">Backend or Path scoped</a> configuration keys, this will continue to be supported.</li>
+<li>Gateway API resources doesn&rsquo;t support annotations, this is planned to continue to be unsupported. Extensions to the Gateway API spec will be added in the extension points of the API.</li>
+<li>Only the <code>GatewayClass</code>, <code>Gateway</code>, <code>TCPRoute</code> and <code>HTTPRoute</code> resource definitions are implemented.</li>
+<li>The controller doesn&rsquo;t implement partial parsing yet for Gateway API resources, changes should be a bit slow on clusters with thousands of Ingress, Gateway API resources or Services.</li>
+<li>Gateway&rsquo;s Listener Port and Protocol are implemented for TCPRoute, but they are not implemented for HTTPRoute - for HTTP workloads, Port uses the global <a href="/docs/configuration/keys/#bind-port">bind-port</a> configuration and Protocol is based on the presence or absence of the TLS attribute.</li>
+<li>Gateway&rsquo;s Addresses is not implemented - binding addresses use the global <a href="/docs/configuration/keys/#bind-ip-addr">bind-ip-addr</a> configuration.</li>
+<li>Gateway&rsquo;s Hostname only supports empty/absence of Hostname or a single <code>*</code>, any other string will override the HTTPRoute Hostnames configuration without any merging.</li>
+<li>HTTPRoute&rsquo;s Rules and BackendRefs don&rsquo;t support Filters.</li>
+<li>Resources status are not updated.</li>
 </ul>
-<p>The following APIs are currently unsupported:</p>
+<h3 id="roadmap">Roadmap<a class="td-heading-self-link" href="#roadmap" aria-label="Heading self-link"></a></h3>
 <ul>
-<li>GRPCRoute</li>
-<li>UDPRoute (*)</li>
-<li>BackendTLSPolicy</li>
+<li>Version <code>v1alpha1</code> support was dropped on v0.15.</li>
+<li>Versions <code>v1beta1</code> and <code>v1</code> support was added on v0.15.</li>
+<li><code>v1alpha2</code>, <code>v1beta1</code> and <code>v1</code> versions will continue to be supported on future N42 Gateway releases.</li>
+<li>Spec conformance will be gradually incremented on newer N42 Gateway versions.</li>
 </ul>
-<blockquote>
-<p>(*) HAProxy does not support UDP routing, so the UDPRoute API will continue to be unsupported on future releases.</p>
-</blockquote>
-<p>Gateway API resources don&rsquo;t support annotations, this should continue to be unsupported. Extensions to the Gateway API spec will be added in the extension points of the API. However, target Services can be annotated with <a href="/docs/configuration/keys/#scope">Backend or Path scoped</a> configuration keys, this will continue to be supported.</p>
-<h3 id="ingress-api-support">Ingress API support<a class="td-heading-self-link" href="#ingress-api-support" aria-label="Heading self-link"></a></h3>
-<p>A single N42 Gateway deployment can manage Ingress, and all versions of the supported Gateway API resources in the same Kubernetes cluster. If the same hostname and path with the same path type is declared in the Gateway API and Ingress, the Gateway API wins and a warning is logged. Ingress resources will continue to be supported in future controller versions, without side effects, and without the need to install the Gateway API CRDs.</p>
+<h2 id="ingress">Ingress<a class="td-heading-self-link" href="#ingress" aria-label="Heading self-link"></a></h2>
+<p>A single N42 Gateway deployment can manage Ingress, and also <code>v1alpha2</code>, <code>v1beta1</code> and <code>v1</code> Gateway API resources in the same Kubernetes cluster. If the same hostname and path with the same path type is declared in the Gateway API and Ingress, the Gateway API wins and a warning is logged. Ingress resources will continue to be supported in future controller versions, without side effects, and without the need to install the Gateway API CRDs.</p>
 <h2 id="getting-started">Getting started<a class="td-heading-self-link" href="#getting-started" aria-label="Heading self-link"></a></h2>
-<p>Follow the steps below to expose the echoserver service from the <a href="/docs/getting-started/">Getting Started guide</a> using the Gateway API.</p>
-<ul>
-<li>
-<p><a href="https://gateway-api.sigs.k8s.io/guides/getting-started/#installing-gateway-api"target="_blank" rel="noopener">Manually install</a> the Gateway API CRDs</p>
-</li>
-<li>
-<p><a href="/docs/getting-started/">Install</a> or restart N42 Gateway so it can find the just installed APIs:</p>
-<pre tabindex="0"><code>$ kubectl --namespace ingress-controller delete pod -lapp.kubernetes.io/name=n42-gateway
-</code></pre></li>
-<li>
-<p>Create a GatewayClass with the following content:</p>
-<blockquote>
-<p>GatewayClass enables Gateways to be read and parsed by N42 Gateway.</p>
-</blockquote>
+<p>Add the following steps to the <a href="/docs/getting-started/">Getting Started guide</a> in order to expose the echoserver service along with the Gateway API:</p>
+<p><a href="https://gateway-api.sigs.k8s.io/v1alpha2/guides/getting-started/#installing-gateway-api-crds-manually"target="_blank" rel="noopener">Manually install</a> the Gateway API CRDs:</p>
+<pre tabindex="0"><code>$ kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml
+</code></pre><p>Restart N42 Gateway so it can find the just installed APIs:</p>
+<pre tabindex="0"><code>$ kubectl --namespace ingress-controller delete pod -lapp.kubernetes.io/name=haproxy-ingress
+</code></pre><p>A GatewayClass enables Gateways to be read and parsed by N42 Gateway. Create a GatewayClass with the following content:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">GatewayClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">controllerName</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway.github.io/controller</span><span class="w">
-</span></span></span></code></pre></div></li>
-</ul>
-<h3 id="deploy-http-workload">Deploy HTTP workload<a class="td-heading-self-link" href="#deploy-http-workload" aria-label="Heading self-link"></a></h3>
-<ul>
-<li>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">controllerName</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy-ingress.github.io/controller</span><span class="w">
+</span></span></span></code></pre></div><h3 id="deploy-http-workload">Deploy HTTP workload<a class="td-heading-self-link" href="#deploy-http-workload" aria-label="Heading self-link"></a></h3>
 <p>Add the following deployment and service if echoserver isn&rsquo;t running yet:</p>
 <pre tabindex="0"><code>$ kubectl --namespace default create deployment echoserver --image k8s.gcr.io/echoserver:1.3
 $ kubectl --namespace default expose deployment echoserver --port=8080
-</code></pre></li>
-<li>
-<p>Create a Gateway with the following content:</p>
-<blockquote>
-<p>Gateways create listeners and allow to configure hostnames for HTTP workloads.</p>
-</blockquote>
+</code></pre><p>Gateways create listeners and allow to configure hostnames for HTTP workloads. Create a Gateway with the following content:</p>
+<p>Note: port and protocol attributes <a href="#conformance">have some limitations</a>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Gateway</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -356,12 +338,7 @@ $ kubectl --namespace default expose deployment echoserver --port=8080
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">echoserver-gw</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">HTTP</span><span class="w">
-</span></span></span></code></pre></div></li>
-<li>
-<p>Create a HTTPRoute with the following content, changing <code>echoserver-from-gateway.local</code> to a hostname that resolves to a N42 Gateway node:</p>
-<blockquote>
-<p>HTTPRoutes configure the hostnames and target services.</p>
-</blockquote>
+</span></span></span></code></pre></div><p>HTTPRoutes configure the hostnames and target services. Create a HTTPRoute with the following content, changing <code>echoserver-from-gateway.local</code> to a hostname that resolves to a N42 Gateway node:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HTTPRoute</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -376,22 +353,14 @@ $ kubectl --namespace default expose deployment echoserver --port=8080
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">backendRefs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">echoserver</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
-</span></span></span></code></pre></div></li>
-<li>
-<p>Send a request to our just configured route:</p>
+</span></span></span></code></pre></div><p>Send a request to our just configured route:</p>
 <pre tabindex="0"><code>$ curl http://echoserver-from-gateway.local
 $ wget -qO- http://echoserver-from-gateway.local
-</code></pre></li>
-</ul>
-<h3 id="deploy-tcp-workload">Deploy TCP workload<a class="td-heading-self-link" href="#deploy-tcp-workload" aria-label="Heading self-link"></a></h3>
-<ul>
-<li>
+</code></pre><h3 id="deploy-tcp-workload">Deploy TCP workload<a class="td-heading-self-link" href="#deploy-tcp-workload" aria-label="Heading self-link"></a></h3>
 <p>Add the following deployment and service:</p>
 <pre tabindex="0"><code>$ kubectl --namespace default create deployment redis --image docker.io/redis
 $ kubectl --namespace default expose deployment redis --port=6379
-</code></pre></li>
-<li>
-<p>A new port need to be added if N42 Gateway is not configured in the host network. If so, add the following snippet in <code>values.yaml</code> and apply it using Helm:</p>
+</code></pre><p>A new port need to be added if N42 Gateway is not configured in the host network. If so, add the following snippet in <code>values.yaml</code> and apply it using Helm:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">...</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w">
@@ -399,12 +368,7 @@ $ kubectl --namespace default expose deployment redis --port=6379
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">extraPorts</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
-</span></span></span></code></pre></div></li>
-<li>
-<p>Create a Gateway with the following content:</p>
-<blockquote>
-<p>Gateways create listeners and allow to configure the listening port for TCP workloads.</p>
-</blockquote>
+</span></span></span></code></pre></div><p>Gateways create listeners and allow to configure the listening port for TCP workloads. Create a Gateway with the following content:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Gateway</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -416,12 +380,7 @@ $ kubectl --namespace default expose deployment redis --port=6379
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redis-gw</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
-</span></span></span></code></pre></div></li>
-<li>
-<p>Create a TCPRoute with the following content:</p>
-<blockquote>
-<p>TCPRoutes configure the target services.</p>
-</blockquote>
+</span></span></span></code></pre></div><p>TCPRoutes configure the target services. Create a TCPRoute with the following content:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1alpha2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">TCPRoute</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -434,25 +393,17 @@ $ kubectl --namespace default expose deployment redis --port=6379
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">backendRefs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redis</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
-</span></span></span></code></pre></div></li>
-<li>
-<p>Send a ping to the Redis server using <code>curl</code>. Change <code>192.168.106.2</code> below to the IP address of N42 Gateway:</p>
-<blockquote>
-<p>Type <code>ping</code> and see a <code>+PONG</code> response. Press <code>^C</code> to close the connection.</p>
-</blockquote>
+</span></span></span></code></pre></div><p>Send a ping to the Redis server using <code>curl</code>. Change <code>192.168.106.2</code> below to the IP address of N42 Gateway:</p>
 <pre tabindex="0"><code>$ curl -v telnet://192.168.106.2:6379
 *   Trying 192.168.106.2:6379...
 * Connected to 192.168.106.2 (192.168.106.2) port 6379
 ping
 +PONG
 ^C
-</code></pre></li>
-</ul>
-<h2 id="whats-next">What&rsquo;s next<a class="td-heading-self-link" href="#whats-next" aria-label="Heading self-link"></a></h2>
-<p>See also the <a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API documentation</a></p>
+</code></pre><p>Type <code>ping</code> and see a <code>+PONG</code> response. Press <code>^C</code> to close the connection.</p>
 
 	<div class="td-page-meta__lastmod">
-  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3bc0856f1c9be9ef77c9ace895ac989793b81ce3">backport docs (3bc0856f)</a>
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/4cae8af2e113b3b16a4fde705bc4e71a66ebe51d">n42: n42 gateway name migration in documentation (4cae8af2)</a>
 </div>
 
 </div>

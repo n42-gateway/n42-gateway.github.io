@@ -51,12 +51,12 @@
 	<meta itemprop="name" content="Configuration keys">
 	<meta itemprop="description" content="List of all annotations and global ConfigMap options.">
 	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
-	<meta itemprop="wordCount" content="21294">
+	<meta itemprop="wordCount" content="20062">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Configuration keys">
 	<meta name="twitter:description" content="List of all annotations and global ConfigMap options.">
-<link rel="preload" href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" as="style" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
-<link href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" rel="stylesheet" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<link rel="preload" href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
 <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -102,11 +102,15 @@
         <div class="td-version-menu dropdown">
   <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="td-version-menu__title-text">v0.17</span>
+    <span class="td-version-menu__title-text">v0.16 (latest)</span>
   </a>
   <ul class="dropdown-menu">
     <li>
-        <a class="dropdown-item" href="/docs">Latest</a>
+        <a class="dropdown-item" href="/v0.17/docs">v0.17 (alpha)</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16 (latest)</a>
         
       </li>
     
@@ -191,8 +195,6 @@
     <a href="/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsoverview"><span class="">Overview</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsgetting-started-li">
     <a href="/docs/getting-started/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsgetting-started"><span class="">Getting Started</span></a>
-  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsmigration-guide-li">
-    <a href="/docs/migration-guide/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsmigration-guide"><span class="">Migration Guide</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-docsconfiguration-li">
     <a href="/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsconfiguration"><span class="">Configuration</span></a>
     <ul class="ul-2 foldable">
@@ -246,7 +248,6 @@
     <li><a href="#scope">Scope</a>
       <ul>
         <li><a href="#global">Global</a></li>
-        <li><a href="#frontend">Frontend</a></li>
         <li><a href="#host">Host</a></li>
         <li><a href="#backend">Backend</a></li>
         <li><a href="#path">Path</a></li>
@@ -288,9 +289,7 @@
         <li><a href="#headers">Headers</a></li>
         <li><a href="#health-check">Health check</a></li>
         <li><a href="#hsts">HSTS</a></li>
-        <li><a href="#http-frontends">HTTP Frontends</a></li>
         <li><a href="#http-match">HTTP Match</a></li>
-        <li><a href="#http-passthrough">HTTP Passthrough</a></li>
         <li><a href="#http-response">HTTP Response</a></li>
         <li><a href="#initial-weight">Initial weight</a></li>
         <li><a href="#limit">Limit</a></li>
@@ -298,6 +297,7 @@
         <li><a href="#log-format">Log format</a></li>
         <li><a href="#master-worker">Master-worker</a></li>
         <li><a href="#modsecurity">Modsecurity</a></li>
+        <li><a href="#nbproc">Nbproc</a></li>
         <li><a href="#nbthread">Nbthread</a></li>
         <li><a href="#oauth">OAuth</a></li>
         <li><a href="#path-type">Path type</a></li>
@@ -324,6 +324,7 @@
         <li><a href="#tcp-services">TCP Services</a></li>
         <li><a href="#timeout">Timeout</a></li>
         <li><a href="#tls-alpn">TLS ALPN</a></li>
+        <li><a href="#use-htx">Use HTX</a></li>
         <li><a href="#var-namespace">Var namespace</a></li>
         <li><a href="#waf">WAF</a></li>
       </ul>
@@ -374,8 +375,8 @@ from Kubernetes resources.</p>
 <p>N42 Gateway by default does not listen to Ingress resources, until one or more of
 the following conditions are met:</p>
 <ul>
-<li>Ingress resources have the annotation <code>kubernetes.io/ingress.class</code> with the value <code>n42</code></li>
-<li>Ingress resources have its <code>ingressClassName</code> field assigning an IngressClass resource whose <code>controller</code> name is <code>n42-gateway.github.io/controller</code></li>
+<li>Ingress resources have the annotation <code>kubernetes.io/ingress.class</code> with the value <code>haproxy</code></li>
+<li>Ingress resources have its <code>ingressClassName</code> field assigning an IngressClass resource whose <code>controller</code> name is <code>haproxy-ingress.github.io/controller</code></li>
 <li>N42 Gateway was started with <code>--watch-ingress-without-class</code> command-line option</li>
 </ul>
 <p>See <a href="/docs/configuration/command-line/#ingress-class">Ingress Class</a> command-line doc for
@@ -407,7 +408,7 @@ keys, and this is what the rest of this documentation page is all about.</p>
 <h3 id="configmap">ConfigMap<a class="td-heading-self-link" href="#configmap" aria-label="Heading self-link"></a></h3>
 <p>ConfigMap key/value options are read in the following conditions:</p>
 <ul>
-<li>Global config, using <code>--configmap</code> command-line option. The installation process configures a Global config ConfigMap named <code>n42-gateway</code> in the controller namespace. This is the only way to configure keys from the <code>Global</code> scope. See about scopes <a href="#scope">later</a> in this page. Note, <code>--configmap</code> needs to be in the following format: <code>&lt;namespace&gt;/&lt;configmap-name&gt;</code>.</li>
+<li>Global config, using <code>--configmap</code> command-line option. The installation process configures a Global config ConfigMap named <code>haproxy-ingress</code> in the controller namespace. This is the only way to configure keys from the <code>Global</code> scope. See about scopes <a href="#scope">later</a> in this page. Note, <code>--configmap</code> needs to be in the following format: <code>&lt;namespace&gt;/&lt;configmap-name&gt;</code>.</li>
 <li>IngressClass config, using its <code>parameters</code> field linked to a ConfigMap declared in the same namespace of the controller. See about IngressClass <a href="#ingressclass">later</a> in this same section.</li>
 </ul>
 <p>A configuration key is used verbatim as the ConfigMap key name, without any prefix.
@@ -420,7 +421,7 @@ as strings, N42 Gateway will convert them when needed.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy-ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
 </span></span></span></code></pre></div><h3 id="annotation">Annotation<a class="td-heading-self-link" href="#annotation" aria-label="Heading self-link"></a></h3>
 <p>Annotations are read in the following conditions:</p>
@@ -429,18 +430,18 @@ as strings, N42 Gateway will convert them when needed.</p>
 <li>From <code>Services</code> that classified Ingress resources are linking to. <code>Services</code> only accept keys from the <code>Backend</code> scope.</li>
 </ul>
 <p>A configuration key needs a prefix in front of its name to use as an annotation key.
-The default prefix is <code>n42-gateway.github.io</code>. By default, <code>haproxy-ingress.github.io</code>
-and <code>ingress.kubernetes.io</code> are also supported for backward compatibility. Change the
-prefix with the <a href="/docs/configuration/command-line/#annotations-prefix"><code>--annotations-prefix</code></a>
+The default prefix is <code>haproxy-ingress.github.io</code>, and <code>ingress.kubernetes.io</code> is also
+supported for backward compatibility. Change the prefix with the
+<a href="/docs/configuration/command-line/#annotations-prefix"><code>--annotations-prefix</code></a>
 command-line option. The annotation value spec expects a string as the key value, so
 declare numbers and booleans as strings, N42 Gateway will convert them when needed.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/balance-algorithm</span><span class="p">:</span><span class="w"> </span><span class="l">roundrobin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/maxconn-server</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;500&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/balance-algorithm</span><span class="p">:</span><span class="w"> </span><span class="l">roundrobin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/maxconn-server</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;500&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/ssl-redirect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
@@ -463,7 +464,7 @@ IngressClass+ConfigMap configuration.</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-class</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">controller</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway.github.io/controller</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">controller</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy-ingress.github.io/controller</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-options</span><span class="w">
@@ -513,7 +514,7 @@ to distinct routes. For example:</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app-back</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
@@ -535,27 +536,43 @@ might lead to conflicting configuration, more about conflict in the
 tens of thousands of Ingress and Service resources report to work smoothly and
 fast with N42 Gateway.</p>
 <h2 id="scope">Scope<a class="td-heading-self-link" href="#scope" aria-label="Heading self-link"></a></h2>
-<p>N42 Gateway configuration keys must be in one of six distinct scopes: <code>Global</code>, <code>Frontend</code>, <code>Host</code>, <code>Backend</code>, <code>Path</code>, <code>TCP</code>. A scope defines where a configuration key value is applied in the HAProxy configuration, and they are described in the sections below.</p>
-<p>Configuration keys declared in <code>Ingress</code> resources might conflict in the case the same <code>Frontend</code> ports, <code>Host</code> hostname, <code>Backend</code> service, or the <code>TCP</code> port number is used on distinct ingress resources, and those ingress resources configure the same key with distinct values. In the case this happens, a warning will be logged and the used value will be of the Ingress resource that was created first.</p>
+<p>N42 Gateway configuration keys may be in one of five distinct scopes:
+<code>Global</code>, <code>Host</code>, <code>Backend</code>, <code>Path</code>, <code>TCP</code>. A scope defines where a configuration
+key can be declared and how it interacts with Ingress and Service resources.</p>
+<p>Configuration keys declared in <code>Ingress</code> resources might conflict. More about
+the scenarios in the <code>Host</code>, <code>Backend</code> and <code>TCP</code> scopes below. A warning will
+be logged in the case of a conflict, and the used value will be of the Ingress
+resource that was created first.</p>
 <h3 id="global">Global<a class="td-heading-self-link" href="#global" aria-label="Heading self-link"></a></h3>
-<p>Configuration keys from this scope are global for the whole HAProxy instance, and it is usually configured in the global area of the configuration file.</p>
-<p>The only way to configure global scoped keys are via the global config ConfigMap resource. They are ignored if declared elsewhere. Since these keys cannot be configured via Ingress resources, they will also never conflict.</p>
-<h3 id="frontend">Frontend<a class="td-heading-self-link" href="#frontend" aria-label="Heading self-link"></a></h3>
-<p>Configuration keys from this scope are applied per HAProxy frontend, so it is always related with the current http(s) ports configuration. Distinct frontends can receive distinct values from keys of this scope.</p>
-<p>Frontend scoped keys can be declared in global or IngressClass related ConfigMaps as default values, or in any Ingress resource for a more granular configuration. They can conflict since they can be configured via Ingress resource, see <a href="#scope">scope</a>.</p>
-<p>When frontend scoped keys are used as an annotation, they should always be configured along with <a href="#http-frontends"><code>http-frontend</code></a> to define the frontends that should receive the configuration. The globally configured default frontends, ports 80 and 443 by default, cannot be reconfigured via ingress annotations from the Frontend scope.</p>
+<p>Defines configuration keys that apply for all hostnames and backend
+services, and should be declared only in the Global config ConfigMap
+resource. Configuration keys of the Global scope declared as Ingress
+or Service annotations, and also in the IngressClass ConfigMap are
+ignored. Configuration keys of the Global scope never conflict.</p>
 <h3 id="host">Host<a class="td-heading-self-link" href="#host" aria-label="Heading self-link"></a></h3>
-<p>Configuration keys from the host scope are applied per hostname, which is more a Kubernetes API and N42 Gateway concept than a HAProxy one. Distinct hostnames can receive distinct values from keys of this scope.</p>
-<p>Host scoped keys can be declared in global or IngressClass related ConfigMaps as default values, or in any Ingress resource for a more granular configuration. They can conflict since they can be configured via Ingress resource, see <a href="#scope">scope</a>.</p>
+<p>Defines configuration keys that bind to the hostname. Configuration
+keys of the host scope can be declared in any ConfigMap, or in any Ingress
+resource. A conflict happens when the same host configuration key with
+distinct values are declared in distinct Ingress resources but to the same
+hostname.</p>
 <h3 id="backend">Backend<a class="td-heading-self-link" href="#backend" aria-label="Heading self-link"></a></h3>
-<p>Configuration keys from this scope are applied per HAProxy backend, which has an one-to-one relationship with the Kubernetes Service when configured via Ingress API. So, distinct referenced services can receive distinct values from keys of this scope.</p>
-<p>Backend scoped keys can be declared in global or IngressClass related ConfigMaps as default values, or in any Ingress or Service resources for a more granular configuration. They can conflict when configured via Ingress, see <a href="#scope">scope</a>, and will never conflict when configured via Service. In the case of a conflict between a Service and an Ingress, the Service configuration is used.</p>
+<p>Defines configuration keys that bind to the Service resource, which
+is converted to a HAProxy backend after the configuration parsing. Configuration
+keys of the backend scope can be declared in any ConfigMap or as Ingress or Service
+annotation. A conflict happens when the same backend configuration key with distinct
+values are declared in distinct Ingress resources but to the same Service or HAProxy
+backend.</p>
 <h3 id="path">Path<a class="td-heading-self-link" href="#path" aria-label="Heading self-link"></a></h3>
-<p>Configuration keys from this scope are applied per a combination of the hostname and the HTTP path. Just like the <code>Host</code> scope, it is more a Kubernetes API and N42 Gateway concept than a HAProxy one. Distinct combinations of hostname and path can receive distinct values from keys of this scope.</p>
-<p>Path scoped keys can be declared in global or IngressClass related ConfigMaps as default values, or in any Ingress or Service resource for a more granular configuration. They can only conflict in the case the same key is configured both in an Ingress and the Service it points to. They will never conflict if configured exclusively via Ingress, since the same path, with the same match type, under the same hostname cannot be configured more than once. If this happens, N42 Gateway will reject the path declaration instead of conflict the configuration key value.</p>
+<p>Defines configuration keys that bind to the hostname and the HTTP path.
+Configuration keys of the Path scope can be declared in any ConfigMap as a default
+value, or as Ingress or Service annotation. Configuration keys of the Path scope
+never conflict.</p>
 <h3 id="tcp">TCP<a class="td-heading-self-link" href="#tcp" aria-label="Heading self-link"></a></h3>
-<p>Keys from this scope are applied per configured TCP port, assigned via the <code>tcp-service-port</code>. Every distinct TCP port creates a distinct HAProxy frontend, so distinct TCP port numbers, consequently their frontends, can receive distinct values from keys of this scope.</p>
-<p>TCP scoped keys can be declared in global or IngressClass related ConfigMaps as default values, or in any Ingress resource for a more granular configuration. They can conflict since they can be configured via Ingress resource, see <a href="#scope">scope</a>.</p>
+<p>Defines configuration keys that bind on the port number of a TCP service.
+Configuration keys of the TCP scope can be declared in any ConfigMap as a default
+value, or as Ingress annotation. A conflict happens when the same TCP configuration
+key with distinct values are declared in distinct Ingress resources but to the same
+TCP port number.</p>
 <h2 id="keys">Keys<a class="td-heading-self-link" href="#keys" aria-label="Heading self-link"></a></h2>
 <p>The table below describes all supported configuration keys.</p>
 <table>
@@ -633,12 +650,6 @@ fast with N42 Gateway.</p>
 					<td>string to send upon agent connection</td>
 					<td>Backend</td>
 					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#bind"><code>allow-local-bind</code></a></td>
-					<td>[true|false]</td>
-					<td>Global</td>
-					<td><code>false</code></td>
 			</tr>
 			<tr>
 					<td><a href="#allowlist"><code>allowlist-source-range</code></a></td>
@@ -731,15 +742,15 @@ fast with N42 Gateway.</p>
 					<td></td>
 			</tr>
 			<tr>
-					<td><a href="#auth-tls"><code>auth-tls-error-page</code></a></td>
-					<td>url</td>
-					<td>Host</td>
-					<td></td>
-			</tr>
-			<tr>
 					<td><a href="#auth-tls"><code>auth-tls-default-secret</code></a></td>
 					<td>namespace/secret name</td>
 					<td>Global</td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><a href="#auth-tls"><code>auth-tls-error-page</code></a></td>
+					<td>url</td>
+					<td>Host</td>
 					<td></td>
 			</tr>
 			<tr>
@@ -797,27 +808,21 @@ fast with N42 Gateway.</p>
 					<td><code>random(2)</code></td>
 			</tr>
 			<tr>
-					<td><a href="#bind"><del><code>bind-fronting-proxy</code></del></a></td>
+					<td><a href="#bind"><code>bind-fronting-proxy</code></a></td>
 					<td>ip + port</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td></td>
 			</tr>
 			<tr>
 					<td><a href="#bind"><code>bind-http</code></a></td>
 					<td>ip + port</td>
-					<td>Frontend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#bind"><code>bind-http-passthrough</code></a></td>
-					<td>ip + port</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td></td>
 			</tr>
 			<tr>
 					<td><a href="#bind"><code>bind-https</code></a></td>
 					<td>ip + port</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td></td>
 			</tr>
 			<tr>
@@ -829,7 +834,7 @@ fast with N42 Gateway.</p>
 			<tr>
 					<td><a href="#bind-ip-addr"><code>bind-ip-addr-http</code></a></td>
 					<td>IP address</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td></td>
 			</tr>
 			<tr>
@@ -1019,12 +1024,6 @@ fast with N42 Gateway.</p>
 					<td></td>
 			</tr>
 			<tr>
-					<td><a href="#bind-port"><code>create-default-frontends</code></a></td>
-					<td>[true|false]</td>
-					<td>Global</td>
-					<td><code>False</code></td>
-			</tr>
-			<tr>
 					<td><a href="#cross-namespace"><code>cross-namespace-secrets-ca</code></a></td>
 					<td>[allow|deny]</td>
 					<td>Global</td>
@@ -1116,9 +1115,9 @@ fast with N42 Gateway.</p>
 			</tr>
 			<tr>
 					<td><a href="#dynamic-scaling"><code>dynamic-scaling</code></a></td>
-					<td>[None|Slots|Add]</td>
+					<td>[true|false]</td>
 					<td>Backend</td>
-					<td><code>Slots</code></td>
+					<td><code>true</code></td>
 			</tr>
 			<tr>
 					<td><a href="#external"><code>external-has-lua</code></a></td>
@@ -1145,7 +1144,7 @@ fast with N42 Gateway.</p>
 					<td><code>add</code></td>
 			</tr>
 			<tr>
-					<td><a href="#http-passthrough"><del><code>fronting-proxy-port</code></del></a></td>
+					<td><a href="#fronting-proxy-port"><code>fronting-proxy-port</code></a></td>
 					<td>port number</td>
 					<td>Global</td>
 					<td>0 (do not listen)</td>
@@ -1229,18 +1228,6 @@ fast with N42 Gateway.</p>
 					<td><code>false</code></td>
 			</tr>
 			<tr>
-					<td><a href="#http-frontends"><code>http-frontend</code></a></td>
-					<td>frontend ID</td>
-					<td>Frontend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#http-frontends"><code>http-frontends</code></a></td>
-					<td>frontend ID declarations</td>
-					<td>Global</td>
-					<td></td>
-			</tr>
-			<tr>
 					<td><a href="#http-match"><code>http-header-match</code></a></td>
 					<td>header name and value, exact match</td>
 					<td>Path</td>
@@ -1257,18 +1244,6 @@ fast with N42 Gateway.</p>
 					<td>http log format</td>
 					<td>Global</td>
 					<td>HAProxy default log format</td>
-			</tr>
-			<tr>
-					<td><a href="#http-passthrough"><code>http-passthrough</code></a></td>
-					<td>[true|false]</td>
-					<td>Frontend</td>
-					<td><code>false</code></td>
-			</tr>
-			<tr>
-					<td><a href="#http-passthrough"><code>http-passthrough-port</code></a></td>
-					<td>port number</td>
-					<td>Global</td>
-					<td></td>
 			</tr>
 			<tr>
 					<td><a href="#bind-port"><code>http-port</code></a></td>
@@ -1301,7 +1276,7 @@ fast with N42 Gateway.</p>
 					<td><code>443</code></td>
 			</tr>
 			<tr>
-					<td><a href="#http-passthrough"><del><code>https-to-http-port</code></del></a></td>
+					<td><a href="#fronting-proxy-port"><code>https-to-http-port</code></a></td>
 					<td>port number</td>
 					<td>Global</td>
 					<td>0 (do not listen)</td>
@@ -1395,6 +1370,12 @@ fast with N42 Gateway.</p>
 					<td>[true|false]</td>
 					<td>Global</td>
 					<td><code>false</code></td>
+			</tr>
+			<tr>
+					<td><a href="#nbproc"><code>nbproc-ssl</code></a></td>
+					<td>number of process</td>
+					<td>Global</td>
+					<td><code>0</code></td>
 			</tr>
 			<tr>
 					<td><a href="#nbthread"><code>nbthread</code></a></td>
@@ -1507,7 +1488,7 @@ fast with N42 Gateway.</p>
 			<tr>
 					<td><a href="#redirect"><code>redirect-from-code</code></a></td>
 					<td>http status code</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td><code>302</code></td>
 			</tr>
 			<tr>
@@ -1525,44 +1506,8 @@ fast with N42 Gateway.</p>
 			<tr>
 					<td><a href="#redirect"><code>redirect-to-code</code></a></td>
 					<td>http status code</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td><code>302</code></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>request-add-headers</code></a></td>
-					<td>multiline header:value pair</td>
-					<td>Backend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>request-del-headers</code></a></td>
-					<td>comma-separated list of header names</td>
-					<td>Backend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>request-set-headers</code></a></td>
-					<td>multiline header:value pair</td>
-					<td>Backend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>response-add-headers</code></a></td>
-					<td>multiline header:value pair</td>
-					<td>Backend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>response-del-headers</code></a></td>
-					<td>comma-separated list of header names</td>
-					<td>Backend</td>
-					<td></td>
-			</tr>
-			<tr>
-					<td><a href="#headers"><code>response-set-headers</code></a></td>
-					<td>multiline header:value pair</td>
-					<td>Backend</td>
-					<td></td>
 			</tr>
 			<tr>
 					<td><a href="#rewrite-target"><code>rewrite-target</code></a></td>
@@ -1955,9 +1900,9 @@ fast with N42 Gateway.</p>
 					<td><code>true</code></td>
 			</tr>
 			<tr>
-					<td><a href="#http-passthrough"><code>use-forwarded-proto</code></a></td>
+					<td><a href="#fronting-proxy-port"><code>use-forwarded-proto</code></a></td>
 					<td>[true|false]</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td><code>true</code></td>
 			</tr>
 			<tr>
@@ -1967,9 +1912,15 @@ fast with N42 Gateway.</p>
 					<td><code>false</code></td>
 			</tr>
 			<tr>
+					<td><a href="#use-htx"><code>use-htx</code></a></td>
+					<td>[true|false]</td>
+					<td>Global</td>
+					<td><code>false</code></td>
+			</tr>
+			<tr>
 					<td><a href="#proxy-protocol"><code>use-proxy-protocol</code></a></td>
 					<td>[true|false]</td>
-					<td>Frontend</td>
+					<td>Global</td>
 					<td><code>false</code></td>
 			</tr>
 			<tr>
@@ -2083,13 +2034,13 @@ acme-v2.</p>
 <li><code>acme-expiring</code>: how many days before expiring a certificate should be considered old and should be updated. Defaults to <code>30</code> days.</li>
 <li><code>acme-preferred-chain</code>: optional, defines the Issuer&rsquo;s CN (Common Name) of the topmost certificate in the chain, if the acme server offers multiple certificate chains. The default certificate chain will be used if empty or no match is found. Note that changing this option will not force a new certificate to be issued if a valid one is already in place and actual and preferred chains differ. A new certificate can be emitted by changing the secret name in the ingress resource, or removing the secret being referenced.</li>
 <li><code>acme-shared</code>: defines if another certificate signer is running in the cluster. If <code>false</code>, the default value, any request to <code>/.well-known/acme-challenge/</code> is sent to the local acme server despite any ingress object configuration. Otherwise, if <code>true</code>, a configured ingress object would take precedence.</li>
-<li><code>acme-terms-agreed</code>: mandatory, it should be defined as <code>true</code>; otherwise, certificates won&rsquo;t be issued.</li>
-<li><code>cert-signer</code>: defines the certificate signer that should be used to authorize and sign new certificates. The only supported value is <code>&quot;acme&quot;</code>. Add this config as an annotation in the ingress object that should have its certificate managed by N42 Gateway and signed by the configured acme environment. The annotation <code>kubernetes.io/tls-acme: &quot;true&quot;</code> is also supported if the command-line option <code>--acme-track-tls-annotation</code> is used.</li>
+<li><code>acme-terms-agreed</code>: mandatory, it should be defined as <code>true</code>, otherwise certificates won&rsquo;t be issued.</li>
+<li><code>cert-signer</code>: defines the certificate signer that should be used to authorize and sign new certificates. The only supported value is <code>&quot;acme&quot;</code>. Add this config as an annotation in the ingress object that should have its certificate managed by haproxy-ingress and signed by the configured acme environment. The annotation <code>kubernetes.io/tls-acme: &quot;true&quot;</code> is also supported if the command-line option <code>--acme-track-tls-annotation</code> is used.</li>
 </ul>
 <p><strong>Minimum setup</strong></p>
 <p>The command-line option <code>--acme-server</code> need to be declared to start the local
-server and the work queue used to authorize and sign new certificates. See <a href="/docs/configuration/command-line/#acme">other
-command-line options</a>.</p>
+server and the work queue used to authorize and sign new certificates. See other
+command-line options <a href="/docs/configuration/command-line/#acme">here</a>.</p>
 <p>The following configuration keys are mandatory: <code>acme-emails</code>, <code>acme-endpoint</code>,
 <code>acme-terms-agreed</code>.</p>
 <p>A cluster-wide permission to <code>create</code> and <code>update</code> the <code>secrets</code> resources should
@@ -2106,7 +2057,7 @@ server to answer acme challenges, a work queue to enqueue the domain authorizati
 and certificate signing, and will also start a leader election to define which
 N42 Gateway instance should perform authorizations and certificate signing.</p>
 <p>The N42 Gateway leader tracks ingress objects that declares the annotation
-<code>n42-gateway.github.io/cert-signer</code> with value <code>acme</code> and a configured secret name for
+<code>haproxy-ingress.github.io/cert-signer</code> with value <code>acme</code> and a configured secret name for
 TLS certificate. The annotation <code>kubernetes.io/tls-acme</code> with value <code>&quot;true&quot;</code> will also
 be used if the command-line option <code>--acme-track-tls-annotation</code> is declared. The
 secret does not need to exist. A new certificate will be issued if the certificate is
@@ -2212,9 +2163,9 @@ removing the ingress object itself.</p>
 </table>
 <p>Configure if HAProxy should maintain client requests to the same backend server.</p>
 <ul>
-<li><code>affinity</code>: the only supported option is <code>cookie</code>. If declared, clients will receive a cookie with a hash of the backend server to enable persistent connections to it. If the backend server cannot be found or reached, haproxy takes the load balance algorithm route and chooses another one, and the cookie value is updated accordingly.</li>
+<li><code>affinity</code>: the only supported option is <code>cookie</code>. If declared, clients will receive a cookie with a hash of the server it should be fidelized to.</li>
 <li><code>cookie-key</code>: defines a secret key used with the IP address and port number of a backend server to dynamically create a cookie to that server. Defaults to <code>Ingress</code> if not provided.</li>
-<li><code>session-cookie-domain</code>: configures the domain to which the persistence cookie should be sent. All subdomains of the configured domain will also receive the cookie. The ingress&rsquo; hostname must match this configuration, or should be a subdomain; otherwise, modern browsers will refuse to accept the cookie. E.g. if the ingress is configured as <code>sub.example.com</code>, the <code>session-cookie-domain</code> value must be only <code>sub.example.com</code> or <code>example.com</code>. If <code>example.com</code> is used, all of its subdomains will receive the cookie. This option has precedence over <code>session-cookie-shared</code>. Note that, although hostname related, this is a backend scoped configuration key, so the configuration will conflict if used in two or more distinct ingress, with distinct values, pointing to the same Kubernetes service. See <a href="#backend">backend scope</a> for further information about configuration conflict.</li>
+<li><code>session-cookie-domain</code>: configures the domain to which the persistence cookie should be sent. All subdomains of the configured domain will also receive the cookie. The ingress&rsquo; hostname must match this configuration, or should be a subdomain, otherwise modern browsers will refuse to accept the cookie. E.g. if the ingress is configured as <code>sub.example.com</code>, the <code>session-cookie-domain</code> value must be only <code>sub.example.com</code> or <code>example.com</code>. If <code>example.com</code> is used, all of its subdomains will receive the cookie. This option has precedence over <code>session-cookie-shared</code>. Note that, although hostname related, this is a backend scoped configuration key, so the configuration will conflict if used in two or more distinct ingress, with distinct values, pointing to the same Kubernetes service. See <a href="#backend">backend scope</a> for further information about configuration conflict.</li>
 <li><code>session-cookie-dynamic</code>: indicates whether or not dynamic cookie value will be used. With the default of <code>true</code>, a cookie value will be generated by HAProxy using a hash of the server IP address, TCP port, and dynamic cookie secret key. When <code>false</code>, the server name will be used as the cookie name. Note that setting this to <code>false</code> will have no impact if <a href="#dns-resolvers">use-resolver</a> is set.</li>
 <li><code>session-cookie-keywords</code>: additional options to the <code>cookie</code> option like <code>nocache</code>, <code>httponly</code>. For the sake of backwards compatibility the default is <code>indirect nocache httponly</code> if not declared and <code>strategy</code> is <code>insert</code>.</li>
 <li><code>session-cookie-name</code>: the name of the cookie. <code>INGRESSCOOKIE</code> is the default value if not declared.</li>
@@ -2224,13 +2175,18 @@ removing the ingress object itself.</p>
 <li><code>session-cookie-strategy</code>: the cookie strategy to use (insert, rewrite, prefix). <code>insert</code> is the default value if not declared.</li>
 <li><code>session-cookie-value-strategy</code>: the strategy to use to calculate the cookie value of a server (<code>server-name</code>, <code>pod-uid</code>). <code>server-name</code> is the default if not declared, and indicates that the cookie will be set based on the name defined in <code>backend-server-naming</code>. <code>pod-uid</code> indicates that the cookie will be set to the <code>UID</code> of the pod running the target server.</li>
 </ul>
+<p>Note for <code>dynamic-scaling</code> users only, v0.5 or older: the hash of the server is built based on it&rsquo;s name.
+When the slots are scaled down, the remaining servers might change it&rsquo;s server name on
+HAProxy configuration. In order to circumvent this, always configure the slot increment at
+least as much as the number of replicas of the deployment that need to use affinity. This
+limitation was removed on v0.6.</p>
 <p>See also:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie"target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-cookie"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-cookie</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-cookie"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-cookie</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-cookie"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-cookie</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-cookie"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-cookie</a></li>
 <li><a href="https://www.haproxy.com/blog/load-balancing-affinity-persistence-sticky-sessions-what-you-need-to-know/"target="_blank" rel="noopener">https://www.haproxy.com/blog/load-balancing-affinity-persistence-sticky-sessions-what-you-need-to-know/</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4.2-dynamic-cookie-key"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4.2-dynamic-cookie-key</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#dynamic-cookie-key"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#dynamic-cookie-key</a></li>
 </ul>
 <hr>
 <h3 id="agent-check">Agent check<a class="td-heading-self-link" href="#agent-check" aria-label="Heading self-link"></a></h3>
@@ -2302,10 +2258,10 @@ overwrite the weight defined from the agent</li>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-agent-check"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-agent-check</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-agent-port"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-agent-port</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-agent-inter"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-agent-inter</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-agent-send"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-agent-send</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-agent-check"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-agent-check</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-agent-port"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-agent-port</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-agent-inter"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-agent-inter</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-agent-send"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-agent-send</a></li>
 </ul>
 <hr>
 <h3 id="allowlist">Allowlist<a class="td-heading-self-link" href="#allowlist" aria-label="Heading self-link"></a></h3>
@@ -2378,8 +2334,8 @@ the selected header can be trusted!</p>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-deny"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-deny</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-set-src"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-set-src</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20deny"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20deny</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20set-src"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20set-src</a></li>
 </ul>
 <hr>
 <h3 id="app-root">App root<a class="td-heading-self-link" href="#app-root" aria-label="Heading self-link"></a></h3>
@@ -2520,13 +2476,13 @@ context path, so it needs to be declared in the same Ingress that configures it.
 </table>
 <p>Configures External Authentication options.</p>
 <ul>
-<li><code>auth-url</code>: Configures the endpoint(s) of the authentication service. All requests made to the target backend server will be validated by the authentication service before continue, which should respond with <code>2xx</code> HTTP status code; otherwise, the request is considered as failed. In the case of a failure, the backend server is not used and the client receives the response from the authentication service.</li>
-<li><code>auth-external-placement</code>: Defines where the external service call should be configured. Options are <code>backend</code> and <code>frontend</code>. Default value is <code>backend</code> and this is the value that has the better performance. Use <code>frontend</code> if the external service create HTTP headers used on early stages, e.g. <a href="#http-match">HTTP header routing constraints</a>. Note that placing the external authentication configuration in the frontend comes with a performance penalty, because all the incoming requests will need to evaluate the ACLs of this configuration. Avoid placing too much (dozens) paths in the frontend on high loaded proxies.</li>
+<li><code>auth-url</code>: Configures the endpoint(s) of the authentication service. All requests made to the target backend server will be validated by the authentication service before continue, which should respond with <code>2xx</code> HTTP status code, otherwise the request is considered as failed. In the case of a failure, the backend server is not used and the client receives the response from the authentication service.</li>
+<li><code>auth-external-placement</code>: Defines where the external service call should be configured. Options are <code>backend</code> and <code>frontend</code>. Default value is <code>backend</code> and this is the value that has the better performance. Use <code>frontend</code> if the external service create HTTP headers used on early stages, e.g. <a href="#http-match">HTTP header routing constraints</a>. Note that placing the external authentication configuration in the frontend comes with a performance penalty, because all the incomming requests will need to evaluate the ACLs of this configuration. Avoid placing too much (dozens) paths in the frontend on high loaded proxies.</li>
 <li><code>auth-method</code>: Configures the HTTP method used in the request to the external authentication service. Use an asterisk <code>*</code> to copy the same method used in the client request. The default value is <code>GET</code>.</li>
 <li><code>auth-headers-request</code>: Configures a comma-separated list of header names that should be copied from the client to the authentication service. The match is done in a case-insensitive way. All HTTP headers will be copied if not declared.</li>
 <li><code>auth-headers-succeed</code>: Configures a comma-separated list of header names that should be copied from the authentication service to the backend server if the authentication succeed. The match is done in a case-insensitive way. All HTTP headers will be copied if not declared.</li>
 <li><code>auth-headers-fail</code>: Configures a comma-separated list of header names that should be copied from the authentication service to the client if the authentication fail. The match is done in a case-insensitive way. This option is ignored if <code>auth-signin</code> is used. All HTTP headers will be copied if not declared.</li>
-<li><code>auth-signin</code>: Optional, configures the endpoint of the sign in server used to redirect failed requests. The content is parsed by haproxy as a <a href="https://docs.haproxy.org/3.0/configuration.html#8.2.6"target="_blank" rel="noopener">log-format</a> string and the result is copied verbatim to the <code>Location</code> header of a HTTP 302 response. The default behavior is to use the authentication service response.</li>
+<li><code>auth-signin</code>: Optional, configures the endpoint of the sign in server used to redirect failed requests. The content is parsed by haproxy as a <a href="https://docs.haproxy.org/2.8/configuration.html#8.2.4"target="_blank" rel="noopener">log-format</a> string and the result is copied verbatim to the <code>Location</code> header of a HTTP 302 response. The default behavior is to use the authentication service response.</li>
 <li><code>auth-proxy</code>: Optional, changes the name of a frontend proxy and a free TCP port range, used by <code>auth-request.lua</code> script to query the external authentication endpoint.</li>
 </ul>
 <p><strong>External service URL</strong></p>
@@ -2539,11 +2495,6 @@ context path, so it needs to be declared in the same Ingress that configures it.
 </ul>
 <p><code>http</code> and <code>https</code> protocols are straightforward: use them to connect to an IP or hostname without any further configuration. <code>http</code> adds the HTTP <code>Host</code> header if a hostname is used, and <code>https</code> adds also the sni extension. Note that <code>https</code> connects in an insecure way and currently cannot be customized. Do NOT use neither <code>http</code> nor <code>https</code> if haproxy -&gt; authentication service communication has untrusted networks.</p>
 <p><code>svc</code> protocol allows to use a Kubernetes service declared in the same namespace of the ingress or the service being annotated. Services on other namespaces can also be used in the form <code>svc://namespace/servicename:port/path</code> if global config <a href="#cross-namespace"><code>cross-namespace-services</code></a> was configured as <code>allow</code>. The service can be of any type and a port must always be declared - both in the <code>auth-url</code> configuration and in the service resource. Using <code>svc</code> protocol allows to configure a secure connection, see <a href="#secure-backend">secure</a> configuration keys and annotate them in the target service.</p>
-<div class="td-alert td-alert--md alert alert-nb" role="alert">
-  <div class="td-alert-body">
-    <p><code>http</code> or <code>https</code> protos should only use domain names with stable IP addresses. They are not recommended for external services that scale in/out, or frequently changes their IP, and consequently updates the DNS records. N42 Gateway will only follow changes in the DNS records on full reconciliations or when the configured ingress or service changes, which should cause outages until a new reconciliation happens.</p>
-    </div>
-</div>
 <p>Configuration examples:</p>
 <ul>
 <li><code>auth-url: &quot;http://10.0.0.2&quot;</code>: Authentication service accepts plain HTTP connection, TCP port <code>80</code> and root path are used.</li>
@@ -2597,16 +2548,16 @@ context path, so it needs to be declared in the same Ingress that configures it.
 					<td></td>
 			</tr>
 			<tr>
-					<td><code>auth-tls-error-page</code></td>
-					<td><code>Host</code></td>
-					<td></td>
-					<td></td>
-			</tr>
-			<tr>
 					<td><code>auth-tls-default-secret</code></td>
 					<td><code>Global</code></td>
 					<td></td>
 					<td>v0.16</td>
+			</tr>
+			<tr>
+					<td><code>auth-tls-error-page</code></td>
+					<td><code>Host</code></td>
+					<td></td>
+					<td></td>
 			</tr>
 			<tr>
 					<td><code>auth-tls-secret</code></td>
@@ -2697,7 +2648,10 @@ the DN of the certificate.</p>
 			</tr>
 	</tbody>
 </table>
-<p>Defines the HTTP protocol version of the backend. A case-insensitive match is used, so either <code>h1</code> or <code>H1</code> configures HTTP/1 protocol. A non SSL/TLS configuration does not overrides <a href="#secure-backend">secure-backends</a>, so <code>h1</code> and secure-backends <code>true</code> will still configure SSL/TLS.</p>
+<p>Defines the HTTP protocol version of the backend. Note that HTTP/2 is only supported if HTX is enabled.
+A case insensitive match is used, so either <code>h1</code> or <code>H1</code> configures HTTP/1 protocol. A non SSL/TLS
+configuration does not overrides <a href="#secure-backend">secure-backends</a>, so <code>h1</code> and secure-backends <code>true</code>
+will still configure SSL/TLS.</p>
 <p>Options:</p>
 <ul>
 <li><code>h1</code>: the default value, configures HTTP/1 protocol. <code>http</code> is an alias to <code>h1</code>.</li>
@@ -2710,9 +2664,10 @@ the DN of the certificate.</p>
 <p>FastCGI protocol needs a reference to valid haproxy&rsquo;s fcgi-app section via <a href="#fastcgi"><code>fcgi-app</code></a> configuration key, either inheriting from the global ConfigMap or via annotation.</p>
 <p>See also:</p>
 <ul>
+<li><a href="#use-htx">use-htx</a> configuration key to enable HTTP/2 backends.</li>
 <li><a href="#secure-backend">secure-backend</a> configuration keys to configure optional client certificate and certificate authority bundle of SSL/TLS connections.</li>
 <li><a href="#fastcgi">FastCGI</a> configuration keys.</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-proto"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-proto</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-proto"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-proto</a></li>
 </ul>
 <hr>
 <h3 id="backend-server-naming">Backend server naming<a class="td-heading-self-link" href="#backend-server-naming" aria-label="Heading self-link"></a></h3>
@@ -2736,14 +2691,14 @@ the DN of the certificate.</p>
 </table>
 <p>Configures how to name backend servers.</p>
 <ul>
-<li><code>sequence</code>: Names backend servers with a prefixed number sequence: <code>srv001</code>, <code>srv002</code>, and so on. This is the default configuration and the preferred option if <a href="#dynamic-scaling"><code>dynamic-scaling</code></a> is <code>Slots</code>. <code>seq</code> is an alias to <code>sequence</code>.</li>
+<li><code>sequence</code>: Names backend servers with a prefixed number sequence: <code>srv001</code>, <code>srv002</code>, and so on. This is the default configuration and the preferred option if dynamic update is used. <code>seq</code> is an alias to <code>sequence</code>.</li>
 <li><code>pod</code>: Uses the k8s pod name as the backend server name. This option doesn&rsquo;t work on backends whose <a href="#service-upstream"><code>service-upstream</code></a> is <code>true</code>, falling back to <code>sequence</code>.</li>
 <li><code>ip</code>: Uses target&rsquo;s <code>&lt;ip&gt;:&lt;port&gt;</code> as the server name.</li>
 </ul>
 <div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
   <div class="td-alert-body">
-    <p>N42 Gateway won&rsquo;t refuse to change the default naming if <a href="#dynamic-scaling">dynamic scaling</a> is <code>Slots</code>, this would however lead to undesired behaviour: empty slots would still be named as sequences, old-named backend servers will dynamically receive new workloads with new pod names or IP numbers which do not relate with the name anymore, making the naming useless, if not wrong. Dynamic scaling as <code>Add</code> does not have this limitation.</p>
-<p>If you have <a href="#affinity">cookie affinity</a> enabled, dynamic scaling as <code>Slots</code> can cause the cookie values to get out of sync with the servers. This can be avoided by using <code>session-cookie-preserve</code> with a value of <code>true</code>.</p>
+    <p>N42 Gateway won&rsquo;t refuse to change the default naming if dynamic update is <code>true</code>, this would however lead to undesired behaviour: empty slots would still be named as sequences, old-named backend servers will dynamically receive new workloads with new pod names or IP numbers which do not relate with the name anymore, making the naming useless, if not wrong.</p>
+<p>If you have <a href="#affinity">cookie affinity</a> enabled, dynamic updating can cause the cookie values to get out of sync with the servers. This can be avoided by using <code>session-cookie-preserve</code> with a value of <code>true</code>.</p>
     </div>
 </div>
 <hr>
@@ -2767,7 +2722,7 @@ the DN of the certificate.</p>
 	</tbody>
 </table>
 <p>When <code>true</code>, each backend server will receive an <code>id</code> in HAProxy config based on the Kubernetes UID of the pod backing it. When using a hash-based <a href="#balance-algorithm"><code>balance-algorithm</code></a> (for example <code>uri</code> or <code>source</code>) together with consistent hashing, this will maintain the stability of assignments when pods are added or removed — that is, a given URI component or source IP will mostly keep hashing to the same server. When this setting is <code>false</code>, an addition or deletion in the server list may disturb the hash assignments of some or all of the remaining servers.</p>
-<p>If this option is enabled, adding or removing a server will cause a reload when <a href="#dynamic-scaling"><code>dynamic-scaling</code></a> is <code>Slots</code>, because ID cannot be dynamically updated. Dynamic scaling as <code>Add</code> does not have this limitation.</p>
+<p>Server IDs can&rsquo;t dynamically updated, so if this option is enabled, adding or removing a server will cause a reload even when <a href="#dynamic-scaling"><code>dynamic-scaling</code></a> is true.</p>
 <hr>
 <h3 id="balance-algorithm">Balance algorithm<a class="td-heading-self-link" href="#balance-algorithm" aria-label="Heading self-link"></a></h3>
 <table>
@@ -2791,7 +2746,7 @@ the DN of the certificate.</p>
 <p>Defines a valid HAProxy load balancing algorithm. Since v0.16 the default value is <code>random(2)</code>, also known as the Power of Two Random Choices.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-balance"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-balance</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-balance"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-balance</a></li>
 <li><a href="https://www.mail-archive.com/haproxy@formilux.org/msg46011.html"target="_blank" rel="noopener">https://www.mail-archive.com/haproxy@formilux.org/msg46011.html</a></li>
 <li><a href="https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf"target="_blank" rel="noopener">https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf</a></li>
 </ul>
@@ -2808,52 +2763,32 @@ the DN of the certificate.</p>
 	</thead>
 	<tbody>
 			<tr>
-					<td><code>allow-local-bind</code></td>
+					<td><code>bind-fronting-proxy</code></td>
 					<td><code>Global</code></td>
-					<td><code>False</code></td>
-					<td>v0.17</td>
+					<td></td>
+					<td>v0.8</td>
 			</tr>
 			<tr>
 					<td><code>bind-http</code></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td></td>
 					<td>v0.8</td>
-			</tr>
-			<tr>
-					<td><code>bind-http-passthrough</code></td>
-					<td><code>Frontend</code></td>
-					<td></td>
-					<td>v0.17</td>
 			</tr>
 			<tr>
 					<td><code>bind-https</code></td>
-					<td><code>Frontend</code></td>
-					<td></td>
-					<td>v0.8</td>
-			</tr>
-			<tr>
-					<td><del><code>bind-fronting-proxy</code></del></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td></td>
 					<td>v0.8</td>
 			</tr>
 	</tbody>
 </table>
-<p>Configures listening IP and port for HTTP(S) incoming requests. If empty, the
-configuration provided in <a href="#bind-ip-addr">Bind IP addr</a>,
-<a href="#bind-port">Bind port</a> and <a href="#http-passthrough">HTTP Passthrough</a> keys are used.
-If none of the options are declared, N42 Gateway configure the listening bind
-based on the IP stack defined in <a href="/docs/configuration/command-line/#ip-mode"><code>--ip-mode</code></a>
-command-line option.</p>
+<p>Configures listening IP and port for HTTP/s incoming requests. These
+configuration keys have backward compatibility with <a href="#bind-ip-addr">Bind IP addr</a>,
+<a href="#bind-port">Bind port</a> and <a href="#fronting-proxy-port">Fronting proxy</a> keys.
+The bind configuration keys in this section have precedence if declared.</p>
 <p>Any HAProxy supported option can be used, this will be copied verbatim to the
 bind keyword. See HAProxy
-<a href="#https://docs.haproxy.org/3.0/configuration.html#4-bind">bind keyword doc</a>.</p>
-<p>On v0.17 these configuration keys changed from <code>Global</code> to <code>Frontend</code> scope, which means they can be used now as Ingress annotations, provided that the ingress resource references a custom frontend. See <a href="#http-frontends">HTTP Frontends</a> on how to reference a custom frontend using annotation. Listening bind keys need also <code>allow-local-bind</code> as <code>True</code> in order to allow configuration from ingress annotations. Note that allowing listening bind via annotation can lead to overlap if the user configures, in the ingress resource level, the same listening port used by another frontend.</p>
-<div class="td-alert td-alert--md alert alert-warning" role="alert"><div class="td-alert-heading alert-heading" role="heading">Warning</div>
-  <div class="td-alert-body">
-    <p><code>allow-local-bind</code> allows to customize the bind declaration using ingress annotations. Note that N42 Gateway applies the bind configuration verbatim, without validating if it conflicts with other frontends. If this configuration is allowed, an user having write access to ingress resources can create a listening bind configuration that conflicts with the global ones.</p>
-    </div>
-</div>
+<a href="#https://docs.haproxy.org/2.8/configuration.html#4-bind">bind keyword doc</a>.</p>
 <p>Configuration examples:</p>
 <ul>
 <li><code>bind-http: &quot;:::80&quot;</code> and <code>bind-https: &quot;:::443&quot;</code>: Listen all IPv6 addresses</li>
@@ -2862,21 +2797,21 @@ bind keyword. See HAProxy
 </ul>
 <div class="td-alert td-alert--md alert alert-nb" role="alert">
   <div class="td-alert-body">
-    <p>Since v0.17, <code>bind-http-passthrough</code> and <code>bind-http</code> cannot share neither the same frontend nor the same TCP port anymore.</p>
+    <p><code>bind-fronting-proxy</code> and <code>bind-http</code> can share the same port number, provided that the whole configuration key match, not only the port number. See <a href="#fronting-proxy-port">Fronting proxy</a> doc.</p>
     </div>
 </div>
 <div class="td-alert td-alert--md alert alert-warning" role="alert"><div class="td-alert-heading alert-heading" role="heading">Warning</div>
   <div class="td-alert-body">
-    <p>Special care should be taken on port number overlap on global, and annotation based configuration if allowed. Neither haproxy itself nor N42 Gateway will warn if the same port number is used on more than one configuration key. Moreover, although it is possible to configure a binding address completely unrelated with the configured <code>http-port</code>, <code>https-port</code> or <code>http-frontends</code>, the suggestion is that configurations match somehow.</p>
+    <p>Special care should be taken on port number overlap, nether haproxy itself nor
+haproxy-ingress will warn if the same port number is used in more than one
+configuration key.</p>
     </div>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-bind"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-bind</a></li>
-<li><a href="/docs/configuration/command-line/#ip-mode">&ndash;ip-mode</a> command-line option</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-bind"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-bind</a></li>
 <li><a href="#bind-ip-addr">Bind IP addr</a></li>
 <li><a href="#bind-port">Bind port</a></li>
-<li><a href="#http-frontends">HTTP Frontends</a> configuration keys</li>
 </ul>
 <hr>
 <h3 id="bind-ip-addr">Bind IP addr<a class="td-heading-self-link" href="#bind-ip-addr" aria-label="Heading self-link"></a></h3>
@@ -2898,7 +2833,7 @@ bind keyword. See HAProxy
 			</tr>
 			<tr>
 					<td><code>bind-ip-addr-http</code></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td></td>
 					<td></td>
 			</tr>
@@ -2924,19 +2859,17 @@ bind keyword. See HAProxy
 </table>
 <p>Define listening IPv4/IPv6 address on public HAProxy frontends. Since v0.10 the default
 value changed from <code>*</code> to an empty string, which haproxy interprets in the same way and
-binds on all IPv4 and/or IPv6 addresses, depending on the <a href="/docs/configuration/command-line/#ip-mode"><code>--ip-mode</code></a>
-command-line option.</p>
+binds on all IPv4 address.</p>
 <ul>
 <li><code>bind-ip-addr-tcp</code>: IP address of all ConfigMap based TCP services declared on <a href="/docs/configuration/command-line/#tcp-services-configmap"><code>tcp-services-configmap</code></a> command-line option.</li>
 <li><code>bind-ip-addr-healthz</code>: IP address of the health check URL.</li>
-<li><code>bind-ip-addr-http</code>: IP address of HTTP(S) frontends.</li>
+<li><code>bind-ip-addr-http</code>: IP address of all HTTP/s frontends, port <code>:80</code> and <code>:443</code>, and also <a href="#fronting-proxy-port"><code>fronting-proxy-port</code></a> if declared.</li>
 <li><code>bind-ip-addr-prometheus</code>: IP address of the haproxy&rsquo;s internal Prometheus exporter.</li>
 <li><code>bind-ip-addr-stats</code>: IP address of the statistics page. See also <a href="#stats"><code>stats-port</code></a>.</li>
 </ul>
-<p>On v0.17 <code>bind-ip-addr-http</code> changed from <code>Global</code> to <code>Frontend</code> scope, which means it can be used now as Ingress annotation, provided that the ingress resource references a custom frontend. See <a href="#http-frontends">HTTP Frontends</a> on how to reference a custom frontend using annotation.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-bind"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-bind</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-bind"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-bind</a></li>
 <li><a href="#bind">Bind</a></li>
 <li><a href="#bind-port">Bind port</a></li>
 </ul>
@@ -2952,12 +2885,6 @@ command-line option.</p>
 			</tr>
 	</thead>
 	<tbody>
-			<tr>
-					<td><code>create-default-frontends</code></td>
-					<td><code>Global</code></td>
-					<td><code>False</code></td>
-					<td>v0.17</td>
-			</tr>
 			<tr>
 					<td><code>healthz-port</code></td>
 					<td><code>Global</code></td>
@@ -2984,12 +2911,10 @@ command-line option.</p>
 			</tr>
 	</tbody>
 </table>
-<p>Binding port configuration.</p>
 <ul>
-<li><code>create-default-frontends</code>: Define if the default HTTP and HTTPS frontends should always be created, even if neither ingress or gateway resources are using them. This option brings v0.16 behavior if configured as <code>True</code>, always creating the default frontends, despite of having assigned resources or not.</li>
+<li><code>healthz-port</code>: Define the port number HAProxy should listen to in order to answer for health checking requests. Use <code>/healthz</code> as the request path.</li>
 <li><code>http-port</code>: Define the port number of unencrypted HTTP connections.</li>
 <li><code>https-port</code>: Define the port number of encrypted HTTPS connections.</li>
-<li><code>healthz-port</code>: Define the port number HAProxy should listen to in order to answer for health checking requests. Use <code>/healthz</code> as the request path.</li>
 <li><code>prometheus-port</code>: Define the port number of the haproxy&rsquo;s internal Prometheus exporter. Defaults to not create the listener. A listener without being scraped does not use system resources, except for the listening port. The internal exporter supports scope filter as a query string, eg <code>/metrics?scope=frontend&amp;scope=backend</code> will only export frontends and backends. See the full description in the <a href="https://git.haproxy.org/?p=haproxy-2.0.git;a=blob;f=contrib/prometheus-exporter/README;hb=HEAD"target="_blank" rel="noopener">HAProxy&rsquo;s Prometheus exporter doc</a>.</li>
 </ul>
 <div class="td-alert td-alert--md alert alert-nb" role="alert">
@@ -2999,9 +2924,8 @@ command-line option.</p>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="#bind">Bind</a> configuration keys</li>
-<li><a href="#http-frontends">HTTP frontend</a> configuration keys</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-monitor-uri"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-monitor-uri</a> (<code>healthz-port</code>)</li>
+<li><a href="#bind">Bind</a> configuration key</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-monitor-uri"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-monitor-uri</a> (<code>healthz-port</code>)</li>
 <li><a href="https://git.haproxy.org/?p=haproxy-2.0.git;a=blob;f=contrib/prometheus-exporter/README;hb=HEAD"target="_blank" rel="noopener">https://git.haproxy.org/?p=haproxy-2.0.git;a=blob;f=contrib/prometheus-exporter/README;hb=HEAD</a> (<code>prometheus-port</code>)</li>
 </ul>
 <hr>
@@ -3105,8 +3029,8 @@ uses the chosen load balance algorithm.</p>
 <ul>
 <li><a href="/examples/blue-green/">example</a> page.</li>
 <li><a href="/docs/configuration/command-line/#disable-pod-list">disable-pod-list</a> command-line option doc.</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-weight"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-weight</a> (<code>weight</code> based balance)</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-use-server"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-use-server</a> (<code>use-server</code> based selector)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-weight"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-weight</a> (<code>weight</code> based balance)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-use-server"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-use-server</a> (<code>use-server</code> based selector)</li>
 </ul>
 <hr>
 <h3 id="close-sessions-duration">Close sessions duration<a class="td-heading-self-link" href="#close-sessions-duration" aria-label="Heading self-link"></a></h3>
@@ -3295,22 +3219,22 @@ to add more than one line of configuration.</p>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      capture request header X-User-Id len 32</span><span class="w">
 </span></span></span></code></pre></div><p>Annotations:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/config-backend</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/config-backend</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        acl bar-url path /bar
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request deny if bar-url
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request set-var(txn.path) path
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request cache-use icons if { var(txn.path) -m end .ico }
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-response cache-store icons if { var(txn.path) -m end .ico }</span><span class="w">
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/config-backend-early</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/config-backend-early</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        stick-table type ip size 100k expire 1m store http_req_rate(10s)
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request track-sc1 src
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request deny if { sc1_http_req_rate gt 100 } # average of 10rps per source IP, over the last 10s</span><span class="w">
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/config-backend-late</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/config-backend-late</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request deny if { path /internal }</span><span class="w">
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/config-tcp-service</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/config-tcp-service</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        timeout client 1m
 </span></span></span><span class="line"><span class="cl"><span class="sd">        timeout connect 15s</span><span class="w">
 </span></span></span></code></pre></div><hr>
@@ -3348,14 +3272,14 @@ to add more than one line of configuration.</p>
 <p>Configuration of connection limits.</p>
 <ul>
 <li><code>max-connections</code>: Define the maximum concurrent connections on all proxies. Defaults to <code>2000</code> connections, which is also the HAProxy default configuration.</li>
-<li><code>maxconn-server</code>: Defines the maximum concurrent connections each server of a backend should receive. If not specified or a value less than or equal zero is used, an unlimited number of connections will be allowed. When the limit is reached, new connections will wait on a queue.</li>
-<li><code>maxqueue-server</code>: Defines the maximum number of connections should wait in the queue of a server. When this number is reached, new requests will be redispatched to another server, breaking sticky session if configured. The queue will be unlimited if the annotation is not specified or a value less than or equal to zero is used.</li>
+<li><code>maxconn-server</code>: Defines the maximum concurrent connections each server of a backend should receive. If not specified or a value lesser than or equal zero is used, an unlimited number of connections will be allowed. When the limit is reached, new connections will wait on a queue.</li>
+<li><code>maxqueue-server</code>: Defines the maximum number of connections should wait in the queue of a server. When this number is reached, new requests will be redispatched to another server, breaking sticky session if configured. The queue will be unlimited if the annotation is not specified or a value lesser than or equal to zero is used.</li>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.2-maxconn"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.2-maxconn</a> (<code>max-connections</code>)</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-maxconn"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-maxconn</a> (<code>maxconn-server</code>)</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-maxqueue"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-maxqueue</a> (<code>maxqueue-server</code>)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.2-maxconn"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.2-maxconn</a> (<code>max-connections</code>)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-maxconn"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-maxconn</a> (<code>maxconn-server</code>)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-maxqueue"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-maxqueue</a> (<code>maxqueue-server</code>)</li>
 </ul>
 <hr>
 <h3 id="cors">CORS<a class="td-heading-self-link" href="#cors" aria-label="Heading self-link"></a></h3>
@@ -3419,19 +3343,17 @@ to add more than one line of configuration.</p>
 			</tr>
 	</tbody>
 </table>
-<p>Add CORS headers on OPTIONS http command (preflight) and responses.</p>
-<p>Since v0.17, N42 Gateway does not include CORS headers in case the request does not provide the <code>Origin</code> header having an allowed URL.</p>
+<p>Add CORS headers on OPTIONS http command (preflight) and reponses.</p>
 <ul>
 <li><code>cors-enable</code>: Enable CORS if defined as <code>true</code>.</li>
-<li><code>cors-allow-origin</code>: Optional, defines a comma-separated list of <code>Origin</code> URLs that may access the resource. The expected syntax is <code>proto://subdomain.tld</code> followed by an optional <code>:portnumber</code>.</li>
-<li><code>cors-allow-origin-regex</code>: Optional, defines a space-separated list of the allowed <code>Origin</code> based on regex matching. Anchors are not included, so a strict match should use <code>^proto://subdomain\.tld$</code> syntax.</li>
+<li><code>cors-allow-origin</code>: Optional, configures <code>Access-Control-Allow-Origin</code> header which defines the URL that may access the resource. Defaults to <code>*</code>. This option accepts a comma-separated list of origins, the response will be dynamically built based on the <code>Origin</code> request header. If <code>Origin</code> belogs to the list, its content will be sent back to the client in the <code>Access-Control-Allow-Origin</code> header, otherwise the first item of the list will be used.</li>
+<li><code>cors-allow-origin-regex</code>: Optional, like <code>cors-allow-origin</code> but with regex matching. Defaults to empty. This option accepts a space-separated list of origin regexes, the response will be dynamically built based on the <code>Origin</code> request header. If <code>Origin</code> matches any regex in the list, its content will be sent back to the client in the <code>Access-Control-Allow-Origin</code> header, otherwise <code>cors-allow-origin</code> will be considered. This is why you <strong>must also set</strong> <code>cors-allow-origin</code> (probably to something other than <code>*</code>) when using this option.</li>
 <li><code>cors-allow-methods</code>: Optional, configures <code>Access-Control-Allow-Methods</code> header which defines the allowed methods. Default value is <code>GET, PUT, POST, DELETE, PATCH, OPTIONS</code>.</li>
 <li><code>cors-allow-headers</code>: Optional, configures <code>Access-Control-Allow-Headers</code> header which defines the allowed headers. Default value is <code>DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization</code>.</li>
 <li><code>cors-allow-credentials</code>: Optional, configures <code>Access-Control-Allow-Credentials</code> header which defines whether or not credentials (cookies, authorization headers or client certificates) should be exposed. Defaults to <code>true</code>.</li>
 <li><code>cors-max-age</code>: Optional, configures <code>Access-Control-Max-Age</code> header which defines the time in seconds the result should be cached. Defaults to <code>86400</code> (1 day).</li>
 <li><code>cors-expose-headers</code>: Optional, configures <code>Access-Control-Expose-Headers</code> header which defines what headers are allowed to be passed through to the CORS application. Defaults to not add the header.</li>
 </ul>
-<p>Allow origin defaults to <code>*</code> if neither <code>cors-allow-origin</code> nor <code>cors-allow-origin-regex</code> are provided, which means allowing any origin. The <code>Access-Control-Allow-Origin</code> response header will always copy the content received from the <code>Origin</code> request header, despite on how allow origin is configured.</p>
 <p>See also:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS</a></li>
@@ -3462,15 +3384,17 @@ to add more than one line of configuration.</p>
 			</tr>
 	</tbody>
 </table>
-<p>Define how threads map to CPUs. The default value is generated based on <a href="#nbthread">nbthread</a>.</p>
+<p>Define how processes/threads map to CPUs. The default value is generated based
+on <a href="#nbthread">nbthread</a> and <a href="#nbproc">nbproc</a>.</p>
 <ul>
-<li><code>cpu-map</code>: Custom override specifying the <a href="https://docs.haproxy.org/3.0/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">cpu mapping behaviour</a>.</li>
+<li><code>cpu-map</code>: Custom override specifying the cpu mapping behaviour in the format described <a href="https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">here</a>.</li>
 <li><code>use-cpu-map</code>: Set to <code>false</code> to prevent any cpu mapping</li>
 </ul>
 <p>See also:</p>
 <ul>
 <li><a href="#nbthread">nbthread</a> configuration key</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-cpu-map</a></li>
+<li><a href="#nbproc">nbproc</a> configuration key</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map</a></li>
 </ul>
 <hr>
 <h3 id="cross-namespace">Cross Namespace<a class="td-heading-self-link" href="#cross-namespace" aria-label="Heading self-link"></a></h3>
@@ -3632,16 +3556,16 @@ a user. Defaults to 302 (Moved Temporarily)</p>
 <div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Important advices</div>
   <div class="td-alert-body">
     <ul>
-<li>Use resolver with <strong>headless</strong> services, see <a href="https://kubernetes.io/docs/concepts/services-networking/service/#headless-services"target="_blank" rel="noopener">k8s doc</a>; otherwise, HAProxy will reference the service IP instead of the endpoints.</li>
+<li>Use resolver with <strong>headless</strong> services, see <a href="https://kubernetes.io/docs/concepts/services-networking/service/#headless-services"target="_blank" rel="noopener">k8s doc</a>, otherwise HAProxy will reference the service IP instead of the endpoints.</li>
 <li>Beware of DNS cache, eg kube-dns has <code>--max-ttl</code> and <code>--max-cache-ttl</code> to change its default cache of <code>30s</code>.</li>
 </ul>
     </div>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://github.com/n42-gateway/n42-gateway/tree/master/examples/dns-service-discovery"target="_blank" rel="noopener">example</a> page.</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.3.2"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.3.2</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-resolvers"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-resolvers</a></li>
+<li><a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/dns-service-discovery"target="_blank" rel="noopener">example</a> page.</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.3.2"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.3.2</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-resolvers"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-resolvers</a></li>
 <li><a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/"target="_blank" rel="noopener">https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/</a></li>
 <li><a href="https://kubernetes.io/docs/concepts/services-networking/service/#headless-services"target="_blank" rel="noopener">https://kubernetes.io/docs/concepts/services-networking/service/#headless-services</a></li>
 </ul>
@@ -3701,8 +3625,8 @@ You can control this behavior by setting <code>drain-support-redispatch</code> f
 			</tr>
 			<tr>
 					<td><code>dynamic-scaling</code></td>
-					<td><code>Backend</code></td>
-					<td><code>Slots</code></td>
+					<td><code>Global</code></td>
+					<td><code>true</code></td>
 					<td></td>
 			</tr>
 			<tr>
@@ -3713,23 +3637,32 @@ You can control this behavior by setting <code>drain-support-redispatch</code> f
 			</tr>
 	</tbody>
 </table>
-<p>Configures dynamic backend server updates.</p>
+<p>The <code>dynamic-scaling</code> option defines if backend updates should always be made starting
+a new HAProxy instance that will read the new config file (<code>false</code>), or updating the
+running HAProxy via a Unix socket (<code>true</code>) whenever possible. Despite the configuration,
+the config files will stay in sync with in memory config. The default value was <code>false</code>
+up to v0.7 if not declared, changed to <code>true</code> since v0.8.</p>
+<p><code>dynamic-scaling</code> is ignored if the backend uses <a href="#dns-resolvers">DNS resolver</a>.</p>
+<p>If <code>true</code> N42 Gateway will create at least <code>backend-server-slots-increment</code>
+servers on each backend and update them via a Unix socket without reloading HAProxy.
+Unused servers will stay in a disabled state. If the change cannot be made via socket,
+a new HAProxy instance will be started.</p>
+<p>Starting on v0.8, a new ConfigMap option <code>slots-min-free</code> can be used to configure the
+minimum number of free/empty servers per backend. If HAProxy need to be restarted and
+an backend has less than <code>slots-min-free</code> available servers, another
+<code>backend-server-slots-increment</code> new empty servers would be created.</p>
+<p>Starting on v0.6, <code>dynamic-scaling</code> config will only force a reloading of HAProxy if
+the number of servers on a backend need to be increased. Before v0.6 a reload will
+also happen when the number of servers could be reduced.</p>
+<p>The following keys are supported:</p>
 <ul>
-<li><code>dynamic-scaling</code>: Defines if dynamic scaling should be enabled. Options are <code>None</code>, <code>Slots</code> and <code>Add</code>. Defaults to <code>Slots</code>. Values <code>False</code> and <code>True</code> are also supported for backward compatibility, meaning respectively <code>None</code> and <code>Slots</code>.</li>
-<li><code>backend-server-slots-increment</code>: Defines a base multiplier in <code>Slots</code> mode. The total number of backend servers will always be an integer multiple of it - e.g., a value of 3 allows 3, 6, 9, &hellip; servers.</li>
-<li><code>slots-min-free</code>: Configures the minimum number of empty servers a backend should have on <code>Slots</code> mode everytime HAProxy reloads.</li>
+<li><code>dynamic-scaling</code>: Define if dynamic scaling should be used whenever possible</li>
+<li><code>backend-server-slots-increment</code>: Configures the minimum number of servers, the size of the increment when growing and the size of the decrement when shrinking of each HAProxy backend</li>
+<li><code>slots-min-free</code>: Configures the minimum number of empty servers a backend should have on every HAProxy restarts</li>
 </ul>
-<p>The <code>dynamic-scaling</code> option supports three distinct modes:</p>
+<p>See also:</p>
 <ul>
-<li><code>None</code>: no API calls are made and HAProxy is always reloaded to apply changes in the backend server, like adding or removing endpoint and weight. <code>False</code> is an alias for <code>None</code> for backward compatibility.</li>
-<li><code>Slots</code>: Classic dynamic scaling configuration, implemented on N42 Gateway v0.4. Free backend server slots are created on each backend and updated later via API call without reloading HAProxy. Unused servers will stay in a disabled state. HAProxy is reloaded if the change cannot be made via API, or the number of free slots is not enough. <code>True</code> is an alias for <code>Slots</code> for backward compatibility.</li>
-<li><code>Add</code>: New backend servers are added when needed via API. No empty slots are created beforehand.</li>
-</ul>
-<p>Notes about dynamic scaling:</p>
-<ul>
-<li>The HAProxy config files will stay in sync with in memory configuration, despite of a reload happening or not.</li>
-<li>Scaling-in the backend (removing servers) will disable and put the removed servers in maintenance state, being removed as soon as HAProxy needs to be reloaded. On <code>Add</code> mode, N42 Gateway tries to delete the backend server, which will be left behind in the case of a failure, like having active sessions.</li>
-<li>Dynamic updates are ignored if the backend uses <a href="#dns-resolvers">DNS resolver</a>.</li>
+<li><a href="https://docs.haproxy.org/2.8/management.html#9.3"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/management.html#9.3</a></li>
 </ul>
 <hr>
 <h3 id="external">External<a class="td-heading-self-link" href="#external" aria-label="Heading self-link"></a></h3>
@@ -3794,7 +3727,7 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </table>
 <p>Configures FastCGI applications.</p>
 <ul>
-<li><code>fcgi-enabled-apps</code>: Comma separated list of haproxy&rsquo;s fcgi-app sections already declared via <code>config-sections</code> configuration key. Only these app identifiers are allowed to be used by backends. If omitted, defaults to allow all configured fcgi-app sections.</li>
+<li><code>fcgi-enabled-apps</code>: Comma separated list of haproxy&rsquo;s fcgi-app sections already declared via <code>config-sections</code> configuration key. Only these app identifiers are allowed to be used by backends. If ommited, defaults to allow all configured fcgi-app sections.</li>
 <li><code>fcgi-app</code>: Defines the haproxy&rsquo;s fcgi-app section a backend should use. It must be one of the apps in <code>fcgi-enabled-apps</code> if configured, or any of the declared ones in <code>config-sections</code> otherwise. <code>fcgi-app</code> is a mandatory configuration if fcgi server protocol is used, either declaring as an annotation along with the protocol itself, or as a global configuration that should be inherited by all FastCGI backends.</li>
 </ul>
 <p>FastCGI related configurations are only used on backends whose server protocol is configured as fcgi, they are ignored otherwise.</p>
@@ -3812,7 +3745,7 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </span></span></span></code></pre></div><p>See also:</p>
 <ul>
 <li><a href="#backend-protocol"><code>backend-protocol</code></a> configuration key.</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#10"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#10</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#10"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#10</a></li>
 </ul>
 <hr>
 <h3 id="forwardfor">Forwardfor<a class="td-heading-self-link" href="#forwardfor" aria-label="Heading self-link"></a></h3>
@@ -3861,13 +3794,88 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-option%20forwardfor"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-option%20forwardfor</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-option%20forwardfor"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-option%20forwardfor</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For"target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For</a></li>
 </ul>
 <hr>
 <h3 id="fronting-proxy-port">Fronting proxy port<a class="td-heading-self-link" href="#fronting-proxy-port" aria-label="Heading self-link"></a></h3>
-<p>See <a href="#http-passthrough">HTTP Passthrough</a></p>
-<hr>
+<table>
+	<thead>
+			<tr>
+					<th>Configuration key</th>
+					<th>Scope</th>
+					<th>Default</th>
+					<th>Since</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>fronting-proxy-port</code></td>
+					<td><code>Global</code></td>
+					<td></td>
+					<td><code>v0.8</code></td>
+			</tr>
+			<tr>
+					<td><code>https-to-http-port</code></td>
+					<td><code>Global</code></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td><code>use-forwarded-proto</code></td>
+					<td><code>Global</code></td>
+					<td><code>true</code></td>
+					<td><code>v0.10</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>A port number to listen to http requests from a fronting proxy that does the ssl
+offload, e.g. N42 Gateway behind a cloud load balancers that manages the TLS
+certificates. <code>https-to-http-port</code> is an alias to <code>fronting-proxy-port</code>.</p>
+<p><code>fronting-proxy-port</code> and <a href="#bind-port"><code>http-port</code></a> can share the same port number, see below
+what changes in the behaviour.</p>
+<p><code>use-forwarded-proto</code> defines if haproxy should use <code>X-Forwarded-Proto</code> header to decide
+how to handle requests made to <code>fronting-proxy-port</code> port number.</p>
+<p>If <code>use-forwarded-proto</code> is <code>false</code>, the request takes the <code>https</code> route and is handled as if
+<code>X-Forwarded-Proto</code> header is <code>https</code>, see below. The actual header content is ignored by
+haproxy and forwarded to the backend if provided.</p>
+<p>If <code>use-forwarded-proto</code> is <code>true</code>, the default value, requests made to <code>fronting-proxy-port</code>
+port number evaluate the <code>X-Forwarded-Proto</code> header to decide how to handle the request:</p>
+<ul>
+<li>If <code>X-Forwarded-Proto</code> header is <code>https</code>:
+<ul>
+<li>HAProxy will handle the request just like the ssl-offload was made by HAProxy itself - HSTS header is provided if configured and
+<code>X-SSL-*</code> headers won&rsquo;t be changed or removed if provided.</li>
+</ul>
+</li>
+<li>If <code>X-Forwarded-Proto</code> header is <code>http</code> or any other value except <code>https</code>:
+<ul>
+<li>HAProxy will redirect scheme to https</li>
+</ul>
+</li>
+<li>If <code>X-Forwarded-Proto</code> header is missing:
+<ul>
+<li>If <code>fronting-proxy-port</code> has its own port &mdash; HAProxy will redirect scheme to https</li>
+<li>If <code>fronting-proxy-port</code> shares the HTTP port &mdash; the request will be handled as plain http, being redirected to https only if <code>ssl-redirect</code> is <code>true</code>, just like if <code>fronting-proxy-port</code> wasn&rsquo;t configured.</li>
+</ul>
+</li>
+</ul>
+<div class="alert alert-warning" role="alert"><div class="h4 alert-heading" role="heading">Warning on v0.7 and older</div>
+
+
+On v0.7 and older and only if the `X-Forwarded-Proto` is missing: the
+connecting port number was used to define which socket received the request, so
+the fronting proxy should connect to the same port number defined in
+`https-to-http-port`, eg cannot have any proxy like Kubernetes' `NodePort`
+between the load balancer and HAProxy which changes the connecting port number.
+This limitation doesn't exist on v0.8 or above.
+</div>
+
+<p>See also:</p>
+<ul>
+<li><a href="#bind">Bind</a></li>
+<li><a href="#bind-port">Bind port</a></li>
+</ul>
 <h3 id="headers">Headers<a class="td-heading-self-link" href="#headers" aria-label="Heading self-link"></a></h3>
 <table>
 	<thead>
@@ -3885,64 +3893,17 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 					<td></td>
 					<td>v0.11</td>
 			</tr>
-			<tr>
-					<td><code>request-add-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>request-del-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>request-set-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>response-add-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>response-del-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>response-set-headers</code></td>
-					<td><code>Backend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
 	</tbody>
 </table>
-<p>Configure request or response headers.</p>
-<ul>
-<li><code>request-add-headers</code>: Defines headers that should be added to the backend request. The header is always added with the provided value, even if it already exists in the client request.</li>
-<li><code>request-del-headers</code>: Defines a comma-separated list of headers that should be removed from the client request.</li>
-<li><code>request-set-headers</code>: Defines headers that should be set to the backend request. The header value is overwritten in case it already exists in the client request.</li>
-<li><code>response-add-headers</code>: Defines headers that should be added to the client response. The header is always added with the provided value, even if it already exists in the backend response.</li>
-<li><code>response-set-headers</code>: Defines a comma-separated list of headers that should be removed from the backend response.</li>
-<li><code>response-del-headers</code>: Defines headers that should be set to the client response. The header value is overwritten in case it already exists in the backend response.</li>
-<li><code>headers</code>: Alias to <code>request-set-headers</code>, its value is ignored if <code>request-set-headers</code> is defined.</li>
-</ul>
-<p>Adding and setting headers should be configured using a multi-line configuration value. The name of the header and its value should be separated with a colon and/or any amount of spaces.</p>
-<p>The following variables can be used in the header value:</p>
+<p>Configures a list of HTTP header names and the value it should be configured with. More than one header can be configured using a multi-line configuration value. The name of the header and its value should be separated with a colon and/or any amount of spaces.</p>
+<p>The following variables can be used in the value:</p>
 <ul>
 <li><code>%[namespace]</code>: namespace of the ingress or service</li>
 <li><code>%[service]</code>: name of the service which received the request</li>
 </ul>
 <p>Configuration example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/response-del-headers</span><span class="p">:</span><span class="w"> </span><span class="l">x-userid,server</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/headers</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/headers</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        x-path: /
 </span></span></span><span class="line"><span class="cl"><span class="sd">        host: %[service].%[namespace].svc.cluster.local</span><span class="w">
 </span></span></span></code></pre></div><hr>
@@ -4007,12 +3968,12 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4.2-option%20httpchk"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4.2-option%20httpchk</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-addr"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-addr</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-port"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-port</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-inter"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-inter</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-rise"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-rise</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-fall"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-fall</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4.2-option%20httpchk"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4.2-option%20httpchk</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-addr"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-addr</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-port"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-port</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-inter"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-inter</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-rise"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-rise</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-fall"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-fall</a></li>
 </ul>
 <hr>
 <h3 id="hsts">HSTS<a class="td-heading-self-link" href="#hsts" aria-label="Heading self-link"></a></h3>
@@ -4064,86 +4025,6 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security</a></li>
 </ul>
 <hr>
-<h3 id="http-frontends">HTTP Frontends<a class="td-heading-self-link" href="#http-frontends" aria-label="Heading self-link"></a></h3>
-<table>
-	<thead>
-			<tr>
-					<th>Configuration key</th>
-					<th>Scope</th>
-					<th>Default</th>
-					<th>Since</th>
-			</tr>
-	</thead>
-	<tbody>
-			<tr>
-					<td><code>http-frontend</code></td>
-					<td><code>Frontend</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>http-frontends</code></td>
-					<td><code>Global</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-	</tbody>
-</table>
-<p>Create new HTTP and HTTPS frontends. A new pair of HTTP and HTTPS frontends adds the ability to configure hostnames and paths that don&rsquo;t conflict each other, under the same controller and ingress class.</p>
-<ul>
-<li><code>http-frontends</code>: declare a list of frontend IDs to be used on ingress resources.</li>
-<li><code>http-frontend</code>: ID of a frontend declared via <code>http-frontends</code>.</li>
-</ul>
-<p><strong>Frontend declaration</strong></p>
-<p>Declare frontends via <code>http-frontends</code> key. They are immediately available once declared, despite of having ingress or gateway resources connected to them. Missing URIs are configured with the default 404 page. Declare as many HTTP and HTTPS frontend pairs as desired, one per line, provided that their IDs don&rsquo;t repeat and their port numbers don&rsquo;t conflict.</p>
-<ul>
-<li>Each HTTP and HTTPS pair has the following syntax, without any space: <code>&lt;ID&gt;=&lt;http-port&gt;/&lt;https-port&gt;</code>.</li>
-<li>ID is case-sensitive, should have up to 20 letters or numbers, and should start with a letter.</li>
-<li>Separate two or more frontend declarations with line breaks.</li>
-<li>None of the port declarations can match with any other, including global declared ones like default HTTP/HTTPS, Healthz or Prometheus port.</li>
-<li>Failures on the frontend declaration syntax will lead to an error to find it from ingress resources.</li>
-</ul>
-<p>The example below declares two pairs of HTTP/HTTPS frontends named <code>Front7</code> and <code>Front8</code>, having respectively <code>7070</code> and <code>8080</code> as their HTTP ports, and <code>7443</code> and <code>8443</code> as the HTTPS ones:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">http-frontends</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">    Front7=7070/7443
-</span></span></span><span class="line"><span class="cl"><span class="sd">    Front8=8080/8443</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
-</span></span></span></code></pre></div><p><strong>Frontend usage</strong></p>
-<p>Ingress resources can reference a frontend pair using <code>http-frontend</code> key. If missing, the default HTTP and HTTPS will be used, and if pointing to a missing or invalid ID, the whole ingress resource will be ignored.</p>
-<div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
-  <div class="td-alert-body">
-    <p>Ingress resources that don&rsquo;t declare a frontend ID will use the default HTTP and HTTPS ports for the frontend related configurations, like hostnames and paths, frontend scoped keys, etc. This is the backward compatible behavior.</p>
-<p>However, once declared, the frontend ID should match a valid one. The whole ingress resource will be removed from the configuration if there isn&rsquo;t a frontend ID match. This behavior prevents unintended changes on the default frontends if a frontend ID is removed or misconfigured.</p>
-    </div>
-</div>
-<p>See below a configuration example:</p>
-<p>Global ConfigMap:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">http-frontends</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Front8=8080/8443&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
-</span></span></span></code></pre></div><p>Ingress resource adding its spec and frontend related annotations to <code>Front8</code> frontends pair:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/http-frontend</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Front8&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">...</span><span class="w">
-</span></span></span></code></pre></div><hr>
 <h3 id="http-match">HTTP Match<a class="td-heading-self-link" href="#http-match" aria-label="Heading self-link"></a></h3>
 <table>
 	<thead>
@@ -4171,96 +4052,27 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </table>
 <p>Add HTTP constraints for request routing.</p>
 <ul>
-<li><code>http-header-match</code>: Add HTTP header with exact match, one header name and value pair per line. The first white space, or colon followed by an optional white space, separates the header name and the match value. the header name is case-insensitive while the value is case-sensitive.</li>
+<li><code>http-header-match</code>: Add HTTP header with exact match, one header name and value pair per line. The first white space, or colon followed by an optional white space, separates the header name and the match value. the header name is case insensitive while the value is case sensitive.</li>
 <li><code>http-header-match-regex</code>: Same as <code>http-header-match</code> but using regex match. Anchors are not added, so the value <code>bar</code> would match with <code>foobar</code> and <code>barbaz</code>, while <code>^bar</code> would only match with <code>barbaz</code>.</li>
 </ul>
 <p>More than one annotation can be used at the same time, and more than one match can be used in the same annotation. All the matches from all the annotations will be grouped together, and all of them must evaluate to true in order to the request be accepted and sent to the backend.</p>
 <p>Note that any match that potentially changes the backend of a request, like HTTP match, must be running in the HAProxy frontend, so earlier than most of other matching rules. External authentication is an example. See <a href="#auth-external"><code>auth-external-placement</code></a> configuration key if using external authentication to provide headers to HTTP match rules.</p>
 <p><strong>Examples</strong></p>
-<p>Match the header <code>X-Env</code> with value <code>staging</code> - header name is case-insensitive, header value is case-sensitive:</p>
+<p>Match the header <code>X-Env</code> with value <code>staging</code> - header name is case insensitive, header value is case sensitive:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/http-header-match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;X-Env: staging&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/http-header-match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;X-Env: staging&#34;</span><span class="w">
 </span></span></span></code></pre></div><p>Match the header <code>X-Env</code> with value <code>staging</code>, and header <code>X-User</code> with value <code>admin</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/http-header-match</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/http-header-match</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        X-Env: staging
 </span></span></span><span class="line"><span class="cl"><span class="sd">        X-User: admin</span><span class="w">
 </span></span></span></code></pre></div><p>Match the header <code>X-Env</code> with value that matches the regex <code>^(test|staging)$</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/http-header-match-regex</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/http-header-match-regex</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        X-Env: ^(test|staging)$</span><span class="w">
 </span></span></span></code></pre></div><p>See also:</p>
 <ul>
 <li><a href="#auth-external"><code>auth-external-placement</code></a> configuration key</li>
-</ul>
-<hr>
-<h3 id="http-passthrough">HTTP Passthrough<a class="td-heading-self-link" href="#http-passthrough" aria-label="Heading self-link"></a></h3>
-<table>
-	<thead>
-			<tr>
-					<th>Configuration key</th>
-					<th>Scope</th>
-					<th>Default</th>
-					<th>Since</th>
-			</tr>
-	</thead>
-	<tbody>
-			<tr>
-					<td><code>http-passthrough</code></td>
-					<td><code>Frontend</code></td>
-					<td><code>false</code></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>http-passthrough-port</code></td>
-					<td><code>Global</code></td>
-					<td></td>
-					<td>v0.17</td>
-			</tr>
-			<tr>
-					<td><code>use-forwarded-proto</code></td>
-					<td><code>Frontend</code></td>
-					<td><code>true</code></td>
-					<td>v0.10</td>
-			</tr>
-			<tr>
-					<td><del><code>fronting-proxy-port</code></del></td>
-					<td><code>Global</code></td>
-					<td></td>
-					<td>v0.8</td>
-			</tr>
-			<tr>
-					<td><del><code>https-to-http-port</code></del></td>
-					<td><code>Global</code></td>
-					<td></td>
-					<td></td>
-			</tr>
-	</tbody>
-</table>
-<p>Configures HAProxy to pass plain HTTP requests straight to the backends, without further checks, usually from a fronting load balancer doing the SSL offload.</p>
-<ul>
-<li><code>http-passthrough</code>: configures the HTTP frontend as HTTP passthrough. This behavior is achieved globally if both <code>http-port</code> and <code>http-passthrough-port</code> configure the same TCP port number.</li>
-<li><code>http-passthrough-port</code>: configures the port number for the HTTP passthrough frontend. If regular HTTP port (via <code>http-port</code>) and <code>http-passthrough-port</code> differ, N42 Gateway configures distinct frontends for regular HTTP and passthrough one, automatically populating ingress routes on both. If their ports match, a single HTTP frontend will be created and it will be configured as HTTP passthrough.</li>
-<li><code>use-forwarded-proto</code>: if <code>true</code>, the default value, configures HAProxy to redirect the request to https if the <code>X-Forwarded-Proto</code> header is not <code>https</code>. If <code>false</code>, <code>X-Forwarded-Proto</code> header is ignored and passed as is to the backend.</li>
-<li><code>fronting-proxy-port</code> and <code>https-to-http-port</code>: deprecated keys, alias to <code>http-passthrough-port</code>.</li>
-</ul>
-<p>N42 Gateway configures HTTP and HTTPS frontends with a few differences, like handling <code>X-Forwarded-Proto</code> header, redirect from HTTP if <code>ssl-redirect</code> is <code>true</code>, add HSTS headers (when configured) only on HTTPS responses, and drop incoming <code>X-SSL-*</code> headers for security reasons. Configuring HTTP passthrough makes N42 Gateway to have HTTPS behavior over HTTP connection, skipping regular HTTP checks, which allows e.g. a fronting load balancer to SSL offload the TLS requests, talking plain HTTP with HAProxy.</p>
-<p>Since v0.17, <code>http-passthrough</code> and <code>use-forwarded-proto</code> are <code>Frontend</code> scoped, which means they can be used as Ingress annotations, provided that the ingress resource references a custom frontend. See <a href="#http-frontends">HTTP Frontends</a> on how to reference a custom frontend using annotation.</p>
-<div class="td-alert td-alert--md alert alert-nb" role="alert">
-  <div class="td-alert-body">
-    <p>N42 Gateway v0.16 and older uses a mix behavior in the case <code>http-port</code> and <code>http-passthrough-port</code> share the same port number. Since v0.17 this mixed mode is not supported anymore, so a single frontend can be either a regular HTTP or a passthrough one.</p>
-    </div>
-</div>
-<div class="td-alert td-alert--md alert alert-warning" role="alert"><div class="td-alert-heading alert-heading" role="heading">Security warning</div>
-  <div class="td-alert-body">
-    <p>This option must only be used if the network from a fronting load balancer and the ingress nodes is trusted, since the communication happens on plain HTTP, and all the communication is visible via tools like tcpdump. Give also the configured port a special attention and block it from external access: an user can easily add the <code>X-SSL-*</code> headers, authenticating themselves as any user on applications using mTLS.</p>
-    </div>
-</div>
-<p>See also:</p>
-<ul>
-<li><a href="#bind">Bind</a></li>
-<li><a href="#bind-port">Bind port</a></li>
-<li><a href="#http-frontends">HTTP Frontends</a></li>
 </ul>
 <hr>
 <h3 id="http-response">HTTP Response<a class="td-heading-self-link" href="#http-response" aria-label="Heading self-link"></a></h3>
@@ -4301,7 +4113,7 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
     </div>
 </div>
 <blockquote>
-<p>All descriptions with <code>[haproxy]</code> refers to internal HAProxy responses, described in the <a href="https://docs.haproxy.org/3.0/configuration.html#1.4.1"target="_blank" rel="noopener">HAProxy documentation</a> or in the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"target="_blank" rel="noopener">MDN</a>. All the others are handled and issued by N42 Gateway configurations.</p>
+<p>All descriptions with <code>[haproxy]</code> refers to internal HAProxy responses, described in the <a href="https://docs.haproxy.org/2.8/configuration.html#1.3.1"target="_blank" rel="noopener">HAProxy documentation</a> or in the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"target="_blank" rel="noopener">MDN</a>. All the others are handled and issued by N42 Gateway configurations.</p>
 </blockquote>
 <table>
 	<thead>
@@ -4444,9 +4256,9 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </ul>
 <p>Some general hints about response overwriting:</p>
 <ul>
-<li>Do not create huge responses, the whole overwrite must fit into the internal buffer, which is 16k by default, leaving some room to configured downstream rules to operate. See <a href="https://docs.haproxy.org/3.0/configuration.html#4-errorfile"target="_blank" rel="noopener">HAProxy&rsquo;s errorfile doc</a>.</li>
+<li>Do not create huge responses, the whole overwrite must fit into the internal buffer, which is 16k by default, leaving some room to configured downstream rules to operate. See <a href="https://docs.haproxy.org/2.8/configuration.html#4-errorfile"target="_blank" rel="noopener">HAProxy&rsquo;s errorfile doc</a>.</li>
 <li>Take care with external links, e.g. the overwrite of a 503 error page might lead to another 503 error.</li>
-<li>Only add the status code line if changing the code; otherwise, let the controller configure with default values.</li>
+<li>Only add the status code line if changing the code, otherwise let the controller configure with default values.</li>
 <li>A missing status code and status reason will lead to default values, but missing headers and missing body will lead to, respectively, only the <code>content-length</code> header and an empty body.</li>
 <li>Always add at least the HTTP header <code>content-type</code> with the correct value.</li>
 <li>The HTTP header <code>content-length</code> will be overwritten if used.</li>
@@ -4482,8 +4294,8 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 <li><a href="/docs/configuration/command-line/#default-backend-service"><code>--default-backend-service</code></a> command-line option</li>
 <li><a href="#proxy-body-size"><code>proxy-body-size</code></a> configuration key</li>
 <li><a href="#auth-tls">mTLS</a> related configuration keys</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-errorfile"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-errorfile</a></li>
-<li>HAProxy&rsquo;s HTTP response at <a href="https://docs.haproxy.org/3.0/configuration.html#1.4.1"target="_blank" rel="noopener">HAProxy documentation</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-errorfile"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-errorfile</a></li>
+<li>HAProxy&rsquo;s HTTP response at <a href="https://docs.haproxy.org/2.8/configuration.html#1.3.1"target="_blank" rel="noopener">HAProxy documentation</a></li>
 <li>HTTP response status codes at <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"target="_blank" rel="noopener">MDN</a></li>
 </ul>
 <hr>
@@ -4513,11 +4325,11 @@ the balance between the servers.</p>
 <p>Change the default value to a higher number, eg <code>100</code>, if using with
 <a href="#agent-check"><code>agent-check</code></a> and the agent is used to change the weight of the server.</p>
 <p>Blue/green on <code>deploy</code> mode also uses <code>initial-weight</code> as its minimum weight value,
-provided that the maximum is less than or equal <code>256</code>.</p>
+provided that the maximum is lesser than or equal <code>256</code>.</p>
 <p>See also:</p>
 <ul>
 <li><a href="#agent-check"><code>agent-check</code></a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-weight"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-weight</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-weight"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-weight</a></li>
 </ul>
 <hr>
 <h3 id="limit">Limit<a class="td-heading-self-link" href="#limit" aria-label="Heading self-link"></a></h3>
@@ -4594,8 +4406,8 @@ Understand the risks if using with dynamic scaling before configure it.</p>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-server-state-file"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-server-state-file</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-load-server-state-from-file"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-load-server-state-from-file</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-server-state-file"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-server-state-file</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-load-server-state-from-file"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-load-server-state-from-file</a></li>
 </ul>
 <hr>
 <h3 id="log-format">Log format<a class="td-heading-self-link" href="#log-format" aria-label="Heading self-link"></a></h3>
@@ -4652,7 +4464,7 @@ Understand the risks if using with dynamic scaling before configure it.</p>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#8.2.6"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#8.2.6</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#8.2.4"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#8.2.4</a></li>
 <li><a href="#syslog"><code>syslog</code></a></li>
 <li><a href="#auth-external">Auth External</a> configuration keys.</li>
 <li><a href="#tcp-services">TCP Services</a> configuration keys.</li>
@@ -4698,8 +4510,8 @@ websockets, and clusters that frequently changes and forces haproxy to reload.</
 <p>See also:</p>
 <ul>
 <li><a href="/examples/external-haproxy/">External HAProxy example</a> page</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-master-worker"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-master-worker</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-mworker-max-reloads"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-mworker-max-reloads</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-master-worker"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-master-worker</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#mworker-max-reloads"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#mworker-max-reloads</a></li>
 <li><a href="/docs/configuration/command-line/#master-socket">master-socket</a> and <a href="/docs/configuration/command-line/#master-worker">master-worker</a> command-line options</li>
 </ul>
 <hr>
@@ -4788,8 +4600,53 @@ Since v0.8 the spoe filter is configured on a per-backend basis.</p>
 <li><a href="/examples/modsecurity/">modsecurity example</a> page.</li>
 <li><a href="#waf"><code>waf</code></a> configuration key.</li>
 <li><a href="https://www.haproxy.org/download/2.0/doc/SPOE.txt"target="_blank" rel="noopener">https://www.haproxy.org/download/2.0/doc/SPOE.txt</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#9.3"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#9.3</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#9.3"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#9.3</a></li>
 <li><a href="https://github.com/jcmoraisjr/modsecurity-spoa"target="_blank" rel="noopener">https://github.com/jcmoraisjr/modsecurity-spoa</a></li>
+</ul>
+<hr>
+<h3 id="nbproc">Nbproc<a class="td-heading-self-link" href="#nbproc" aria-label="Heading self-link"></a></h3>
+<table>
+	<thead>
+			<tr>
+					<th>Configuration key</th>
+					<th>Scope</th>
+					<th>Default</th>
+					<th>Since</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>nbproc-ssl</code></td>
+					<td><code>Global</code></td>
+					<td><code>0</code></td>
+					<td></td>
+			</tr>
+	</tbody>
+</table>
+<div class="alert alert-warning" role="alert"><div class="h4 alert-heading" role="heading">Warning</div>
+
+
+This option works only on v0.7 or below. Since v0.8 the only supported value is `0` zero.
+</div>
+
+<p>Define the number of dedicated HAProxy process to the SSL/TLS handshake and
+offloading. The default value is 0 (zero) which means HAProxy should process all
+the SSL/TLS offloading, as well as the header inspection and load balancing
+within the same HAProxy process.</p>
+<p>The recommended value depends on how much CPU a single HAProxy process is
+spending. Use 0 (zero) if the amount of processing has low CPU usage. This will
+avoid a more complex topology and an inter-process communication. Use the number
+of cores of a dedicated host minus 1 (one) to distribute the SSL/TLS offloading
+process. Leave one core dedicated to header inspection and load balancing.</p>
+<p>If splitting HAProxy into two or more process and the number of threads is one,
+<code>cpu-map</code> is used to bind each process on its own CPU core.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#nbthread">nbthread</a> configuration key</li>
+<li><a href="#cpu-map">cpu-map</a> configuration key</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-nbproc"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-nbproc</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-bind-process"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-bind-process</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map</a></li>
 </ul>
 <hr>
 <h3 id="nbthread">Nbthread<a class="td-heading-self-link" href="#nbthread" aria-label="Heading self-link"></a></h3>
@@ -4819,8 +4676,8 @@ thread on its own CPU core.</p>
 <p>See also:</p>
 <ul>
 <li><a href="#cpu-map">cpu-map</a> configuration key</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-nbthread"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-nbthread</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-cpu-map</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-nbthread"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-nbthread</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-cpu-map</a></li>
 </ul>
 <hr>
 <h3 id="oauth">OAuth<a class="td-heading-self-link" href="#oauth" aria-label="Heading self-link"></a></h3>
@@ -4871,10 +4728,10 @@ or any other compatible implementation running as a backend of the same domain t
 <p>Since v0.13 these same options can be used with <a href="#auth-external">Auth External</a> configuration keys. Change <code>&lt;oauth2-proxy-service&gt;</code> below with the oauth2-proxy service name, and <code>&lt;hostname&gt;</code> to the hostname of the oauth2-proxy and the backend servers:</p>
 <ul>
 <li><code>auth-url: &quot;svc://&lt;oauth2-proxy-service&gt;/oauth2/auth&quot;</code>.</li>
-<li><code>auth-signin: &quot;https://&lt;hostname&gt;/oauth2/start?rd=%[path]&quot;</code> - the content is parsed by haproxy as a <a href="https://docs.haproxy.org/3.0/configuration.html#8.2.6"target="_blank" rel="noopener">log-format</a> string and the result is copied verbatim to the <code>Location</code> header of a HTTP 302 response. The <code>rd</code> query field asks oauth2-proxy to preserve the path provided by the client.</li>
+<li><code>auth-signin: &quot;https://&lt;hostname&gt;/oauth2/start?rd=%[path]&quot;</code> - the content is parsed by haproxy as a <a href="https://docs.haproxy.org/2.8/configuration.html#8.2.4"target="_blank" rel="noopener">log-format</a> string and the result is copied verbatim to the <code>Location</code> header of a HTTP 302 response. The <code>rd</code> query field asks oauth2-proxy to preserve the path provided by the client.</li>
 <li><code>auth-headers-succeed: &quot;X-Auth-Request-Email&quot;</code> - copy the <code>X-Auth-Request-Email</code> HTTP header with the user email from oauth2-proxy to the backend server.</li>
 </ul>
-<p>Configure oauth2 on a distinct ingress, without the <code>auth-url</code> annotation; otherwise, it will endless loop in a HTTP 403 error.</p>
+<p>Configure oauth2 on a distinct ingress, without the <code>auth-url</code> annotation, otherwise it will endless loop in a HTTP 403 error.</p>
 <p>See also:</p>
 <ul>
 <li><a href="#auth-external">Auth External</a> configuration keys.</li>
@@ -5041,9 +4898,9 @@ or any other compatible implementation running as a backend of the same domain t
 </span></span></span><span class="line"><span class="cl"><span class="sd">      http-request deny if { src,lua.peers_sum(%[peers_group_global],http_req_rate) gt 100 }</span><span class="w">
 </span></span></span></code></pre></div><p>Backends can be configured via Ingress or Service annotations:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/peers-table</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/peers-table</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        stick-table type ip size 100k expire 1m peers ingress store http_req_rate(10s)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">n42-gateway.github.io/config-backend-early</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">haproxy-ingress.github.io/config-backend-early</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ...
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request track-sc1 src table %[peers_table_backend]
 </span></span></span><span class="line"><span class="cl"><span class="sd">        http-request deny if { src,lua.peers_sum(%[peers_group_backend],http_req_rate) gt 100 }</span><span class="w">
@@ -5079,9 +4936,9 @@ or any other compatible implementation running as a backend of the same domain t
 <p>See also:</p>
 <ul>
 <li><a href="#configuration-snippet"><code>config-peers</code></a> configuration key</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.5"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.5</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-stick-table"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-stick-table</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-track-sc0"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-track-sc0</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.5"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.5</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-stick-table"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-stick-table</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20track-sc0"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4.2-http-request%20track-sc0</a></li>
 <li><a href="https://www.haproxy.com/blog/introduction-to-haproxy-stick-tables"target="_blank" rel="noopener">https://www.haproxy.com/blog/introduction-to-haproxy-stick-tables</a></li>
 </ul>
 <hr>
@@ -5112,7 +4969,7 @@ resource.</p>
 <p>Since 0.7 <code>unlimited</code> can also be used to overwrite any global body size limit.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#7.3.6-req.body_size"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#7.3.6-req.body_size</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#7.3.6-req.body_size"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#7.3.6-req.body_size</a></li>
 </ul>
 <hr>
 <h3 id="proxy-protocol">Proxy protocol<a class="td-heading-self-link" href="#proxy-protocol" aria-label="Heading self-link"></a></h3>
@@ -5140,7 +4997,7 @@ resource.</p>
 			</tr>
 			<tr>
 					<td><code>use-proxy-protocol</code></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td><code>false</code></td>
 					<td></td>
 			</tr>
@@ -5149,19 +5006,17 @@ resource.</p>
 <p>Configures PROXY protocol in frontends and backends.</p>
 <ul>
 <li><code>proxy-protocol</code>: Define if the upstream backends support proxy protocol and what version of the protocol should be used. Supported values are <code>v1</code>, <code>v2</code>, <code>v2-ssl</code>, <code>v2-ssl-cn</code> or <code>no</code>. The default behavior if not declared is that the protocol is not supported by the backends and should not be used.</li>
-<li><code>use-proxy-protocol</code>: Define if HTTP services are behind another proxy that uses the PROXY protocol. If <code>true</code>, HTTP ports will expect the PROXY protocol, version 1 or 2. The stats endpoint (defaults to port <code>1936</code>) has its own <a href="#stats"><code>stats-proxy-protocol</code></a> configuration key.</li>
+<li><code>use-proxy-protocol</code>: Define if HTTP services are behind another proxy that uses the PROXY protocol. If <code>true</code>, HTTP ports which defaults to <code>80</code> and <code>443</code> will expect the PROXY protocol, version 1 or 2. The stats endpoint (defaults to port <code>1936</code>) has its own <a href="#stats"><code>stats-proxy-protocol</code></a> configuration key.</li>
 <li><code>tcp-service-proxy-protocol</code>: Define if the TCP service is behind another proxy that uses the PROXY protocol. Configures as <code>&quot;true&quot;</code> if the proxy should expect requests using the PROXY protocol, version 1 or 2. The default value is <code>&quot;false&quot;</code>.</li>
 </ul>
-<p>On v0.17 <code>use-proxy-protocol</code> changed from <code>Global</code> to <code>Frontend</code> scope, which means it can be used now as Ingress annotation, provided that the ingress resource references a custom frontend. See <a href="#http-frontends">HTTP Frontends</a> on how to reference a custom frontend using annotation.</p>
 <p>See also:</p>
 <ul>
-<li><a href="#http-frontends">HTTP Frontends</a> configuration keys</li>
 <li><a href="https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt"target="_blank" rel="noopener">https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.1-accept-proxy"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.1-accept-proxy</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2-ssl"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2-ssl</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2-ssl-cn"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-send-proxy-v2-ssl-cn</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.1-accept-proxy"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.1-accept-proxy</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2-ssl"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2-ssl</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2-ssl-cn"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-send-proxy-v2-ssl-cn</a></li>
 </ul>
 <hr>
 <h3 id="redirect">Redirect<a class="td-heading-self-link" href="#redirect" aria-label="Heading self-link"></a></h3>
@@ -5189,7 +5044,7 @@ resource.</p>
 			</tr>
 			<tr>
 					<td><code>redirect-from-code</code></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td><code>302</code></td>
 					<td>v0.13</td>
 			</tr>
@@ -5207,7 +5062,7 @@ resource.</p>
 			</tr>
 			<tr>
 					<td><code>redirect-to-code</code></td>
-					<td><code>Frontend</code></td>
+					<td><code>Global</code></td>
 					<td><code>302</code></td>
 					<td>v0.13</td>
 			</tr>
@@ -5225,7 +5080,6 @@ examples below.</p>
 <li><code>redirect-to-code</code>: Which HTTP status code should be used in the redirect to. A <code>302</code> response is used by default if not configured.</li>
 <li><code>no-redirect-locations</code>: Defines a comma-separated list of paths that should be ignored by all the redirects. Default value is <code>/.well-known/acme-challenge</code>, used by ACME protocol. Configure as an empty string to make the redirect happen on all paths, including the ACME challenge.</li>
 </ul>
-<p>On v0.17, both <code>redirect-from-code</code> and <code>redirect-to-code</code> changed from <code>Global</code> to <code>Frontend</code> scope, which means they can be used now as Ingress annotations, provided that the ingress resource references a custom frontend. See <a href="#http-frontends">HTTP Frontends</a> on how to reference a custom frontend using annotation.</p>
 <p><strong>Using redirect-from</strong></p>
 <p>The following configuration redirects <code>app.local</code> to <code>www.app.local</code>, preserving protocol,
 path and query string:</p>
@@ -5233,7 +5087,7 @@ path and query string:</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/redirect-from</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;app.local&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/redirect-from</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;app.local&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
@@ -5261,7 +5115,7 @@ below will not be used.</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">n42-gateway.github.io/redirect-to</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;https://www.app.local/login&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">haproxy-ingress.github.io/redirect-to</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;https://www.app.local/login&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">app</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
@@ -5278,7 +5132,6 @@ below will not be used.</p>
 </span></span></span></code></pre></div><p>See also:</p>
 <ul>
 <li><a href="#app-root"><code>app-root</code></a> configuration key.</li>
-<li><a href="#http-frontends">HTTP Frontends</a> configuration keys.</li>
 </ul>
 <hr>
 <h3 id="rewrite-target">Rewrite target<a class="td-heading-self-link" href="#rewrite-target" aria-label="Heading self-link"></a></h3>
@@ -5424,9 +5277,9 @@ below will not be used.</p>
 <p>See also:</p>
 <ul>
 <li><a href="#backend-protocol">Backend protocol</a> configuration key.</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-verify"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-verify</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-verifyhost"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-verifyhost</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-sni"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-sni</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-verify"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-verify</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-verifyhost"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-verifyhost</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-sni"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-sni</a></li>
 </ul>
 <hr>
 <h3 id="security">Security<a class="td-heading-self-link" href="#security" aria-label="Heading self-link"></a></h3>
@@ -5479,7 +5332,7 @@ below will not be used.</p>
 </ul>
 <p><strong>Starting as root</strong></p>
 <p>In the default configuration N42 Gateway container starts as the non root user <code>haproxy</code>, UID <code>99</code>. Since its 2.4 version, <code>docker.io/haproxy</code> image starts as the same user and UID.</p>
-<p>Starting as root can be useful to configure chroot, and <a href="https://docs.haproxy.org/3.0/management.html#13"target="_blank" rel="noopener">Security Considerations</a> from the HAProxy doc describes some other use cases.</p>
+<p>Starting as root can be useful to configure chroot, and <a href="https://docs.haproxy.org/2.8/management.html#13"target="_blank" rel="noopener">Security Considerations</a> from the HAProxy doc describes some other use cases.</p>
 <p>The starting user can be changed in the deployment or daemonset&rsquo;s pod template using the following configuration:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
@@ -5504,11 +5357,11 @@ below will not be used.</p>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/management.html#13"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/management.html#13</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-chroot"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-chroot</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-uid"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-uid</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-gid"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-gid</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-unix-bind"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-unix-bind</a></li>
+<li><a href="https://docs.haproxy.org/2.8/management.html#13"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/management.html#13</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-chroot"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-chroot</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-uid"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-uid</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-gid"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-gid</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-unix-bind"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-unix-bind</a></li>
 </ul>
 <hr>
 <h3 id="server-alias">Server alias<a class="td-heading-self-link" href="#server-alias" aria-label="Heading self-link"></a></h3>
@@ -5538,7 +5391,7 @@ below will not be used.</p>
 </table>
 <p>Configure hostname alias. All annotations will be combined together with the host
 attribute in the same ACL, and any of them might be used to match SNI extensions
-(TLS) or Host HTTP header. The matching is case-insensitive.</p>
+(TLS) or Host HTTP header. The matching is case insensitive.</p>
 <ul>
 <li><code>server-alias</code>: Defines an alias with hostname-like syntax. On v0.6 and older, wildcard <code>*</code> wasn&rsquo;t converted to match a subdomain. Regular expression was also accepted but dots were escaped, making this alias less useful as a regex. Starting v0.7 the same hostname syntax is used, so <code>*.my.domain</code> will match <code>app.my.domain</code> but won&rsquo;t match <code>sub.app.my.domain</code>.</li>
 <li><code>server-alias-regex</code>: Only in v0.7 and newer. Match hostname using a POSIX extended regular expression. The regex will be used verbatim, so add <code>^</code> and <code>$</code> if strict hostname is desired and escape <code>\.</code> dots in order to strictly match them. Some HTTP clients add the port number in the Host header, so remember to add <code>(:[0-9]+)?$</code> in the end of the regex if a dollar sign <code>$</code> is being used to match the end of the string.</li>
@@ -5606,8 +5459,8 @@ service&rsquo;s ClusterIP is used instead.</p>
 </div>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-source"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-source</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-source"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-source</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-source"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-source</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-source"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-source</a></li>
 <li><a href="https://www.kernel.org/doc/html/v5.12/networking/ip-sysctl.html#ip-variables"target="_blank" rel="noopener">https://www.kernel.org/doc/html/v5.12/networking/ip-sysctl.html#ip-variables</a></li>
 </ul>
 <hr>
@@ -5699,10 +5552,10 @@ service&rsquo;s ClusterIP is used instead.</p>
 <p>See also:</p>
 <ul>
 <li><a href="https://ssl-config.mozilla.org/#server=haproxy"target="_blank" rel="noopener">https://ssl-config.mozilla.org/#server=haproxy</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-default-bind-ciphers"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-default-bind-ciphers</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-default-bind-ciphersuites"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-default-bind-ciphersuites</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-ciphers"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-ciphers</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.2-ciphersuites"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.2-ciphersuites</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-default-bind-ciphers"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-default-bind-ciphers</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-default-bind-ciphersuites"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-default-bind-ciphersuites</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-ciphers"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-ciphers</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.2-ciphersuites"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.2-ciphersuites</a></li>
 </ul>
 <hr>
 <h3 id="ssl-dh">SSL DH<a class="td-heading-self-link" href="#ssl-dh" aria-label="Heading self-link"></a></h3>
@@ -5737,8 +5590,8 @@ service&rsquo;s ClusterIP is used instead.</p>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.2-tune.ssl.default-dh-param"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.2-tune.ssl.default-dh-param</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-dh-param-file"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-ssl-dh-param-file</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#tune.ssl.default-dh-param"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#tune.ssl.default-dh-param</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-dh-param-file"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-ssl-dh-param-file</a></li>
 </ul>
 <hr>
 <h3 id="ssl-engine">SSL engine<a class="td-heading-self-link" href="#ssl-engine" aria-label="Heading self-link"></a></h3>
@@ -5772,8 +5625,8 @@ and its parameters.</p>
 the ssl-engine used supports it.</p>
 <p>Reference:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.2-ssl-engine"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.2-ssl-engine</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.2-ssl-mode-async"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.2-ssl-mode-async</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#ssl-engine"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#ssl-engine</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#ssl-mode-async"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#ssl-mode-async</a></li>
 </ul>
 <hr>
 <h3 id="ssl-options">SSL options<a class="td-heading-self-link" href="#ssl-options" aria-label="Heading self-link"></a></h3>
@@ -5839,7 +5692,7 @@ the ssl-engine used supports it.</p>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.1-crt-list"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.1-crt-list</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.1-crt-list"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.1-crt-list</a></li>
 </ul>
 <hr>
 <h3 id="ssl-passthrough">SSL passthrough<a class="td-heading-self-link" href="#ssl-passthrough" aria-label="Heading self-link"></a></h3>
@@ -5877,7 +5730,7 @@ configured to SSL offload on HAProxy.</p>
 </div>
 <ul>
 <li><code>ssl-passthrough</code>: Enable SSL passthrough if defined as <code>true</code>. The backend is then expected to SSL offload the incoming traffic. The default value is <code>false</code>, which means HAProxy should do the SSL handshake.</li>
-<li><code>ssl-passthrough-http-port</code>: Optional HTTP port number of the ssl-passthrough backend. If defined, connections to the HAProxy&rsquo;s HTTP port, defaults to <code>80</code>, is sent to the configured port number of the backend, which expects to speak plain HTTP. If not defined, connections to the HTTP port will redirect the client to HTTPS. Note that this configuration only applies to the root path, since any non root path under ssl-passthrough configuration is already configured under the plain HTTP frontend.</li>
+<li><code>ssl-passthrough-http-port</code>: Optional HTTP port number of the backend. If defined, connections to the HAProxy&rsquo;s HTTP port, defaults to <code>80</code>, is sent to the configured port number of the backend, which expects to speak plain HTTP. If not defined, connections to the HTTP port will redirect the client to HTTPS.</li>
 </ul>
 <p>Hostnames configured as <code>ssl-passthrough</code> configures HAProxy in the following way:</p>
 <ul>
@@ -5925,7 +5778,7 @@ configured to SSL offload on HAProxy.</p>
 <p>See also:</p>
 <ul>
 <li><a href="#ssl-always-add-https"><code>ssl-always-add-https</code></a> configuration key</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#4.2-redirect"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4.2-redirect</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#redirect"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#redirect</a></li>
 </ul>
 <hr>
 <h3 id="stats">Stats<a class="td-heading-self-link" href="#stats" aria-label="Heading self-link"></a></h3>
@@ -6072,8 +5925,8 @@ if a path couldn&rsquo;t be matched.</p>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-log"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-log</a></li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-log-tag"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-log-tag</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-log"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-log</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-log-tag"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-log-tag</a></li>
 </ul>
 <hr>
 <h3 id="tcp-services">TCP Services<a class="td-heading-self-link" href="#tcp-services" aria-label="Heading self-link"></a></h3>
@@ -6115,7 +5968,7 @@ if a path couldn&rsquo;t be matched.</p>
 <div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
   <div class="td-alert-body">
     <p>Note that hostname based selection relies on SNI, so it works only on TLS requests. The encrypted content can be offloaded either by HAProxy, providing the hostname in <code>.spec.rules[].host</code> and <code>.spec.tls</code>, or offloaded by the backend server, providing the hostname only in <code>.spec.rules[].host</code>. Non TLS content cannot be multiplexed on the same TCP port for more than one backend.</p>
-<p>Note also that, in the case that a hostname does not match, HAProxy will select a backend only if <code>.spec.defaultBackend</code> or an empty <code>.spec.rules[].host</code> is configured; otherwise, the connection is closed without a response.</p>
+<p>Note also that, in the case a hostname does not match, HAProxy will select a backend only if <code>.spec.defaultBackend</code> or an empty <code>.spec.rules[].host</code> is configured, otherwise the connection is closed without a response.</p>
     </div>
 </div>
 <p>Every TCP service port creates a dedicated haproxy frontend that can be <a href="#configuration-snippet">customized</a> in three distinct ways:</p>
@@ -6229,8 +6082,8 @@ if a path couldn&rsquo;t be matched.</p>
 </ul>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#3.1-hard-stop-after"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#3.1-hard-stop-after</a> (<code>timeout-stop</code>)</li>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#2.5"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#2.5</a> (time suffix)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#3.1-hard-stop-after"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#3.1-hard-stop-after</a> (<code>timeout-stop</code>)</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#2.5"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#2.5</a> (time suffix)</li>
 </ul>
 <hr>
 <h3 id="tls-alpn">TLS ALPN<a class="td-heading-self-link" href="#tls-alpn" aria-label="Heading self-link"></a></h3>
@@ -6257,7 +6110,34 @@ HTTP/2 on the client side.</p>
 <p><code>tls-alpn</code> was <code>Global</code> scope up to v0.10.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://docs.haproxy.org/3.0/configuration.html#5.1-alpn"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#5.1-alpn</a></li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#5.1-alpn"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#5.1-alpn</a></li>
+</ul>
+<hr>
+<h3 id="use-htx">Use HTX<a class="td-heading-self-link" href="#use-htx" aria-label="Heading self-link"></a></h3>
+<table>
+	<thead>
+			<tr>
+					<th>Configuration key</th>
+					<th>Scope</th>
+					<th>Default</th>
+					<th>Since</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>use-htx</code></td>
+					<td><code>Global</code></td>
+					<td><code>true</code></td>
+					<td>v0.9</td>
+			</tr>
+	</tbody>
+</table>
+<p>Defines if the new HTX internal representation for HTTP elements should be used. The default value
+is <code>true</code> since v0.10, it was <code>false</code> on v0.9. HTX should be used to enable HTTP/2 protocol to backends.</p>
+<p>See also:</p>
+<ul>
+<li><a href="#backend-protocol">backend-protocol</a> configuration keys</li>
+<li><a href="https://docs.haproxy.org/2.8/configuration.html#4-option%20http-use-htx"target="_blank" rel="noopener">https://docs.haproxy.org/2.8/configuration.html#4-option%20http-use-htx</a></li>
 </ul>
 <hr>
 <h3 id="var-namespace">Var namespace<a class="td-heading-self-link" href="#var-namespace" aria-label="Heading self-link"></a></h3>
@@ -6324,7 +6204,7 @@ If the WAF is in <code>detect</code> mode the requests are passed to ModSecurity
 </ul>
 
 	<div class="td-page-meta__lastmod">
-  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3bc0856f1c9be9ef77c9ace895ac989793b81ce3">backport docs (3bc0856f)</a>
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/4cae8af2e113b3b16a4fde705bc4e71a66ebe51d">n42: n42 gateway name migration in documentation (4cae8af2)</a>
 </div>
 
 </div>

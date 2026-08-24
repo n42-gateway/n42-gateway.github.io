@@ -48,13 +48,13 @@
 
 	<meta itemprop="name" content="Getting Started">
 	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
-	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
-	<meta itemprop="wordCount" content="840">
+	<meta itemprop="dateModified" content="2026-08-24T20:48:11-03:00">
+	<meta itemprop="wordCount" content="846">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Getting Started">
 	<meta name="twitter:description" content="How to install N42 Gateway and expose the first service.">
-<link rel="preload" href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" as="style" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
-<link href="/scss/main.min.c6dd1c1514c74a8bb2ce9a78b622597835a4c3c1f8dfa44ee1f2e7d92be21082.css" rel="stylesheet" integrity="sha256-xt0cFRTHSouyzpp4tiJZeDWkw8H436RO4fLn2SviEII=" crossorigin="anonymous">
+<link rel="preload" href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
 <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -100,11 +100,15 @@
         <div class="td-version-menu dropdown">
   <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="td-version-menu__title-text">v0.17</span>
+    <span class="td-version-menu__title-text">v0.16 (latest)</span>
   </a>
   <ul class="dropdown-menu">
     <li>
-        <a class="dropdown-item" href="/docs">Latest</a>
+        <a class="dropdown-item" href="/v0.17/docs">v0.17 (alpha)</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16 (latest)</a>
         
       </li>
     
@@ -189,8 +193,6 @@
     <a href="/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsoverview"><span class="">Overview</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-docsgetting-started-li">
     <a href="/docs/getting-started/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__section" id="m-docsgetting-started"><span class="td-sidebar-nav-active-item">Getting Started</span></a>
-  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-docsmigration-guide-li">
-    <a href="/docs/migration-guide/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsmigration-guide"><span class="">Migration Guide</span></a>
   </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-docsconfiguration-li">
     <a href="/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-docsconfiguration"><span class="">Configuration</span></a>
     <ul class="ul-2 foldable">
@@ -258,16 +260,16 @@
 	<header class="article-meta">
 		
 </header>
-	<p>The following sections walk through steps to have N42 Gateway working, watching ingress resources and exposing services.</p>
+	<p>The following sections walk through steps to have N42 Gateway working, watching Ingress or Gateway API resources and exposing services.</p>
 <h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
 <p>N42 Gateway needs a running Kubernetes cluster. Controller version v0.16 needs Kubernetes 1.21 or newer, see other supported versions in the <a href="https://github.com/n42-gateway/n42-gateway/#use-n42-gateway"target="_blank" rel="noopener">README</a> file. N42 Gateway also works fine on local k8s deployments like <a href="https://minikube.sigs.k8s.io"target="_blank" rel="noopener">minikube</a>, <a href="https://kind.sigs.k8s.io"target="_blank" rel="noopener">kind</a>, <a href="https://k3s.io"target="_blank" rel="noopener">k3s</a>, <a href="https://k3d.io"target="_blank" rel="noopener">k3d</a> or <a href="https://github.com/abiosoft/colima"target="_blank" rel="noopener">colima</a>.</p>
-<p>An ingress controller works exposing internal services to the external world, so another prerequisite is that at least one cluster node is accessible externally. On cloud environments, a cloud load balancer can be configured to reach the ingress controller nodes.</p>
+<p>An ingress controller works exposing internal services to the external world, so another pre-requisite is that at least one cluster node is accessible externally. On cloud environments, a cloud load balancer can be configured to reach the ingress controller nodes.</p>
 <p>N42 Gateway uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"target="_blank" rel="noopener">TLS SNI extension</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"target="_blank" rel="noopener">Host header</a> to associate requests and ingress&rsquo; <code>host</code>s. The easiest way to accomplish this on local environment is using <a href="https://nip.io"target="_blank" rel="noopener">nip.io</a>. A production environment should consider a <a href="https://en.wikipedia.org/wiki/Dynamic_DNS"target="_blank" rel="noopener">dynamic DNS</a> solution or a <a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record"target="_blank" rel="noopener">wildcard DNS record</a>.</p>
 <h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
 <p>N42 Gateway uses <a href="https://helm.sh"target="_blank" rel="noopener">Helm</a> chart to install and configure the controller. See below some deployment instructions:</p>
 <ol>
 <li>
-<p>Install <code>helm</code>, N42 Gateway requires version 3. See the <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">installation instructions</a>.</p>
+<p>Install <code>helm</code>, N42 Gateway requires version 3. See the installation instructions <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">here</a>.</p>
 </li>
 <li>
 <p>Add the N42 Gateway&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
@@ -304,17 +306,17 @@
 </li>
 <li>
 <p>Install N42 Gateway using <code>n42-gateway</code> as the release name and <code>n42-gateway-values.yaml</code> file as the custom parameters:</p>
-<pre tabindex="0"><code>$ helm upgrade n42-gateway n42-gateway/n42-gateway\
+<pre tabindex="0"><code>$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
   --install\
   --create-namespace --namespace ingress-controller\
-  --version 0.17.0-alpha.2 --devel\
+  --version 0.16.1\
   -f n42-gateway-values.yaml
 </code></pre><blockquote>
 <p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;n42-gateway-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
 </blockquote>
 <div class="td-alert td-alert--md alert alert-nb" role="alert">
   <div class="td-alert-body">
-    <p>See the <a href="/v0.17/docs/migration-guide/">migration guide</a> for alternatives if upgrading from a HAProxy Ingress cluster.</p>
+    <p>See the <a href="/v0.17/docs/migration-guide/">migration guide</a> for upcoming changes to N42 Gateway.</p>
     </div>
 </div>
 </li>
@@ -328,7 +330,7 @@
 </ul>
 <p>N42 Gateway&rsquo; Helm chart has a few more configuration options, see all of them in the chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md"target="_blank" rel="noopener">documentation</a> and in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
 <h2 id="deploy-and-expose">Deploy and expose<a class="td-heading-self-link" href="#deploy-and-expose" aria-label="Heading self-link"></a></h2>
-<p>The following steps deploy an echoserver image and exposes it in the current namespace using an Ingress resource. Learn how to expose using <a href="/docs/configuration/gateway-api/">Gateway API</a>.</p>
+<p>The following steps deploy an echoserver image and exposes it in the current namespace using an Ingress resource. See <a href="/docs/configuration/gateway-api/">here</a> how to expose using Gateway API.</p>
 <ol>
 <li>
 <p>Create the echoserver&rsquo;s deployment and service:</p>
@@ -344,7 +346,7 @@ echoserver-5b6fb6dd96-68jwp   1/1     Running   0          27s
 <li>
 <p>Make N42 Gateway expose the echoserver service. Change <code>echoserver.local</code> value in the <code>--rule</code> option below to a hostname that resolves to an ingress controller node.</p>
 <blockquote>
-<p>Obs.: <a href="https://nip.io"target="_blank" rel="noopener"><code>nip.io</code></a> is a convenient service which converts a valid domain name to an IP, either public or local.</p>
+<p>Obs.: <code>nip.io</code> is a convenient service which converts a valid domain name to any IP, either public or local. See <a href="https://nip.io"target="_blank" rel="noopener">here</a> how it works.</p>
 </blockquote>
 <pre tabindex="0"><code>$ kubectl --namespace default create ingress echoserver \
   --class=haproxy \
@@ -382,7 +384,7 @@ $ wget -qO- --no-check-certificate https://echoserver.local
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3bc0856f1c9be9ef77c9ace895ac989793b81ce3">backport docs (3bc0856f)</a>
+  Last modified August 24, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/aa4118d48670acdfad43824c1ce4d83e584a577f">update to v0.16.2 (aa4118d4)</a>
 </div>
 </div>
 
