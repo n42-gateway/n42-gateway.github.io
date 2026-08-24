@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: modsecurity-spoa
+  name: modsecurity-spoa
+  namespace: ingress-controller
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: modsecurity-spoa
+  template:
+    metadata:
+      labels:
+        run: modsecurity-spoa
+    spec:
+      volumes:
+      - name: varlog
+        emptyDir: {}
+      containers:
+      - name: modsecurity-spoa
+        image: quay.io/jcmoraisjr/modsecurity-spoa
+        args:
+        - -n
+        - "1"
+        ports:
+        - containerPort: 12345
+          name: spop
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 150Mi
+          requests:
+            cpu: 200m
+            memory: 150Mi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: 12345
+          timeoutSeconds: 4
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+      - name: audit-log
+        image: busybox
+        args: [/bin/sh, -c, 'tail -n+1 -f /var/log/modsec_audit.log']
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log

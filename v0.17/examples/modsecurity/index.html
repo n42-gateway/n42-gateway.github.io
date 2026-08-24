@@ -1,0 +1,484 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js" data-theme-init>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  html[data-theme-init] * { transition: none !important; }
+</style>
+
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+<meta name="robots" content="index, follow">
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-512x512.png" sizes="512x512">
+
+<title>ModSecurity | N42 Gateway</title>
+<meta name="description" content="Demonstrate how to configure ModSecurity web application firewall.">
+<meta property="og:url" content="/v0.17/examples/modsecurity/">
+	<meta property="og:site_name" content="N42 Gateway">
+	<meta property="og:title" content="ModSecurity">
+	<meta property="og:description" content="Demonstrate how to configure ModSecurity web application firewall.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="examples">
+		<meta property="article:modified_time" content="2026-08-22T10:57:47-03:00">
+
+	<meta itemprop="name" content="ModSecurity">
+	<meta itemprop="description" content="Demonstrate how to configure ModSecurity web application firewall.">
+	<meta itemprop="dateModified" content="2026-08-22T10:57:47-03:00">
+	<meta itemprop="wordCount" content="965">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="ModSecurity">
+	<meta name="twitter:description" content="Demonstrate how to configure ModSecurity web application firewall.">
+<link rel="preload" href="/v0.17/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/v0.17/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-page">
+    <header>
+      <nav class="td-navbar js-navbar-scroll">
+<div class="td-navbar-container container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/v0.17/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="6075 6474 5665 6417" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="$fill" stroke="none" d="M9324 7360c-58 71-132 125-217 159v488l856 857v362l738-738c-4-9-8-18-11-26-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-42-7-83-20-122-37L9963 9791v578l-4e2 4e2V9029l-456-456v589l-4e2 4e2V7519c-5-2-9-4-14-6L7115 9091c3 7 6 14 9 21 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 44 8 87 21 127 39L8410 7230c-3-8-7-16-10-24-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254zm-2e2-165c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM64e2 9123c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm5014-672c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM8490 12004c58-71 132-125 217-159v-488l-856-857v-362l-738 738c4 9 8 18 11 26 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 42 7 83 20 122 37L7851 9573V8995l4e2-4e2v1740l456 456v-589l4e2-4e2v2043c5 2 9 4 14 6l1578-1578c-3-7-6-14-9-21-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-44-8-87-21-127-39L9404 12134c3 8 7 16 10 24 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254zm2e2 165c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm2724-1928c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zm-5014 672c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85z"/></g></g></g></svg></span><span class="navbar-brand__name">N42 Gateway</span></a>
+  <div class="td-navbar__main td-navbar-nav-scroll td-navbar-nav-scroll--indicator" id="main_navbar">
+    <div class="scroll-indicator scroll-left"></div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.17/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.17/docs/"><span>Docs</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/v0.17/examples/"><span>Examples</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.17/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item td-navbar__version-menu">
+        <div class="td-version-menu dropdown">
+  <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="td-version-menu__title-text">v0.17</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+        <a class="dropdown-item" href="/docs">Latest</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.17/docs">v0.17</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.15/docs">v0.15</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
+        
+      </li>
+    
+  </ul>
+</div>
+</li>
+      <li class="nav-item td-navbar__light-dark-menu">
+        <div class="td-light-dark-menu dropdown"><svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu" aria-labelledby="bd-theme">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+</div>
+
+      </li>
+      </ul>
+    <div class="scroll-indicator scroll-right"></div>
+  </div>
+  <div class="td-navbar__search d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main" data-bs-spy="scroll" data-bs-target=".td-toc" data-bs-root-margin="0px 0px -10%">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v017examples-li">
+    <a href="/v0.17/examples/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-v017examples"><span class="">Examples</span></a>
+    <ul class="ul-1">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v017examplesblue-green-li">
+    <a href="/v0.17/examples/blue-green/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v017examplesblue-green"><span class="">Blue/green</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v017examplesexternal-haproxy-li">
+    <a href="/v0.17/examples/external-haproxy/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v017examplesexternal-haproxy"><span class="">External haproxy</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v017examplesmetrics-li">
+    <a href="/v0.17/examples/metrics/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v017examplesmetrics"><span class="">Metrics</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-v017examplesmodsecurity-li">
+    <a href="/v0.17/examples/modsecurity/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id="m-v017examplesmodsecurity"><span class="td-sidebar-nav-active-item">ModSecurity</span></a>
+  </li>
+    </ul>
+  </li>
+    </ul>
+  </nav>
+</div>
+          </aside>
+          <aside class="td-sidebar-toc">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/n42-gateway/n42-gateway/tree/master/docs/content/en/examples/modsecurity.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/edit/master/docs/content/en/examples/modsecurity.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/new/master/docs/content/en/examples?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60get-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/issues/new?title=ModSecurity" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc" data-proofer-ignore>
+<div class="td-toc-title">
+      <span class="td-toc-title__text">On this page</span>
+      <a class="td-toc-title__link" title="Top of page" href="#"></a>
+    </div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#deploying-agent">Deploying agent</a></li>
+    <li><a href="#configuring-n42-gateway">Configuring N42 Gateway</a></li>
+    <li><a href="#test">Test</a></li>
+    <li><a href="#deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs">Deploy ModSecurity Agent With a Sidecar Container for Audit Logs</a></li>
+    <li><a href="#using-coraza-instead-of-modsecurity">Using Coraza instead of ModSecurity</a>
+      <ul>
+        <li><a href="#troubleshooting-coraza">Troubleshooting Coraza</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/v0.17/examples/">Examples</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    ModSecurity</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>ModSecurity</h1>
+	<div class="lead">Demonstrate how to configure ModSecurity web application firewall.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>This example demonstrates how to configure ModSecurity
+web application firewall on N42 Gateway controller.</p>
+<h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
+<p>This document has the following prerequisites:</p>
+<ul>
+<li>A Kubernetes cluster with a running N42 Gateway controller. See the <a href="https://github.com/n42-gateway/n42-gateway/tree/master/examples/setup-cluster.md#five-minutes-deployment"target="_blank" rel="noopener">five minutes deployment</a> or the <a href="https://github.com/n42-gateway/n42-gateway/tree/master/examples/deployment"target="_blank" rel="noopener">deployment example</a></li>
+<li><code>ingress-controller</code> namespace, the default of the five minutes deployment</li>
+</ul>
+<h2 id="deploying-agent">Deploying agent<a class="td-heading-self-link" href="#deploying-agent" aria-label="Heading self-link"></a></h2>
+<p>A ModSecurity agent can be deployed in a number of ways: as a sidecar container
+in the same N42 Gateway deployment/daemonset resource, as a standalone container
+in the same host of ingress, or in dedicated host(s), inside or outside a k8s cluster.
+The steps below will deploy ModSecurity in some dedicated hosts of a k8s cluster,
+adjust the steps to fit your need.</p>
+<p>The ModSecurity agent used is <a href="https://github.com/jcmoraisjr/modsecurity-spoa"target="_blank" rel="noopener">jcmoraisjr/modsecurity-spoa</a>.</p>
+<p>Create the ModSecurity agent deployment with 3 running pods:</p>
+<pre tabindex="0"><code>$ kubectl create -f https://n42-gateway.github.io/resources/modsecurity-deployment.yaml
+deployment.apps/modsecurity-spoa created
+</code></pre><div class="td-alert td-alert--md alert alert-nb" role="alert">
+  <div class="td-alert-body">
+    <p>This deployment configures a small amount of requests and limits resources, remember to adjust them before moving to production.</p>
+    </div>
+</div>
+<p>Check if the agent is up and running:</p>
+<pre tabindex="0"><code>$ kubectl -n ingress-controller get deployment modsecurity-spoa
+NAME                     READY     UP-TO-DATE   AVAILABLE  AGE
+modsecurity-spoa         3/3       3            3          7s
+</code></pre><p>You can now create the service that provides a ClusterIP address for the HAProxy ConfigMap.</p>
+<pre tabindex="0"><code>$ kubectl -n ingress-controller expose deployment modsecurity-spoa --port=12345 --type=ClusterIP
+service/modsecurity-spoa exposed
+</code></pre><p>Once the service is created, you can obtain the ClusterIP address to be used later in the ConfigMap.</p>
+<pre tabindex="0"><code>$ kubectl -n ingress-controller get service modsecurity-spoa
+NAME                     TYPE       CLUSTERIP        EXTERNAL-IP  PORT(S)     AGE
+modsecurity-spoa         ClusterIP  172.20.216.246   &lt;none&gt;       12345/TCP   7m
+</code></pre><h2 id="configuring-n42-gateway">Configuring N42 Gateway<a class="td-heading-self-link" href="#configuring-n42-gateway" aria-label="Heading self-link"></a></h2>
+<p>Add the ConfigMap key <code>modsecurity-endpoints</code> with a comma-separated list of <code>IP:port</code>
+of the ModSecurity agent server(s). The default port number of the agent is <code>12345</code>.
+A <code>kubectl -n ingress-controller edit configmap n42-gateway</code> should work.</p>
+<p>Example of a ConfigMap content if the ModSecurity service has a ClusterIP of <code>172.20.216.246</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">modsecurity-endpoints</span><span class="p">:</span><span class="w"> </span><span class="m">172.20.216.246</span><span class="p">:</span><span class="m">12345</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span></code></pre></div><h2 id="test">Test<a class="td-heading-self-link" href="#test" aria-label="Heading self-link"></a></h2>
+<p>Deploy any application:</p>
+<pre tabindex="0"><code>$ kubectl run echo \
+  --image=gcr.io/google_containers/echoserver:1.3 \
+  --port=8080 \
+  --expose
+</code></pre><p>&hellip; and create its ingress resource. Remember to annotate waf as <code>modsecurity</code>.
+No need to use a valid domain, <code>echo.domain</code> below is fine:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> kubectl create -f - &lt;&lt;EOF
+</span></span><span class="line"><span class="cl"><span class="go">apiVersion: networking.k8s.io/v1
+</span></span></span><span class="line"><span class="cl"><span class="go">kind: Ingress
+</span></span></span><span class="line"><span class="cl"><span class="go">metadata:
+</span></span></span><span class="line"><span class="cl"><span class="go">  annotations:
+</span></span></span><span class="line"><span class="cl"><span class="go">    n42-gateway.github.io/ssl-redirect: &#34;false&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">    n42-gateway.github.io/waf: &#34;modsecurity&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">  name: echo
+</span></span></span><span class="line"><span class="cl"><span class="go">spec:
+</span></span></span><span class="line"><span class="cl"><span class="go">  rules:
+</span></span></span><span class="line"><span class="cl"><span class="go">  - host: echo.domain
+</span></span></span><span class="line"><span class="cl"><span class="go">    http:
+</span></span></span><span class="line"><span class="cl"><span class="go">      paths:
+</span></span></span><span class="line"><span class="cl"><span class="go">      - path: /
+</span></span></span><span class="line"><span class="cl"><span class="go">        pathType: Prefix
+</span></span></span><span class="line"><span class="cl"><span class="go">        backend:
+</span></span></span><span class="line"><span class="cl"><span class="go">          service:
+</span></span></span><span class="line"><span class="cl"><span class="go">            name: echo
+</span></span></span><span class="line"><span class="cl"><span class="go">            port:
+</span></span></span><span class="line"><span class="cl"><span class="go">              number: 8080
+</span></span></span><span class="line"><span class="cl"><span class="go">EOF
+</span></span></span></code></pre></div><p>Test with a simple request. Change the IP below to the IP of your Ingress controller:</p>
+<pre tabindex="0"><code>$ curl -I 192.168.100.99 -H &#39;Host: echo.domain&#39;
+HTTP/1.1 200 OK
+Server: nginx/1.9.11
+Date: Sun, 27 May 2018 23:28:58 GMT
+Content-Type: text/plain
+</code></pre><p>Test now with a malicious request:</p>
+<pre tabindex="0"><code>curl -i &#39;192.168.100.99?p=/etc/passwd&#39; -H &#39;Host: echo.domain&#39;
+HTTP/1.0 403 Forbidden
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;
+Request forbidden by administrative rules.
+&lt;/body&gt;&lt;/html&gt;
+</code></pre><p>Check the agent logs:</p>
+<pre tabindex="0"><code>$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6f757ffd88-9qt2f   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-vwtzr   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-q4rvm   1/1     Running   0          11m
+...
+
+$ kubectl -n ingress-controller logs --tail=10 modsecurity-spoa-6f757ffd88-9qt2f
+...
+1527464273.942819 [00] [client 127.0.0.1] ModSecurity: Access denied with code 403 (phase 2). Matche
+d phrase &#34;etc/passwd&#34; at ARGS:p. [file &#34;/etc/modsecurity/owasp-modsecurity-crs/rules/REQUEST-930-APP
+LICATION-ATTACK-LFI.conf&#34;] [line &#34;108&#34;] [id &#34;930120&#34;] [rev &#34;4&#34;] [msg &#34;OS File Access Attempt&#34;] [data
+ &#34;Matched Data: etc/passwd found within ARGS:p: /etc/passwd&#34;] [severity &#34;CRITICAL&#34;] [ver &#34;OWASP_CRS/
+3.0.0&#34;] [maturity &#34;9&#34;] [accuracy &#34;9&#34;] [tag &#34;application-multi&#34;] [tag &#34;language-multi&#34;] [tag &#34;platfor
+m-multi&#34;] [tag &#34;attack-lfi&#34;] [tag &#34;OWASP_CRS/WEB_ATTACK/FILE_INJECTION&#34;] [tag &#34;WASCTC/WASC-33&#34;] [tag
+ &#34;OWASP_TOP_10/A4&#34;] [tag &#34;PCI/6.5.4&#34;] [hostname &#34;ingress.localdomain&#34;] [uri &#34;http://echo.domain/&#34;] [
+unique_id &#34;&#34;]
+...
+</code></pre><h2 id="deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs">Deploy ModSecurity Agent With a Sidecar Container for Audit Logs<a class="td-heading-self-link" href="#deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs" aria-label="Heading self-link"></a></h2>
+<p>A ModSecurity agent can be deployed with an additional sidecar container so you can have access to the logs stored in the AuditLog file. If you are using the default configuration of the ModSecurity agent, the logs written to the AuditLog specified are not reachable in the agent container&rsquo;s STDOUT.</p>
+<p>In order to read information written to that file, you must add a sidecar container to the method of deployment of the ModSecurity agent in Kubernetes. This is especially useful if you set the SecRuleEngine configuration to DetectionOnly.</p>
+<p>Update the ModSecurity agent deployment to have a sidecar container to read the audit log file to STDOUT</p>
+<pre tabindex="0"><code>$ kubectl apply -f https://n42-gateway.github.io/resources/modsecurity-deployment-auditlog-sidecar.yaml
+deployment &#34;modsecurity-spoa&#34; configured
+</code></pre><p>Now the ModSecurity agent pods will have two containers to get logs from: one for the traditional ModSecurity logs and one for the logs written to the AuditLog file.</p>
+<pre tabindex="0"><code>$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6596c6b444-cht27   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-kw2tr   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-mkndw   2/2     Running   0          14m
+</code></pre><h2 id="using-coraza-instead-of-modsecurity">Using Coraza instead of ModSecurity<a class="td-heading-self-link" href="#using-coraza-instead-of-modsecurity" aria-label="Heading self-link"></a></h2>
+<p>Since the maintainers of ModSecurity are dropping support in 2024, <a href="https://coreruleset.org/20211222/talking-about-modsecurity-and-the-new-coraza-waf/"target="_blank" rel="noopener">OWASP has created a replacement called Coraza</a> which is a drop-in replacement for ModSecurity.</p>
+<p>In order to use Coraza, the process is essentially the same as described in the above sections, with a few exceptions. First, in the <code>n42-gateway</code> ConfigMap, add the following two additional keys:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">  </span><span class="nt">modsecurity-use-coraza</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">modsecurity-args</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;app=hdr(host) id=unique-id src-ip=src src-port=src_port dst-ip=dst dst-port=dst_port method=method path=path query=query version=req.ver headers=req.hdrs body=req.body&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>You may require different <code>modsecurity-args</code> depending on your Coraza config and your version of coraza-spoa. Check the <a href="https://github.com/corazawaf/coraza-spoa"target="_blank" rel="noopener">coraza-spoa README</a> for full details.</p>
+<p>Second, you&rsquo;ll need to change the spoa-modsecurity container image to a coraza-spoa image and create a configmap to hold the Coraza config.yaml. See a <a href="/resources/coraza-deployment.yaml">complete example with all the changes</a>.</p>
+<div class="td-alert td-alert--md alert alert-warning" role="alert"><div class="td-alert-heading alert-heading" role="heading">Warning</div>
+  <div class="td-alert-body">
+    <p>The coraza-spoa image that we provide in the above example is based on <a href="https://github.com/corazawaf/coraza-spoa/pull/36"target="_blank" rel="noopener">an experimental branch of coraza-spoa</a>. For production environments, it would be best to wait until the experimental changes are merged and <a href="https://github.com/corazawaf/coraza-spoa/issues/37"target="_blank" rel="noopener">an official image is released</a>.</p>
+    </div>
+</div>
+<h3 id="troubleshooting-coraza">Troubleshooting Coraza<a class="td-heading-self-link" href="#troubleshooting-coraza" aria-label="Heading self-link"></a></h3>
+<ul>
+<li>Ensure that the <code>bind</code> port in Coraza&rsquo;s config.yaml matches the port in <code>modsecurity-endpoints</code>.</li>
+<li>Pay close attention to the <code>modsecurity-args</code> (specifically the <code>app</code> arg) and make sure they are set according to the coraza-spoa docs since the exact args may vary depending on your version of coraza-spoa.</li>
+<li>For more complex issues, it may help to set <code>log_level: debug</code> in Coraza.</li>
+</ul>
+
+	<div class="td-page-meta__lastmod">
+  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/0fa18e99e979d22ef5e643f001c59b9ac04425c2">n42: update resource name in docs (0fa18e99)</a>
+</div>
+
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a href="https://kubernetes.slack.com/channels/n42-gateway" aria-label="Slack" target="_blank" rel="noopener">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Discussions" aria-label="Discussions">
+    <a href="https://github.com/n42-gateway/n42-gateway/discussions" aria-label="Discussions" target="_blank" rel="noopener">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a href="https://github.com/n42-gateway/n42-gateway" aria-label="GitHub" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The N42 Gateway Authors
+  | Image by <a href="https://www.pexels.com/@sejio402/" target="_blank" rel="noopener">Sergei Starostin</a>
+    from <a href="https://www.pexels.com/photo/grayscale-photo-of-a-circuit-board-6477212/" target="_blank" rel="noopener">Pexels</a>
+  <br/> HAProxy is a registered trademark of HAProxy Technologies SAS.
+</small>
+<p class="td-footer__about mt-2"><a href="/v0.17/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/v0.17/js/main.min.8fc09c77d4d6a40f353bf1d5911cd56d915756fdc5eb0bb0bf4fb53a4eb67dcf.js" integrity="sha256-j8Ccd9TWpA81O/HVkRzVbZFXVv3F6wuwv0&#43;1Ok62fc8=" crossorigin="anonymous"></script>
+<script defer src="/v0.17/js/click-to-copy.min.24576ff9fe9f85bb1948ecae52ce227cafce53757a3ad52301f2a79260f6b97d.js" integrity="sha256-JFdv&#43;f6fhbsZSOyuUs4ifK/OU3V6OtUjAfKnkmD2uX0=" crossorigin="anonymous"></script>
+<script src='/v0.17/js/tabpane-persist.js'></script>
+
+  </body>
+</html>
