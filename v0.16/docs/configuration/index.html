@@ -1,0 +1,343 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js" data-theme-init>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  html[data-theme-init] * { transition: none !important; }
+</style>
+
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+<meta name="robots" content="index, follow">
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-512x512.png" sizes="512x512">
+
+<title>Configuration | N42 Gateway</title>
+<meta name="description" content="All configuration options: ingress/service annotations, global ConfigMap options, command-line options and template overwriting.">
+<meta property="og:url" content="/v0.16/docs/configuration/">
+	<meta property="og:site_name" content="N42 Gateway">
+	<meta property="og:title" content="Configuration">
+	<meta property="og:description" content="All configuration options: ingress/service annotations, global ConfigMap options, command-line options and template overwriting.">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="website">
+
+	<meta itemprop="name" content="Configuration">
+	<meta itemprop="description" content="All configuration options: ingress/service annotations, global ConfigMap options, command-line options and template overwriting.">
+	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
+	<meta itemprop="wordCount" content="9">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Configuration">
+	<meta name="twitter:description" content="All configuration options: ingress/service annotations, global ConfigMap options, command-line options and template overwriting.">
+<link rel="preload" href="/v0.16/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/v0.16/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-section">
+    <header>
+      <nav class="td-navbar js-navbar-scroll">
+<div class="td-navbar-container container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/v0.16/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="6075 6474 5665 6417" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="$fill" stroke="none" d="M9324 7360c-58 71-132 125-217 159v488l856 857v362l738-738c-4-9-8-18-11-26-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-42-7-83-20-122-37L9963 9791v578l-4e2 4e2V9029l-456-456v589l-4e2 4e2V7519c-5-2-9-4-14-6L7115 9091c3 7 6 14 9 21 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 44 8 87 21 127 39L8410 7230c-3-8-7-16-10-24-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254zm-2e2-165c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM64e2 9123c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm5014-672c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM8490 12004c58-71 132-125 217-159v-488l-856-857v-362l-738 738c4 9 8 18 11 26 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 42 7 83 20 122 37L7851 9573V8995l4e2-4e2v1740l456 456v-589l4e2-4e2v2043c5 2 9 4 14 6l1578-1578c-3-7-6-14-9-21-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-44-8-87-21-127-39L9404 12134c3 8 7 16 10 24 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254zm2e2 165c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm2724-1928c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zm-5014 672c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85z"/></g></g></g></svg></span><span class="navbar-brand__name">N42 Gateway</span></a>
+  <div class="td-navbar__main td-navbar-nav-scroll td-navbar-nav-scroll--indicator" id="main_navbar">
+    <div class="scroll-indicator scroll-left"></div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/v0.16/docs/"><span>Docs</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/examples/"><span>Examples</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item td-navbar__version-menu">
+        <div class="td-version-menu dropdown">
+  <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="td-version-menu__title-text">v0.16</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+        <a class="dropdown-item" href="/docs">Latest</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16</a>
+        
+      </li>
+    
+  </ul>
+</div>
+</li>
+      <li class="nav-item td-navbar__light-dark-menu">
+        <div class="td-light-dark-menu dropdown"><svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu" aria-labelledby="bd-theme">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+</div>
+
+      </li>
+      </ul>
+    <div class="scroll-indicator scroll-right"></div>
+  </div>
+  <div class="td-navbar__search d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main" data-bs-spy="scroll" data-bs-target=".td-toc" data-bs-root-margin="0px 0px -10%">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v016docs-li">
+    <a href="/v0.16/docs/" title="Documentation" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-v016docs"><span class="">Docs</span></a>
+    <ul class="ul-1">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsoverview-li">
+    <a href="/v0.16/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v016docsoverview"><span class="">Overview</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsgetting-started-li">
+    <a href="/v0.16/docs/getting-started/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v016docsgetting-started"><span class="">Getting Started</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v016docsconfiguration-li">
+    <a href="/v0.16/docs/configuration/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__section" id="m-v016docsconfiguration"><span class="td-sidebar-nav-active-item">Configuration</span></a>
+    <ul class="ul-2 foldable">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsconfigurationgateway-api-li">
+    <a href="/v0.16/docs/configuration/gateway-api/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v016docsconfigurationgateway-api"><span class="">Gateway API</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsconfigurationkeys-li">
+    <a href="/v0.16/docs/configuration/keys/" title="Configuration keys" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v016docsconfigurationkeys"><span class="">Keys</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsconfigurationcommand-line-li">
+    <a href="/v0.16/docs/configuration/command-line/" title="Command-line options" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v016docsconfigurationcommand-line"><span class="">Command-line</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsconfigurationtemplate-li">
+    <a href="/v0.16/docs/configuration/template/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v016docsconfigurationtemplate"><span class="">Template</span></a>
+  </li>
+    </ul>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docsfaq-li">
+    <a href="/v0.16/docs/faq/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v016docsfaq"><span class="">FAQ</span></a>
+  </li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v016docscontribution-guidelines-li">
+    <a href="/v0.16/docs/contribution-guidelines/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v016docscontribution-guidelines"><span class="">Contribution Guidelines</span></a>
+  </li>
+    </ul>
+  </li>
+    </ul>
+  </nav>
+</div>
+          </aside>
+          <aside class="td-sidebar-toc">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/n42-gateway/n42-gateway/tree/master/docs/content/en/docs/configuration/_index.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/edit/master/docs/content/en/docs/configuration/_index.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/new/master/docs/content/en/docs/configuration?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60get-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/n42-gateway/n42-gateway/issues/new?title=Configuration" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc" data-proofer-ignore>
+</div>
+
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/v0.16/docs/">Docs</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Configuration</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>Configuration</h1>
+  <div class="lead">All configuration options: ingress/service annotations, global ConfigMap options, command-line options and template overwriting.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>See below all the supported N42 Gateway configuration options.</p>
+
+	<div class="section-index">
+    
+    
+    <hr class="panel-line">
+        <div class="entry">
+                <h5>
+                    <a href="/v0.16/docs/configuration/gateway-api/">Gateway API</a>
+                </h5>
+                <p>Configure HAProxy using Gateway API resources.</p>
+            </div>
+        <div class="entry">
+                <h5>
+                    <a href="/v0.16/docs/configuration/keys/">Configuration keys</a>
+                </h5>
+                <p>List of all annotations and global ConfigMap options.</p>
+            </div>
+        <div class="entry">
+                <h5>
+                    <a href="/v0.16/docs/configuration/command-line/">Command-line options</a>
+                </h5>
+                <p>Static command-line configuration options.</p>
+            </div>
+        <div class="entry">
+                <h5>
+                    <a href="/v0.16/docs/configuration/template/">Template</a>
+                </h5>
+                <p>Overwrite the default template files.</p>
+            </div>
+        </div>
+<div class="td-page-meta__lastmod">
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/4cae8af2e113b3b16a4fde705bc4e71a66ebe51d">n42: n42 gateway name migration in documentation (4cae8af2)</a>
+</div>
+</div>
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a href="https://kubernetes.slack.com/channels/n42-gateway" aria-label="Slack" target="_blank" rel="noopener">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Discussions" aria-label="Discussions">
+    <a href="https://github.com/n42-gateway/n42-gateway/discussions" aria-label="Discussions" target="_blank" rel="noopener">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a href="https://github.com/n42-gateway/n42-gateway" aria-label="GitHub" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The N42 Gateway Authors
+  | Image by <a href="https://www.pexels.com/@sejio402/" target="_blank" rel="noopener">Sergei Starostin</a>
+    from <a href="https://www.pexels.com/photo/grayscale-photo-of-a-circuit-board-6477212/" target="_blank" rel="noopener">Pexels</a>
+  <br/> HAProxy is a registered trademark of HAProxy Technologies SAS.
+</small>
+<p class="td-footer__about mt-2"><a href="/v0.16/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/v0.16/js/main.min.48f5e7ef7f184fdd6af93d1882a5193ee2d2f85daab9c0afe00b81f123c0b961.js" integrity="sha256-SPXn738YT91q&#43;T0YgqUZPuLS&#43;F2qucCv4AuB8SPAuWE=" crossorigin="anonymous"></script>
+<script defer src="/v0.16/js/click-to-copy.min.24576ff9fe9f85bb1948ecae52ce227cafce53757a3ad52301f2a79260f6b97d.js" integrity="sha256-JFdv&#43;f6fhbsZSOyuUs4ifK/OU3V6OtUjAfKnkmD2uX0=" crossorigin="anonymous"></script>
+<script src='/v0.16/js/tabpane-persist.js'></script>
+
+  </body>
+</html>

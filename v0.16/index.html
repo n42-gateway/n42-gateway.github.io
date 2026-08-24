@@ -1,0 +1,443 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js" data-theme-init>
+  <head>
+	<meta name="generator" content="Hugo 0.165.0">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#000000">
+
+<style>
+  html { background: Canvas; color: CanvasText; }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0b0d12; color: #e6e6e6; }
+  }
+  html[data-theme-init] * { transition: none !important; }
+</style>
+
+<script>
+  (function() {
+    const themeKey = 'td-color-theme';
+    const storedTheme = localStorage.getItem(themeKey);
+    let theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (theme === 'auto') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  })();
+</script>
+<meta name="robots" content="index, follow">
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/favicons/android-chrome-512x512.png" sizes="512x512">
+
+<title>N42 Gateway</title>
+<meta name="description" content="Welcome to N42 Gateway! The original HAProxy®-powered Ingress and Gateway API controller.
+Built for production since 2017.
+Learn More Why N42 Gateway Fast Carefully built on top of the battle-tested HAProxy load balancer. Reliable Making uptime happen across mission-critical clusters and services around the world. Highly customizable 200&#43; configuration options and growing. Ingress and Gateway API resources. Read more">
+<meta property="og:url" content="/v0.16/">
+	<meta property="og:site_name" content="N42 Gateway">
+	<meta property="og:title" content="N42 Gateway">
+	<meta property="og:description" content="Welcome to N42 Gateway! The original HAProxy®-powered Ingress and Gateway API controller.
+Built for production since 2017.
+Learn More Why N42 Gateway Fast Carefully built on top of the battle-tested HAProxy load balancer. Reliable Making uptime happen across mission-critical clusters and services around the world. Highly customizable 200&#43; configuration options and growing. Ingress and Gateway API resources. Read more">
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="website">
+
+	<meta itemprop="name" content="N42 Gateway">
+	<meta itemprop="description" content="Welcome to N42 Gateway! The original HAProxy®-powered Ingress and Gateway API controller.
+Built for production since 2017.
+Learn More Why N42 Gateway Fast Carefully built on top of the battle-tested HAProxy load balancer. Reliable Making uptime happen across mission-critical clusters and services around the world. Highly customizable 200&#43; configuration options and growing. Ingress and Gateway API resources. Read more">
+	<meta itemprop="dateModified" content="2026-06-09T08:16:41-03:00">
+	<meta itemprop="wordCount" content="106">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="N42 Gateway">
+	<meta name="twitter:description" content="Welcome to N42 Gateway! The original HAProxy®-powered Ingress and Gateway API controller.
+Built for production since 2017.
+Learn More Why N42 Gateway Fast Carefully built on top of the battle-tested HAProxy load balancer. Reliable Making uptime happen across mission-critical clusters and services around the world. Highly customizable 200&#43; configuration options and growing. Ingress and Gateway API resources. Read more">
+<link rel="preload" href="/v0.16/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" as="style" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<link href="/v0.16/scss/main.min.c14fd0e2c75b59845208230a9ed7aeee0b3aee5eb2661d8aebbbc2af74dc26dc.css" rel="stylesheet" integrity="sha256-wU/Q4sdbWYRSCCMKnteu7gs67l6yZh2K67vCr3TcJtw=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '4']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=4&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-home">
+    <header>
+      <nav class="td-navbar js-navbar-scroll td-navbar-cover td-navbar-transparent">
+<div class="td-navbar-container container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/v0.16/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="6075 6474 5665 6417" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="$fill" stroke="none" d="M9324 7360c-58 71-132 125-217 159v488l856 857v362l738-738c-4-9-8-18-11-26-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-42-7-83-20-122-37L9963 9791v578l-4e2 4e2V9029l-456-456v589l-4e2 4e2V7519c-5-2-9-4-14-6L7115 9091c3 7 6 14 9 21 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 44 8 87 21 127 39L8410 7230c-3-8-7-16-10-24-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254zm-2e2-165c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM64e2 9123c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm5014-672c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zM8490 12004c58-71 132-125 217-159v-488l-856-857v-362l-738 738c4 9 8 18 11 26 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254 60-74 139-129 228-163 89-33 185-42 279-27 42 7 83 20 122 37L7851 9573V8995l4e2-4e2v1740l456 456v-589l4e2-4e2v2043c5 2 9 4 14 6l1578-1578c-3-7-6-14-9-21-33-90-42-186-27-280 16-94 56-181 117-255 60-73 139-129 227-162 90-33 186-43 280-27s181 56 254 117c74 60 129 139 164 228 32 89 41 185 25 279-16 93-55 181-116 254-60 74-139 129-228 163-89 33-185 42-279 27-44-8-87-21-127-39L9404 12134c3 8 7 16 10 24 33 90 42 186 27 280-16 94-56 181-117 255-60 73-139 129-227 162-90 33-186 43-280 27s-181-56-254-117c-74-60-129-139-164-228-32-89-41-185-25-279 16-93 55-181 116-254zm2e2 165c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85zm2724-1928c32-38 53-83 61-133 8-49 3-98-14-145-17-46-46-87-85-119-38-31-83-52-132-60-50-8-99-4-145 14-47 17-88 46-120 84-31 39-52 84-60 133s-3 99 14 145c17 47 46 87 84 119 39 32 84 53 133 61s99 3 145-14c47-17 88-46 119-85zm-5014 672c-32 38-53 83-61 133-8 49-3 98 14 145 17 46 46 87 85 119 38 31 83 52 132 60 50 8 99 4 145-14 47-17 88-46 120-84 31-39 52-84 60-133s3-99-14-145c-17-47-46-87-84-119-39-32-84-53-133-61s-99-3-145 14c-47 17-88 46-119 85z"/></g></g></g></svg></span><span class="navbar-brand__name">N42 Gateway</span></a>
+  <div class="td-navbar__main td-navbar-nav-scroll td-navbar-nav-scroll--indicator" id="main_navbar">
+    <div class="scroll-indicator scroll-left"></div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/docs/"><span>Docs</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/examples/"><span>Examples</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.16/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item td-navbar__version-menu">
+        <div class="td-version-menu dropdown">
+  <a class="nav-link dropdown-toggle td-version-menu__title" href="#" role="button"
+    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="td-version-menu__title-text">v0.16</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+        <a class="dropdown-item" href="/docs">Latest</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.16/docs">v0.16</a>
+        
+      </li>
+    
+  </ul>
+</div>
+</li>
+      <li class="nav-item td-navbar__light-dark-menu">
+        <div class="td-light-dark-menu dropdown"><svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu" aria-labelledby="bd-theme">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+</div>
+
+      </li>
+      </ul>
+    <div class="scroll-indicator scroll-right"></div>
+  </div>
+  <div class="td-navbar__search d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-default td-outer">
+      <main role="main" class="td-main">
+        
+<link rel="preload" as="image" href="/v0.16/pexels-sejio402-6477212-background_hu_456b3eadf18799a0.jpg" media="(max-width: 1200px)">
+<link rel="preload" as="image" href="/v0.16/pexels-sejio402-6477212-background_hu_3cd4315601148884.jpg" media="(min-width: 1200px)">
+<style>
+#td-cover-block-0 {
+  background-image: url(/v0.16/pexels-sejio402-6477212-background_hu_456b3eadf18799a0.jpg);
+}
+@media only screen and (min-width: 1200px) {
+  #td-cover-block-0 {
+    background-image: url(/v0.16/pexels-sejio402-6477212-background_hu_3cd4315601148884.jpg);
+  }
+}
+</style>
+<section id="td-cover-block-0" class="row td-cover-block td-cover-block--height-full js-td-cover td-overlay td-overlay--dark -bg-dark" >
+  <div class="col-12">
+    <div class="container td-overlay__inner">
+      <div class="text-center">
+        <div class="pt-3 lead">
+          
+<img src="/logo.svg" width="200px" />
+<h1 class="display-2 mt-md-5 pb-4">Welcome to N42 Gateway!</h1>
+<p class="display-6 mb-4">The original HAProxy&reg;-powered Ingress and Gateway API controller.</p>
+<p class="display-6 mb-5">Built for production since 2017.</p>
+<div class="mb-5">
+	<a class="btn btn-lg btn-primary" href="/v0.16/docs/">
+  		Learn More <i class="fas fa-arrow-alt-circle-right ms-2"></i>
+	</a>
+</div>
+
+
+
+<a class="btn btn-link text-primary" href="#td-block-1" aria-label="Read more"><i class="fa-solid fa-circle-chevron-down" style="font-size: 400%"></i></a>
+
+</div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+
+
+<div><a id="td-block-1" class="td-anchor-no-extra-offset"></a></div>
+<section class="row td-box td-box--secondary position-relative td-box--height-auto">
+<div class="col-12">
+<div class="container text-center td-arrow-down">
+<div class="h4 mb-0">
+
+
+<h1 class="text-center">Why N42 Gateway</h1>
+
+</div>
+</div>
+</div>
+</section>
+
+
+
+<div><a id="td-block-2" class="td-anchor-no-extra-offset"></a></div>
+<section class="row td-box td-box--dark td-box--height-auto">
+<div class="col">
+<div class="row">
+
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fas fa fa-bolt"></i>
+</div>
+<h4 class="h3">Fast</h4>
+<div class="mb-0">
+
+Carefully built on top of the battle-tested HAProxy load balancer.
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fas fa fa-shield-alt"></i>
+</div>
+<h4 class="h3">Reliable</h4>
+<div class="mb-0">
+
+Making uptime happen across mission-critical clusters and services around the world.
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fas fa fa-cogs"></i>
+</div>
+<h4 class="h3">Highly customizable</h4>
+<div class="mb-0">
+
+200+ configuration options and growing. Ingress and Gateway API resources.
+
+</div>
+<p><a href="/docs/configuration">Read more</a></p>
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+
+<div><a id="td-block-3" class="td-anchor-no-extra-offset"></a></div>
+<section class="row td-box td-box--primary position-relative td-box--height-auto">
+<div class="col-12">
+<div class="container text-center td-arrow-down">
+<div class="h4 mb-0">
+
+
+<h1 class="text-center">Get involved!</h1>
+
+</div>
+</div>
+</div>
+</section>
+
+
+
+<div><a id="td-block-4" class="td-anchor-no-extra-offset"></a></div>
+<section class="row td-box td-box--4 td-box--height-auto">
+<div class="col">
+<div class="row">
+
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fab fa-slack"></i>
+</div>
+<h4 class="h3">Slack</h4>
+<div class="mb-0">
+
+We're in the <a href="https://kubernetes.slack.com/channels/n42-gateway" target="_blank" rel="noopener">#n42-gateway</a> channel on Kubernetes Slack.<br/>Take an <a href="https://slack.k8s.io" target="_blank" rel="noopener">invite</a> if not subscribed yet.
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fas fa fa-envelope"></i>
+</div>
+<h4 class="h3">Discussions</h4>
+<div class="mb-0">
+
+Follow announcements and ask questions<br/>on <a href="https://github.com/n42-gateway/n42-gateway/discussions" target="_blank" rel="noopener">GitHub Discussions</a>.
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center">
+<div class="mb-4 h1">
+  <i class="fab fa-github"></i>
+</div>
+<h4 class="h3">Contributions welcome!</h4>
+<div class="mb-0">
+
+We do a <a href="https://github.com/n42-gateway/n42-gateway/pulls" target="_blank" rel="noopener">Pull Request</a> contributions workflow on <a href="https://github.com/n42-gateway/n42-gateway" target="_blank" rel="noopener">GitHub</a>.<br/>New users are always welcome!
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+
+<div><a id="td-block-5" class="td-anchor-no-extra-offset"></a></div>
+<section class="row td-box td-box--5 td-box--height-auto">
+<div class="col">
+<div class="row">
+
+
+<h1 class="text-center pb-4">See N42 Gateway in action</h1>
+<div class="text-center">
+	<a class="btn btn-lg btn-primary" href="/v0.16/docs/getting-started/">
+		Get started! <i class="fas fa-arrow-alt-circle-right ml-2"></i>
+	</a>
+</div>
+</div>
+</div>
+</section>
+
+
+      </main>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a href="https://kubernetes.slack.com/channels/n42-gateway" aria-label="Slack" target="_blank" rel="noopener">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Discussions" aria-label="Discussions">
+    <a href="https://github.com/n42-gateway/n42-gateway/discussions" aria-label="Discussions" target="_blank" rel="noopener">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a href="https://github.com/n42-gateway/n42-gateway" aria-label="GitHub" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The N42 Gateway Authors
+  | Image by <a href="https://www.pexels.com/@sejio402/" target="_blank" rel="noopener">Sergei Starostin</a>
+    from <a href="https://www.pexels.com/photo/grayscale-photo-of-a-circuit-board-6477212/" target="_blank" rel="noopener">Pexels</a>
+  <br/> HAProxy is a registered trademark of HAProxy Technologies SAS.
+</small>
+<p class="td-footer__about mt-2"><a href="/v0.16/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/v0.16/js/main.min.48f5e7ef7f184fdd6af93d1882a5193ee2d2f85daab9c0afe00b81f123c0b961.js" integrity="sha256-SPXn738YT91q&#43;T0YgqUZPuLS&#43;F2qucCv4AuB8SPAuWE=" crossorigin="anonymous"></script>
+<script defer src="/v0.16/js/click-to-copy.min.24576ff9fe9f85bb1948ecae52ce227cafce53757a3ad52301f2a79260f6b97d.js" integrity="sha256-JFdv&#43;f6fhbsZSOyuUs4ifK/OU3V6OtUjAfKnkmD2uX0=" crossorigin="anonymous"></script>
+<script src='/v0.16/js/tabpane-persist.js'></script>
+
+  </body>
+</html>
