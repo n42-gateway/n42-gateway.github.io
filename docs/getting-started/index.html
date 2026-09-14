@@ -48,8 +48,8 @@
 
 	<meta itemprop="name" content="Getting Started">
 	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
-	<meta itemprop="dateModified" content="2026-08-24T20:48:11-03:00">
-	<meta itemprop="wordCount" content="846">
+	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
+	<meta itemprop="wordCount" content="857">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Getting Started">
 	<meta name="twitter:description" content="How to install N42 Gateway and expose the first service.">
@@ -109,6 +109,18 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.16/docs">v0.16 (latest)</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.15/docs">v0.15</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
         
       </li>
     
@@ -267,13 +279,18 @@
 <p>N42 Gateway uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"target="_blank" rel="noopener">TLS SNI extension</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"target="_blank" rel="noopener">Host header</a> to associate requests and ingress&rsquo; <code>host</code>s. The easiest way to accomplish this on local environment is using <a href="https://nip.io"target="_blank" rel="noopener">nip.io</a>. A production environment should consider a <a href="https://en.wikipedia.org/wiki/Dynamic_DNS"target="_blank" rel="noopener">dynamic DNS</a> solution or a <a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record"target="_blank" rel="noopener">wildcard DNS record</a>.</p>
 <h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
 <p>N42 Gateway uses <a href="https://helm.sh"target="_blank" rel="noopener">Helm</a> chart to install and configure the controller. See below some deployment instructions:</p>
+<div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
+  <div class="td-alert-body">
+    <p>N42 Gateway v0.16 uses the HAProxy Ingress branding in Helm configuration</p>
+    </div>
+</div>
 <ol>
 <li>
-<p>Install <code>helm</code>, N42 Gateway requires version 3. See the installation instructions <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">here</a>.</p>
+<p>Install <code>helm</code>, N42 Gateway requires version 3. See the <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">installation instructions</a>.</p>
 </li>
 <li>
-<p>Add the N42 Gateway&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
-<pre tabindex="0"><code>$ helm repo add n42-gateway https://n42-gateway.github.io/charts
+<p>Add the HAProxy Ingress&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
+<pre tabindex="0"><code>$ helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
 </code></pre></li>
 <li>
 <p>Check if kubeconfig points to the right cluster:</p>
@@ -282,7 +299,7 @@
 <p>Note that the user needs administrative privileges in the cluster to properly install the controller.</p>
 </li>
 <li>
-<p>Create a <code>n42-gateway-values.yaml</code> file with custom parameters:</p>
+<p>Create a <code>haproxy-ingress-values.yaml</code> file with custom parameters:</p>
 <blockquote>
 <p>Use the content below if N42 Gateway should expose HAProxy via a service loadbalancer, like ELB, kube-vip, ServiceLB (k3s), etc.</p>
 </blockquote>
@@ -305,14 +322,14 @@
 </span></span></span></code></pre></div><p>N42 Gateway chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md#configuration"target="_blank" rel="noopener">documentation</a> has all the available options. See also further documentation in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
 </li>
 <li>
-<p>Install N42 Gateway using <code>n42-gateway</code> as the release name and <code>n42-gateway-values.yaml</code> file as the custom parameters:</p>
+<p>Install N42 Gateway using <code>haproxy-ingress</code> as the release name and <code>haproxy-ingress-values.yaml</code> file as the custom parameters:</p>
 <pre tabindex="0"><code>$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
   --install\
   --create-namespace --namespace ingress-controller\
   --version 0.16.1\
-  -f n42-gateway-values.yaml
+  -f haproxy-ingress-values.yaml
 </code></pre><blockquote>
-<p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;n42-gateway-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
+<p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;haproxy-ingress-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
 </blockquote>
 <div class="td-alert td-alert--md alert alert-nb" role="alert">
   <div class="td-alert-body">
@@ -384,7 +401,7 @@ $ wget -qO- --no-check-certificate https://echoserver.local
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified August 24, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/aa4118d48670acdfad43824c1ce4d83e584a577f">update to v0.16.2 (aa4118d4)</a>
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3703cc363e7d4e0255b23889ee87a71bafee8ee2">n42: n42 gateway name migration in documentation (3703cc36)</a>
 </div>
 </div>
 

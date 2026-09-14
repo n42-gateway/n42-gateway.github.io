@@ -51,7 +51,7 @@
 	<meta itemprop="name" content="External haproxy">
 	<meta itemprop="description" content="Demonstrate how to configure N42 Gateway to use an external haproxy deployment.">
 	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
-	<meta itemprop="wordCount" content="987">
+	<meta itemprop="wordCount" content="999">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="External haproxy">
 	<meta name="twitter:description" content="Demonstrate how to configure N42 Gateway to use an external haproxy deployment.">
@@ -111,6 +111,18 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.16/docs">v0.16 (latest)</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.15/docs">v0.15</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+        
+      </li>
+    <li>
+        <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
         
       </li>
     
@@ -270,7 +282,7 @@ installed, and if so, the installation process should use the
 <a href="/docs/getting-started/#installation">Helm chart</a>.</p>
 <h2 id="configure-the-controller">Configure the controller<a class="td-heading-self-link" href="#configure-the-controller" aria-label="Heading self-link"></a></h2>
 <p>The easiest and recommended way to configure an external haproxy is using the Helm
-chart with a customized values file. Create the <code>n42-gateway-values.yaml</code> file with the
+chart with a customized values file. Create the <code>haproxy-ingress-values.yaml</code> file with the
 following content:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w">
@@ -358,12 +370,17 @@ to <code>:80</code> and <code>:443</code> without the need to run as root. Give 
 </span></span></span></code></pre></div></li>
 </ol>
 <h2 id="install-the-controller">Install the controller<a class="td-heading-self-link" href="#install-the-controller" aria-label="Heading self-link"></a></h2>
-<p>Add the N42 Gateway Helm repository if using N42 Gateway&rsquo; chart for the first time:</p>
-<pre tabindex="0"><code>$ helm repo add haproxy-ingress https://n42-gateway.github.io/charts
-</code></pre><p>Install or upgrade N42 Gateway using the <code>n42-gateway-values.yaml</code> parameters:</p>
+<p>Add the HAProxy Ingress Helm repository if using HAProxy Ingress&rsquo; chart for the first time:</p>
+<div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
+  <div class="td-alert-body">
+    <p>N42 Gateway v0.16 uses the HAProxy Ingress branding in Helm configuration</p>
+    </div>
+</div>
+<pre tabindex="0"><code>$ helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
+</code></pre><p>Install or upgrade N42 Gateway using the <code>haproxy-ingress-values.yaml</code> parameters:</p>
 <pre tabindex="0"><code>$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
   --install --create-namespace --namespace=ingress-controller\
-  -f n42-gateway-values.yaml
+  -f haproxy-ingress-values.yaml
 </code></pre><p>Check if the controller successfully starts or restarts:</p>
 <pre tabindex="0"><code>$ kubectl --namespace ingress-controller get pod -w
 </code></pre><h2 id="test">Test<a class="td-heading-self-link" href="#test" aria-label="Heading self-link"></a></h2>
@@ -427,7 +444,7 @@ check URI. This example changes the liveness probe from the N42 Gateway
 container to the haproxy one.</p>
 
 	<div class="td-page-meta__lastmod">
-  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/4cae8af2e113b3b16a4fde705bc4e71a66ebe51d">n42: n42 gateway name migration in documentation (4cae8af2)</a>
+  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/3703cc363e7d4e0255b23889ee87a71bafee8ee2">n42: n42 gateway name migration in documentation (3703cc36)</a>
 </div>
 
 </div>
