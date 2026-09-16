@@ -46,11 +46,11 @@
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="docs">
-		<meta property="article:modified_time" content="2026-08-22T10:57:47-03:00">
+		<meta property="article:modified_time" content="2026-09-12T09:46:35-03:00">
 
 	<meta itemprop="name" content="Gateway API">
 	<meta itemprop="description" content="Configure HAProxy using Gateway API resources.">
-	<meta itemprop="dateModified" content="2026-08-22T10:57:47-03:00">
+	<meta itemprop="dateModified" content="2026-09-12T09:46:35-03:00">
 	<meta itemprop="wordCount" content="697">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Gateway API">
@@ -127,14 +127,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -346,7 +338,7 @@
 </li>
 <li>
 <p><a href="/v0.17/docs/getting-started/">Install</a> or restart N42 Gateway so it can find the just installed APIs:</p>
-<pre tabindex="0"><code>$ kubectl --namespace ingress-controller delete pod -lapp.kubernetes.io/name=n42-gateway
+<pre tabindex="0"><code>$ kubectl --namespace n42-gateway-system delete pod -lapp.kubernetes.io/name=n42-gateway
 </code></pre></li>
 <li>
 <p>Create a GatewayClass with the following content:</p>
@@ -356,7 +348,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">gateway.networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">GatewayClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">controllerName</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway.github.io/controller</span><span class="w">
 </span></span></span></code></pre></div></li>
@@ -379,7 +371,7 @@ $ kubectl --namespace default expose deployment echoserver --port=8080
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">echoserver</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l">n42</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">listeners</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">echoserver-gw</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
@@ -439,7 +431,7 @@ $ kubectl --namespace default expose deployment redis --port=6379
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redis</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassName</span><span class="p">:</span><span class="w"> </span><span class="l">n42</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">listeners</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redis-gw</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6379</span><span class="w">
@@ -480,7 +472,7 @@ ping
 <p>See also the <a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API documentation</a></p>
 
 	<div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/0fa18e99e979d22ef5e643f001c59b9ac04425c2">n42: update resource name in docs (0fa18e99)</a>
+  Last modified September 12, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/279b2a18e2edb36f8ecf3062ffe697699fcb52d0">n42: update suggested namespace installation (279b2a18)</a>
 </div>
 
 </div>

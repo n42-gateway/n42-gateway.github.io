@@ -48,8 +48,8 @@
 
 	<meta itemprop="name" content="Getting Started">
 	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
-	<meta itemprop="dateModified" content="2026-08-24T20:54:17-03:00">
-	<meta itemprop="wordCount" content="841">
+	<meta itemprop="dateModified" content="2026-09-16T08:31:05-03:00">
+	<meta itemprop="wordCount" content="954">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Getting Started">
 	<meta name="twitter:description" content="How to install N42 Gateway and expose the first service.">
@@ -125,14 +125,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -288,7 +280,7 @@
 </header>
 	<p>The following sections walk through steps to have N42 Gateway working, watching Ingress or Gateway API resources and exposing services.</p>
 <h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
-<p>N42 Gateway needs a running Kubernetes cluster. Controller version v0.16 needs Kubernetes 1.21 or newer, see other supported versions in the <a href="https://github.com/n42-gateway/n42-gateway/#use-n42-gateway"target="_blank" rel="noopener">README</a> file. N42 Gateway also works fine on local k8s deployments like <a href="https://minikube.sigs.k8s.io"target="_blank" rel="noopener">minikube</a>, <a href="https://kind.sigs.k8s.io"target="_blank" rel="noopener">kind</a>, <a href="https://k3s.io"target="_blank" rel="noopener">k3s</a>, <a href="https://k3d.io"target="_blank" rel="noopener">k3d</a> or <a href="https://github.com/abiosoft/colima"target="_blank" rel="noopener">colima</a>.</p>
+<p>N42 Gateway needs a running Kubernetes cluster. Controller version v0.17 needs Kubernetes 1.21 or newer, see other supported versions in the <a href="https://github.com/n42-gateway/n42-gateway/#use-n42-gateway"target="_blank" rel="noopener">README</a> file. N42 Gateway also works fine on local k8s deployments like <a href="https://minikube.sigs.k8s.io"target="_blank" rel="noopener">minikube</a>, <a href="https://kind.sigs.k8s.io"target="_blank" rel="noopener">kind</a>, <a href="https://k3s.io"target="_blank" rel="noopener">k3s</a>, <a href="https://k3d.io"target="_blank" rel="noopener">k3d</a> or <a href="https://github.com/abiosoft/colima"target="_blank" rel="noopener">colima</a>.</p>
 <p>An ingress controller works exposing internal services to the external world, so another prerequisite is that at least one cluster node is accessible externally. On cloud environments, a cloud load balancer can be configured to reach the ingress controller nodes.</p>
 <p>N42 Gateway uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"target="_blank" rel="noopener">TLS SNI extension</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"target="_blank" rel="noopener">Host header</a> to associate requests and ingress&rsquo; <code>host</code>s. The easiest way to accomplish this on local environment is using <a href="https://nip.io"target="_blank" rel="noopener">nip.io</a>. A production environment should consider a <a href="https://en.wikipedia.org/wiki/Dynamic_DNS"target="_blank" rel="noopener">dynamic DNS</a> solution or a <a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record"target="_blank" rel="noopener">wildcard DNS record</a>.</p>
 <h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
@@ -299,7 +291,7 @@
 </li>
 <li>
 <p>Add the N42 Gateway&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
-<pre tabindex="0"><code>$ helm repo add n42-gateway https://n42-gateway.github.io/charts
+<pre tabindex="0"><code>$ helm repo add n42 https://n42-gateway.github.io/charts
 </code></pre></li>
 <li>
 <p>Check if kubeconfig points to the right cluster:</p>
@@ -312,30 +304,40 @@
 <blockquote>
 <p>Use the content below if N42 Gateway should expose HAProxy via a service loadbalancer, like ELB, kube-vip, ServiceLB (k3s), etc.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via a service loadbalancer</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via a service loadbalancer.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># You can configure gatewayClassResource.enabled as true if Gateway API CRDs are installed.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">publishService</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span></span></span></code></pre></div><blockquote>
-<p>Use the content below to expose HAProxy via host port on all cluster nodes.</p>
+<p>Use the content below to expose HAProxy via host port on all or some cluster nodes.</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via host port on all cluster nodes</span><span class="w">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via host port on all or some cluster nodes.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c"># You can configure gatewayClassResource.enabled as true if Gateway API CRDs are installed.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">gatewayClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">daemonset</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">useHostPort</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ingress-controller</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
-</span></span></span></code></pre></div><p>N42 Gateway chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md#configuration"target="_blank" rel="noopener">documentation</a> has all the available options. See also further documentation in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+</span></span></span></code></pre></div><p>N42 Gateway chart <a href="https://github.com/n42-gateway/charts/blob/release-0.17/n42-gateway/README.md#configuration"target="_blank" rel="noopener">documentation</a> has all the available options. See also further documentation in the <a href="https://github.com/n42-gateway/charts/blob/release-0.17/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
 </li>
 <li>
 <p>Install N42 Gateway using <code>n42-gateway</code> as the release name and <code>n42-gateway-values.yaml</code> file as the custom parameters:</p>
-<pre tabindex="0"><code>$ helm upgrade n42-gateway n42-gateway/n42-gateway\
+<pre tabindex="0"><code>$ helm upgrade n42 n42/n42-gateway\
   --install\
-  --create-namespace --namespace ingress-controller\
-  --version 0.17.0-alpha.2 --devel\
+  --create-namespace --namespace n42-gateway-system\
+  --version 0.17.0-alpha.3 --devel\
   -f n42-gateway-values.yaml
 </code></pre><blockquote>
 <p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;n42-gateway-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
@@ -346,15 +348,20 @@
     </div>
 </div>
 </li>
+<li>
+<p>Only if using DaemonSet kind - apply the N42 Gateway label on the nodes that should have N42 Gateway installed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ kubectl label node &lt;node-name&gt; ingress-controller<span class="o">=</span>n42-gateway
+</span></span></code></pre></div></li>
 </ol>
-<p>The controller should be running in a few seconds. There are four important customizations made in the example above:</p>
+<p>The controller should be running in a few seconds. There are some important customizations made in the example above:</p>
 <ul>
 <li><code>--version</code>: a good practice, this will ensure that you&rsquo;ll have the same version installed even if a new release issued.</li>
-<li><code>--namespace</code>: we&rsquo;re instructing helm to install N42 Gateway in the <code>ingress-controller</code> namespace. This namespace will be created if it does not exist yet. The default behavior, if namespace is not provided, is to deploy the controller in the kubectl&rsquo;s current namespace.</li>
-<li><code>ingressClassResource.enabled</code>: This causes the helm chart to apply an <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class"target="_blank" rel="noopener">IngressClass</a> to your cluster. IngressClasses are how N42 Gateway knows which of your Ingresses it should control. IngressClasses replace the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation"target="_blank" rel="noopener">kubernetes.io/ingress.class</a> annotation used in Kubernetes versions before v1.18.</li>
+<li><code>--namespace</code>: we&rsquo;re instructing helm to install N42 Gateway in the <code>n42-gateway-system</code> namespace. This namespace will be created if it does not exist yet. The default behavior, if namespace is not provided, is to deploy the controller in the kubectl&rsquo;s current namespace.</li>
+<li><code>ingressClassResource</code> and <code>gatewayClassResource</code>: This causes the helm chart to apply an <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class"target="_blank" rel="noopener">IngressClass</a> and/or a <a href="https://gateway-api.sigs.k8s.io/reference/api-types/gatewayclass/"target="_blank" rel="noopener">GatewayClass</a> to your cluster. Classes are how N42 Gateway knows which of your Ingresses or Gateway resources it should control.</li>
 <li><code>kind</code>, <code>daemonset.useHostPort</code> and <code>service.type</code>, only used when service loadbalancer should not be used: disables service load balancer and exposes HAProxy via host port on all cluster nodes.</li>
+<li><code>nodeSelector</code>, only used when kind is DaemonSet: it instruct N42 Gateway to only run in the selected nodes, if you remove this configuration, N42 Gateway will run on all nodes. Any key and value works, provided that the Helm configuration matches the label applied to the cluster nodes.</li>
 </ul>
-<p>N42 Gateway&rsquo; Helm chart has a few more configuration options, see all of them in the chart <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/README.md"target="_blank" rel="noopener">documentation</a> and in the <a href="https://github.com/n42-gateway/charts/blob/release-0.16/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+<p>N42 Gateway&rsquo; Helm chart has a few more configuration options, see all of them in the chart <a href="https://github.com/n42-gateway/charts/blob/release-0.17/n42-gateway/README.md"target="_blank" rel="noopener">documentation</a> and in the <a href="https://github.com/n42-gateway/charts/blob/release-0.17/n42-gateway/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
 <h2 id="deploy-and-expose">Deploy and expose<a class="td-heading-self-link" href="#deploy-and-expose" aria-label="Heading self-link"></a></h2>
 <p>The following steps deploy an echoserver image and exposes it in the current namespace using an Ingress resource. Learn how to expose using <a href="/v0.17/docs/configuration/gateway-api/">Gateway API</a>.</p>
 <ol>
@@ -410,7 +417,7 @@ $ wget -qO- --no-check-certificate https://echoserver.local
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified August 24, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/af54050a81e525992f6b51d530c88df4b514795a">update to v0.17.0-alpha.3 (af54050a)</a>
+  Last modified September 16, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/c6c0c8c44aa6f98cc1167d1bc3198b5d633f22c0">update to v0.17.0-alpha.3 (c6c0c8c4)</a>
 </div>
 </div>
 

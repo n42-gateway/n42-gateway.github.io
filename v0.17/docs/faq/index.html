@@ -127,14 +127,6 @@
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
         
       </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
-        
-      </li>
     
   </ul>
 </div>
@@ -332,8 +324,8 @@
 <h3 id="how-to-track-the-proxy-performance">How to track the proxy performance?<a class="td-heading-self-link" href="#how-to-track-the-proxy-performance" aria-label="Heading self-link"></a></h3>
 <p>N42 Gateway has some useful <a href="/v0.17/examples/metrics/">metrics</a> and also a suggested <a href="https://grafana.com/grafana/dashboards/12056"target="_blank" rel="noopener">Grafana dashboard</a>. Two of these metrics help to analyze how HAProxy is performing and must be tracked on mission-critical deployments. These metrics can be read from <code>&lt;controller&gt;:10254/metrics</code> using Prometheus or a compatible tool:</p>
 <ul>
-<li><code>n42_gateway_haproxy_processing_seconds_total</code> is a counter that uses <code>Idle_pct</code> from HAProxy&rsquo;s <code>show info</code> to calculate the number of seconds HAProxy spent doing something on its event loop. Using this metric is much more accurate than reading directly from <code>Idle_pct</code>, because N42 Gateway reads this value frequently, see <a href="/v0.17/docs/configuration/command-line/#stats"><code>--stats-collect-processing-period</code></a>, and will consider the spikes. Use this metric with the <code>rate()</code> function to find the actual rate. Rates close to 1 (one) means that HAProxy is very close to being saturated.</li>
-<li><code>n42_gateway_haproxy_response_time_seconds</code> is a histogram with the response time of calls to the admin socket. Dividing the <code>rate()</code> of the <code>_sum</code> counter by the <code>rate()</code> of the <code>_count</code> counter, filtered by <code>command=&quot;show_info&quot;</code> label, will give the amount of time HAProxy takes to answer the <code>show info</code> command. This should be below <code>1ms</code> most of the time, higher values suggest a saturated proxy or a noisy neighborhood stealing CPU from the proxy. The buckets of this histogram can be configured using <a href="/v0.17/docs/configuration/command-line/#buckets-response-time"><code>--buckets-response-time</code></a>. Here is the full promql to calculate the response time: <code>rate(n42_gateway_haproxy_response_time_seconds_sum{command=&quot;show_info&quot;}[1m]) / rate(n42_gateway_haproxy_response_time_seconds_count{command=&quot;show_info&quot;}[1m])</code></li>
+<li><code>n42gateway_haproxy_processing_seconds_total</code> is a counter that uses <code>Idle_pct</code> from HAProxy&rsquo;s <code>show info</code> to calculate the number of seconds HAProxy spent doing something on its event loop. Using this metric is much more accurate than reading directly from <code>Idle_pct</code>, because N42 Gateway reads this value frequently, see <a href="/v0.17/docs/configuration/command-line/#stats"><code>--stats-collect-processing-period</code></a>, and will consider the spikes. Use this metric with the <code>rate()</code> function to find the actual rate. Rates close to 1 (one) means that HAProxy is very close to being saturated.</li>
+<li><code>n42gateway_haproxy_response_time_seconds</code> is a histogram with the response time of calls to the admin socket. Dividing the <code>rate()</code> of the <code>_sum</code> counter by the <code>rate()</code> of the <code>_count</code> counter, filtered by <code>command=&quot;show_info&quot;</code> label, will give the amount of time HAProxy takes to answer the <code>show info</code> command. This should be below <code>1ms</code> most of the time, higher values suggest a saturated proxy or a noisy neighborhood stealing CPU from the proxy. The buckets of this histogram can be configured using <a href="/v0.17/docs/configuration/command-line/#buckets-response-time"><code>--buckets-response-time</code></a>. Here is the full promql to calculate the response time: <code>rate(n42gateway_haproxy_response_time_seconds_sum{command=&quot;show_info&quot;}[1m]) / rate(n42gateway_haproxy_response_time_seconds_count{command=&quot;show_info&quot;}[1m])</code></li>
 </ul>
 <hr>
 <h3 id="how-to-prioritize-a-feature-request">How to prioritize a feature request?<a class="td-heading-self-link" href="#how-to-prioritize-a-feature-request" aria-label="Heading self-link"></a></h3>
@@ -369,7 +361,7 @@
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified August 20, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/301c3144ec1e674eaa723c6a8ac0fc7996c7aff2">n42: change metrics namespace to n42_gateway (301c3144)</a>
+  Last modified August 20, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/c7bd9ff38b580a9a3a25e71642ebe0748355df5d">n42: change metrics namespace to n42gateway (c7bd9ff3)</a>
 </div>
 </div>
 

@@ -46,11 +46,11 @@
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="docs">
-		<meta property="article:modified_time" content="2026-08-22T10:31:34-03:00">
+		<meta property="article:modified_time" content="2026-09-09T07:32:05-03:00">
 
 	<meta itemprop="name" content="Command-line options">
 	<meta itemprop="description" content="Static command-line configuration options.">
-	<meta itemprop="dateModified" content="2026-08-22T10:31:34-03:00">
+	<meta itemprop="dateModified" content="2026-09-09T07:32:05-03:00">
 	<meta itemprop="wordCount" content="5327">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Command-line options">
@@ -127,14 +127,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -547,7 +539,7 @@
 			<tr>
 					<td><a href="#ingress-class"><code>--ingress-class</code></a></td>
 					<td>name</td>
-					<td><code>n42-gateway</code></td>
+					<td><code>n42</code></td>
 					<td></td>
 			</tr>
 			<tr>
@@ -881,7 +873,7 @@ services.</p>
 <ul>
 <li><code>--buckets-response-time</code></li>
 </ul>
-<p>Configures the buckets of the histogram <code>n42_gateway_haproxy_response_time_seconds</code>, used to compute the response time of the haproxy&rsquo;s admin socket. The response time unit is in seconds. The default value is <code>.0005,.001,.002,.005,.01</code> (<code>500µs</code>, <code>1ms</code>, <code>2ms</code>, <code>5ms</code>, <code>10ms</code>) if not configured.</p>
+<p>Configures the buckets of the histogram <code>n42gateway_haproxy_response_time_seconds</code>, used to compute the response time of the haproxy&rsquo;s admin socket. The response time unit is in seconds. The default value is <code>.0005,.001,.002,.005,.01</code> (<code>500µs</code>, <code>1ms</code>, <code>2ms</code>, <code>5ms</code>, <code>10ms</code>) if not configured.</p>
 <hr>
 <h3 id="configmap">configmap<a class="td-heading-self-link" href="#configmap" aria-label="Heading self-link"></a></h3>
 <ul>
@@ -967,7 +959,7 @@ deprecation. The default behavior is to log all API server warnings.</p>
 </ul>
 <p>Election ID configuration has no effect if none of Address status update, Embedded Acme signer, or Gateway API are enabled.</p>
 <p>Since v0.15 a <code>%s</code> placeholder is used to define where the IngressClass value should be added to the election ID. Up to v0.14 the IngressClass was concatenated in the end of the provided value to compose the real election ID value. Ingress class is added to the election ID name to avoid conflict when two or more N42 Gateway controllers are running in the same cluster.</p>
-<p>Election ID defaults to <code>class-%s.n42-gateway.github.io</code> if not configured, which is rendered to <code>class-n42-gateway.n42-gateway.github.io</code> if the IngressClass is not changed from the default value.</p>
+<p>Election ID defaults to <code>class-%s.n42-gateway.github.io</code> if not configured, which is rendered to <code>class-n42.n42-gateway.github.io</code> if the IngressClass is not changed from the default value.</p>
 <hr>
 <h3 id="enable-endpointslices-api">enable-endpointslices-api<a class="td-heading-self-link" href="#enable-endpointslices-api" aria-label="Heading self-link"></a></h3>
 <ul>
@@ -1017,7 +1009,7 @@ add the command-line option <code>--watch-ingress-without-class</code> to also l
 older controller version.</p>
 <ul>
 <li><code>--ingress-class</code>: defines the value of <code>kubernetes.io/ingress.class</code> annotation this controller
-should listen to. The default value is <code>n42-gateway</code> if not declared.</li>
+should listen to. The default value is <code>n42</code> if not declared.</li>
 <li><code>--controller-class</code>: by default, N42 Gateway will watch IngressClasses whose
 <code>spec.controller</code> name is <code>n42-gateway.github.io/controller</code>. All ingress resources that
 link to these IngressClasses will be added to the configuration. The <code>--controller-class</code>
@@ -1422,7 +1414,7 @@ resources that this controller is tracking when the controller is being stopped.
 applied. Default value is <code>false</code>, which means the validation will only happen when HAProxy needs to
 be reloaded.</p>
 <p>If validation fails, N42 Gateway will log the error and set the metric
-<code>n42_gateway_update_success</code> to zero, indicating failure.</p>
+<code>n42gateway_update_success</code> to zero, indicating failure.</p>
 <hr>
 <h3 id="verify-hostname">verify-hostname<a class="td-heading-self-link" href="#verify-hostname" aria-label="Heading self-link"></a></h3>
 <ul>
@@ -1491,7 +1483,7 @@ configuration <a href="/v0.17/docs/configuration/gateway-api/">doc</a>.</p>
 single namespace.</p>
 
 	<div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/101e6a91946f58875ddb96f064df1553d71db588">n42: add configuration class command-line option (101e6a91)</a>
+  Last modified September 9, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/cf60d2dc2d11b458d094dfb536f31a9e7a752dde">n42: update default class to n42 (cf60d2dc)</a>
 </div>
 
 </div>

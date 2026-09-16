@@ -46,12 +46,12 @@
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="docs">
-		<meta property="article:modified_time" content="2026-08-22T10:57:47-03:00">
+		<meta property="article:modified_time" content="2026-09-12T09:46:35-03:00">
 
 	<meta itemprop="name" content="Configuration keys">
 	<meta itemprop="description" content="List of all annotations and global ConfigMap options.">
-	<meta itemprop="dateModified" content="2026-08-22T10:57:47-03:00">
-	<meta itemprop="wordCount" content="21294">
+	<meta itemprop="dateModified" content="2026-09-12T09:46:35-03:00">
+	<meta itemprop="wordCount" content="21505">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Configuration keys">
 	<meta name="twitter:description" content="List of all annotations and global ConfigMap options.">
@@ -127,14 +127,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -402,7 +394,7 @@ from Kubernetes resources.</p>
 <p>N42 Gateway by default does not listen to Ingress resources, until one or more of
 the following conditions are met:</p>
 <ul>
-<li>Ingress resources have the annotation <code>kubernetes.io/ingress.class</code> with the value <code>n42-gateway</code></li>
+<li>Ingress resources have the annotation <code>kubernetes.io/ingress.class</code> with the value <code>n42</code></li>
 <li>Ingress resources have its <code>ingressClassName</code> field assigning an IngressClass resource whose <code>controller</code> name is <code>n42-gateway.github.io/controller</code></li>
 <li>N42 Gateway was started with <code>--watch-ingress-without-class</code> command-line option</li>
 </ul>
@@ -449,7 +441,7 @@ as strings, N42 Gateway will convert them when needed.</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway-system</span><span class="w">
 </span></span></span></code></pre></div><h3 id="annotation">Annotation<a class="td-heading-self-link" href="#annotation" aria-label="Heading self-link"></a></h3>
 <p>Annotations are read in the following conditions:</p>
 <ul>
@@ -503,7 +495,7 @@ IngressClass+ConfigMap configuration.</p>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-options</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway-system</span><span class="w">
 </span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -669,6 +661,12 @@ fast with N42 Gateway.</p>
 					<td><code>false</code></td>
 			</tr>
 			<tr>
+					<td><a href="#allowlist"><code>allowlist-enforcement-mode</code></a></td>
+					<td>[deny|reject|silent-drop]</td>
+					<td>Path</td>
+					<td><code>deny</code></td>
+			</tr>
+			<tr>
 					<td><a href="#allowlist"><code>allowlist-source-range</code></a></td>
 					<td>Comma-separated IPs or CIDRs</td>
 					<td>Path</td>
@@ -811,6 +809,12 @@ fast with N42 Gateway.</p>
 					<td>[sequence|ip|pod]</td>
 					<td>Backend</td>
 					<td><code>sequence</code></td>
+			</tr>
+			<tr>
+					<td><a href="#backend-server-naming"><code>backend-server-rename</code></a></td>
+					<td>[true|false]</td>
+					<td>Backend</td>
+					<td><code>false</code></td>
 			</tr>
 			<tr>
 					<td><a href="#dynamic-scaling"><code>backend-server-slots-increment</code></a></td>
@@ -1087,6 +1091,12 @@ fast with N42 Gateway.</p>
 					<td>HTTP status code</td>
 					<td>Global</td>
 					<td><code>302</code></td>
+			</tr>
+			<tr>
+					<td><a href="#allowlist"><code>denylist-enforcement-mode</code></a></td>
+					<td>[deny|reject|silent-drop]</td>
+					<td>Path</td>
+					<td><code>deny</code></td>
 			</tr>
 			<tr>
 					<td><a href="#allowlist"><code>denylist-source-range</code></a></td>
@@ -2348,10 +2358,22 @@ overwrite the weight defined from the agent</li>
 	</thead>
 	<tbody>
 			<tr>
+					<td><code>allowlist-enforcement-mode</code></td>
+					<td><code>Path</code></td>
+					<td><code>deny</code></td>
+					<td>v0.17</td>
+			</tr>
+			<tr>
 					<td><code>allowlist-source-range</code></td>
 					<td><code>Path</code></td>
 					<td></td>
 					<td>v0.12</td>
+			</tr>
+			<tr>
+					<td><code>denylist-enforcement-mode</code></td>
+					<td><code>Path</code></td>
+					<td><code>deny</code></td>
+					<td>v0.17</td>
 			</tr>
 			<tr>
 					<td><code>denylist-source-range</code></td>
@@ -2384,17 +2406,39 @@ the allow and deny lists act as a backend scoped config.</p>
 rule, so an allow list with <code>&quot;10.0.0.0/8,!10.100.0.0/16&quot;</code> will allow only IPs from
 the range <code>10.x.x.x</code>, except the range <code>10.100.x.x</code> which will continue to be denied.</p>
 <ul>
-<li><code>allowlist-source-range</code>: Used to deny requests by default, allowing only the IPs
+<li>
+<p><code>allowlist-source-range</code>: Used to deny requests by default, allowing only the IPs
 and CIDRs in the list, except IPs and CIDRs prefixed with <code>!</code> which will continue to
 be denied. <code>whitelist-source-range</code> is an alias to preserve backward compatibility,
-and will be ignored if <code>allowlist-source-range</code> is declared.</li>
-<li><code>denylist-source-range</code>: Used to allow requests by default, denying only the IPs
+and will be ignored if <code>allowlist-source-range</code> is declared.</p>
+</li>
+<li>
+<p><code>denylist-source-range</code>: Used to allow requests by default, denying only the IPs
 and CIDRs in the list, except IPs and CIDRs prefixed with <code>!</code> which will continue to
-be allowed.</li>
-<li><code>allowlist-source-header</code>: Used to define a header from which source IP will be
+be allowed.</p>
+</li>
+<li>
+<p><code>allowlist-source-header</code>: Used to define a header from which source IP will be
 taken in order to compare with the allow and deny list. If not defined a normal source
 will be used. This option is useful when ingress is hidden behind reverse proxy but you
-still want to control access to separate paths from ingress configuration.</li>
+still want to control access to separate paths from ingress configuration.</p>
+</li>
+<li>
+<p><code>allowlist-enforcement-mode</code> and <code>denylist-enforcement-mode</code>: Used to define what
+HAProxy should do with a request rejected by the allow list or the deny list,
+respectively:</p>
+<ul>
+<li><code>deny</code>, the default value, responds <code>403 Forbidden</code> on HTTP requests.</li>
+<li><code>reject</code> closes the connection immediately without sending any HTTP response.</li>
+<li><code>silent-drop</code> discards the request without letting the client know the
+connection was dropped, in the same way the <a href="#waf">WAF</a> does when configured to
+drop requests: no packet is sent back, so the client keeps waiting until its own
+timeout expires, which slows down port scanners and misbehaving clients.</li>
+</ul>
+<p>On TCP services <code>deny</code> and <code>reject</code> behave the same, rejecting the connection
+during content inspection, while <code>silent-drop</code> kills the connection without
+notifying the client.</p>
+</li>
 </ul>
 <p>Allowlist and denylist can be used together. The request will be denied if the
 configurations overlap and a source IP matches both the allowlist and denylist.</p>
@@ -2407,6 +2451,7 @@ the selected header can be trusted!</p>
 <p>See also:</p>
 <ul>
 <li><a href="https://docs.haproxy.org/3.0/configuration.html#4-deny"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-deny</a></li>
+<li><a href="https://docs.haproxy.org/3.0/configuration.html#4-silent-drop"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-silent-drop</a></li>
 <li><a href="https://docs.haproxy.org/3.0/configuration.html#4-set-src"target="_blank" rel="noopener">https://docs.haproxy.org/3.0/configuration.html#4-set-src</a></li>
 </ul>
 <hr>
@@ -2760,6 +2805,12 @@ the DN of the certificate.</p>
 					<td><code>sequence</code></td>
 					<td><code>v0.8.1</code></td>
 			</tr>
+			<tr>
+					<td><code>backend-server-rename</code></td>
+					<td><code>Backend</code></td>
+					<td><code>false</code></td>
+					<td><code>v0.17</code></td>
+			</tr>
 	</tbody>
 </table>
 <p>Configures how to name backend servers.</p>
@@ -2768,6 +2819,7 @@ the DN of the certificate.</p>
 <li><code>pod</code>: Uses the k8s pod name as the backend server name. This option doesn&rsquo;t work on backends whose <a href="#service-upstream"><code>service-upstream</code></a> is <code>true</code>, falling back to <code>sequence</code>.</li>
 <li><code>ip</code>: Uses target&rsquo;s <code>&lt;ip&gt;:&lt;port&gt;</code> as the server name.</li>
 </ul>
+<p><code>backend-server-rename</code>, when <code>true</code> and <code>backend-server-naming</code> is <code>ip</code> or <code>pod</code>, lets N42 Gateway rename a reused empty slot in place via the <code>set server &lt;b&gt;/&lt;s&gt; name</code> runtime command instead of triggering a reload, keeping the server name in sync with the workload now backing it. It defaults to <code>false</code> because the command requires HAProxy 3.5-dev2 or newer; on older versions the command is rejected and the update falls back to a reload.</p>
 <div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
   <div class="td-alert-body">
     <p>N42 Gateway won&rsquo;t refuse to change the default naming if <a href="#dynamic-scaling">dynamic scaling</a> is <code>Slots</code>, this would however lead to undesired behaviour: empty slots would still be named as sequences, old-named backend servers will dynamically receive new workloads with new pod names or IP numbers which do not relate with the name anymore, making the naming useless, if not wrong. Dynamic scaling as <code>Add</code> does not have this limitation.</p>
@@ -4141,7 +4193,7 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway-system</span><span class="w">
 </span></span></span></code></pre></div><p><strong>Frontend usage</strong></p>
 <p>Ingress resources can reference a frontend pair using <code>http-frontend</code> key. If missing, the default HTTP and HTTPS will be used, and if pointing to a missing or invalid ID, the whole ingress resource will be ignored.</p>
 <div class="td-alert td-alert--md alert alert-info" role="alert"><div class="td-alert-heading alert-heading" role="heading">Note</div>
@@ -4159,7 +4211,7 @@ package) and will not work if <code>external-has-lua</code> is not enabled.</li>
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">ingress-controller</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway-system</span><span class="w">
 </span></span></span></code></pre></div><p>Ingress resource adding its spec and frontend related annotations to <code>Front8</code> frontends pair:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">networking.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Ingress</span><span class="w">
@@ -6352,7 +6404,7 @@ If the WAF is in <code>detect</code> mode the requests are passed to ModSecurity
 </ul>
 
 	<div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/0fa18e99e979d22ef5e643f001c59b9ac04425c2">n42: update resource name in docs (0fa18e99)</a>
+  Last modified September 12, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/279b2a18e2edb36f8ecf3062ffe697699fcb52d0">n42: update suggested namespace installation (279b2a18)</a>
 </div>
 
 </div>

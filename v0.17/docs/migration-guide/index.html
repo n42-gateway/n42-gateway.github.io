@@ -49,7 +49,7 @@
 	<meta itemprop="name" content="Migration Guide">
 	<meta itemprop="description" content="Guide for migrating existing HAProxy Ingress deployments to N42 Gateway.">
 	<meta itemprop="dateModified" content="2026-08-22T11:28:44-03:00">
-	<meta itemprop="wordCount" content="2181">
+	<meta itemprop="wordCount" content="2251">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Migration Guide">
 	<meta name="twitter:description" content="Guide for migrating existing HAProxy Ingress deployments to N42 Gateway.">
@@ -125,14 +125,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -298,11 +290,11 @@
 <p>Before starting the migration, it is worth understanding what this rename changes - and what it does not. N42 Gateway is the direct continuation of HAProxy Ingress: the routing engine, configuration model, operational behavior and development philosophy remain the same. Most migration tasks are related to project identity - repository names, Helm charts and Kubernetes resource names - rather than application behavior.</p>
 <p><strong>Choose the migration strategy first</strong>: start by deciding whether your environment requires a highly available migration or a short maintenance window is acceptable. The remainder of this guide is organized around these two operational models.</p>
 <p><strong>How long should the migration take</strong>: the migration itself is typically straightforward. In highly available environments, the total duration is usually determined by operational validations and DNS propagation rather than by the controller deployment itself.</p>
-<p><strong>Current stable versions are not impacted</strong>: all new v0.16 and older releases still use HAProxy Ingress branding and artifact names. HAProxy Ingress images and chart repository continue in the same URLs. All the Helm charts were migrated to a new location, a HTTP redirect ensures that the new location is found.</p>
+<p><strong>Current stable versions are not impacted</strong>: all new v0.16 and older minor versions still use HAProxy Ingress branding and artifact names. HAProxy Ingress images and chart repository continue in the same URLs. All the Helm charts were migrated to a new location, a HTTP redirect ensures that the new location is found.</p>
 <p><strong>Backward compatible resource configuration</strong>: All the configuration key names remain the same, and the <code>&quot;haproxy-ingress.github.io/&quot;</code> annotation prefix is still supported by default. Ingress and Gateway class names are handled during the migration strategies. Metric names are changed and overriding options are also handled during the migration strategies.</p>
 <p>Good migration guides minimize surprises. This guide was written with that goal in mind: every externally visible change introduced by the rename is documented below, together with the recommended migration approach.</p>
 <h2 id="supported-versions">Supported versions<a class="td-heading-self-link" href="#supported-versions" aria-label="Heading self-link"></a></h2>
-<p>This guide describes migration strategies to HAProxy Ingress v0.17 and later. Migration to a newer v0.16 or older releases are not impacted by the changes in the branding name.</p>
+<p>This guide describes migration strategies to HAProxy Ingress v0.17 and later. Migration to a newer v0.16 or older minor versions are not impacted by the changes in the branding name.</p>
 <h2 id="migration-strategies">Migration strategies<a class="td-heading-self-link" href="#migration-strategies" aria-label="Heading self-link"></a></h2>
 <p>The following migration strategies are supported, choose the one that best suites your use case:</p>
 <table>
@@ -339,13 +331,18 @@
 <p>Recommended for production environments running v0.16 or older. It consists in configuring the <code>values.yaml</code> file so a regular rolling update happens using the same Helm release created for HAProxy Ingress.</p>
 <h4 id="overview">Overview<a class="td-heading-self-link" href="#overview" aria-label="Heading self-link"></a></h4>
 <p>The Name override strategy consists in deploying N42 Gateway code using the same HAProxy Ingress resource names, leading to a safe and predictable rolling update process over the same Helm release.</p>
-<p>This strategy is a prerequisite before running the definitive migration. Using two distinct strategies allows to separate controller version upgrade from the Helm release migration. It causes none or minimal disruption since it consists in a regular rolling update process.</p>
+<p>This strategy is a prerequisite before running the definitive migration on <a href="#strategy-2-side-deployment">Strategy 2 Side deployment</a>. Using two distinct strategies allows to separate controller version upgrade from the Helm release migration. It causes none or minimal disruption since it consists in a regular rolling update process.</p>
 <div class="td-alert td-alert--md alert alert-nb" role="alert">
   <div class="td-alert-body">
     <p>This is more an upgrade than a migration, so before using this strategy, verify the N42 Gateway release notes in order to understand what changes in the new version.</p>
     </div>
 </div>
-<p>N42 Gateway v0.17.0-alpha.3 or newer is required.</p>
+<p>N42 Gateway <code>v0.17.0-alpha.3</code> or newer is required.</p>
+<div class="td-alert td-alert--md alert alert-nb" role="alert">
+  <div class="td-alert-body">
+    <p>N42 Gateway Helm chart has new configuration options supporting the migration, like <code>chartnameOverride</code> and <code>fullControllerName</code>. These options will continue to be supported indefinitely, fully overriding the branding name even on future N42 Gateway releases.</p>
+    </div>
+</div>
 <h4 id="steps">Steps<a class="td-heading-self-link" href="#steps" aria-label="Heading self-link"></a></h4>
 <ol>
 <li>
@@ -361,14 +358,19 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">initContainerName</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy-ingress-init</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">fullControllerName</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy-ingress.github.io/controller</span><span class="w"> </span><span class="c">## add any suffix if using controller.ingressClassResource.controllerClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">configuration-class</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w"> </span><span class="c">## must match the future ingress/gateway class name on strategy 2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">configuration-class</span><span class="p">:</span><span class="w"> </span><span class="l">n42</span><span class="w"> </span><span class="c">## must match the future ingress/gateway class name on strategy 2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">election-id</span><span class="p">:</span><span class="w"> </span><span class="l">class-%s.haproxy-ingress.github.io</span><span class="w"> </span><span class="c">## preserve the same old value if already configured</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metrics-namespace</span><span class="p">:</span><span class="w"> </span><span class="l">haproxyingress</span><span class="w">
 </span></span></span></code></pre></div><p>Use <code>helm template</code> to ensure that current and new installations render to the same configuration - complete with the parameters you already use on upgrades:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm template haproxy-ingress haproxy-ingress/haproxy-ingress ... -f haproxy-ingress-values.yaml <span class="p">|</span> grep -v <span class="s1">&#39;^#&#39;</span> &gt;manifests-current.yaml
-</span></span><span class="line"><span class="cl">helm repo add n42-gateway https://n42-gateway.github.io/charts
-</span></span><span class="line"><span class="cl">helm template haproxy-ingress n42-gateway/n42-gateway --version 0.17.0-alpha.3 --devel ... -f n42-gateway-overrides-values.yaml <span class="p">|</span> grep -v <span class="s1">&#39;^#&#39;</span> &gt;manifests-new.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm template haproxy-ingress haproxy-ingress/haproxy-ingress <span class="se">\
+</span></span></span><span class="line"><span class="cl">    ... <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -f haproxy-ingress-values.yaml <span class="p">|</span> grep -v <span class="s1">&#39;^#&#39;</span> &gt;manifests-current.yaml
+</span></span><span class="line"><span class="cl">helm repo add n42 https://n42-gateway.github.io/charts
+</span></span><span class="line"><span class="cl">helm template haproxy-ingress n42/n42-gateway <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --version 0.17.0-alpha.3 --devel ... <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -f n42-gateway-overrides-values.yaml <span class="p">|</span> grep -v <span class="s1">&#39;^#&#39;</span> &gt;manifests-new.yaml
 </span></span><span class="line"><span class="cl">diff -u manifests-current.yaml manifests-new.yaml
-</span></span></code></pre></div><p>Verify if the only changes are the image URL and the new <code>--full-controller-name</code>, <code>--configuration-class</code> and <code>--metrics-namespace</code> command-line options.</p>
+</span></span></code></pre></div><p>Verify if the only changes are the image URL, Helm labels, and the new <code>--full-controller-name</code>, <code>--configuration-class</code>, <code>--election-id</code> and <code>--metrics-namespace</code> command-line options.</p>
 </li>
 <li>
 <p>Configure node selector if using DaemonSet</p>
@@ -385,7 +387,9 @@
 <li>
 <p>Update to N42 Gateway</p>
 <p>Start the rolling update using <code>n42-gateway-overrides-values.yaml</code>, after confirm the configuration remains the same - complete with the parameters you already use on upgrades:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade haproxy-ingress n42-gateway/n42-gateway --version 0.17.0-alpha.3 --devel ... -f n42-gateway-overrides-values.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade haproxy-ingress n42/n42-gateway <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --version 0.17.0-alpha.3 --devel ... <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -f n42-gateway-overrides-values.yaml
 </span></span></code></pre></div></li>
 <li>
 <p>Validate operation</p>
@@ -419,7 +423,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># this attribute defaults to &#34;n42-gateway&#34;, so only needed if already declared</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClass</span><span class="p">:</span><span class="w"> </span><span class="l">n42-gateway</span><span class="w"> </span><span class="c"># ingressClass should match controller.extraArgs.configuration-class from the n42-gateway-overrides-values.yaml file in the strategy 1</span><span class="w">
-</span></span></span></code></pre></div><p>N42 Gateway uses <code>n42_gateway</code> as the metrics name prefix. Configure the <code>n42-gateway-values.yaml</code> file if you want to preserve backward compatible metrics name:</p>
+</span></span></span></code></pre></div><p>N42 Gateway uses <code>n42gateway</code> as the metrics name prefix. Configure the <code>n42-gateway-values.yaml</code> file if you want to preserve backward compatible metrics name:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metrics-namespace</span><span class="p">:</span><span class="w"> </span><span class="l">haproxyingress</span><span class="w">
@@ -427,9 +431,11 @@
 <li>
 <p>Deploy N42 Gateway alongside HAProxy Ingress</p>
 <p>Add the N42 Gateway Helm chart repository:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add n42-gateway https://n42-gateway.github.io/charts
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add n42 https://n42-gateway.github.io/charts
 </span></span></code></pre></div><p>Deploy the new Helm release - complete with the parameters you already use on upgrades:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade n42-gateway n42-gateway/n42-gateway --install --namespace ingress-controller ... -f n42-gateway-values.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade n42 n42/n42-gateway <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --install --namespace n42-gateway-system ... <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -f n42-gateway-values.yaml
 </span></span></code></pre></div><p>Only if using DaemonSet kind - apply the N42 Gateway label on new nodes:</p>
 <blockquote>
 <p>Do not <code>--overwrite</code>, or otherwise requests directed to HAProxy Ingress should be handled by the new N42 Gateway deployment</p>
@@ -470,7 +476,7 @@
 <p>Check the old controller metrics after finishing all the class updates and after DNS updates are propagated, to ensure that no requests reach it.</p>
 <p>Check the new controller metrics to ensure that everything is going well.</p>
 <p>Remove the old controller:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm delete haproxy-ingress
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm uninstall haproxy-ingress
 </span></span></code></pre></div></li>
 </ol>
 <h4 id="rollback-1">Rollback<a class="td-heading-self-link" href="#rollback-1" aria-label="Heading self-link"></a></h4>
@@ -485,23 +491,25 @@
 <li>
 <p>Prepare the environment for N42 Gateway</p>
 <p>Create a new Helm configuration file <code>n42-gateway-values.yaml</code> as a copy of the HAProxy Ingress&rsquo; one.</p>
-<p>N42 Gateway uses <code>n42_gateway</code> as the metric name prefix. Configure <code>n42-gateway-values.yaml</code> to preserve backward compatible metric name:</p>
+<p>N42 Gateway uses <code>n42gateway</code> as the metrics name prefix. Configure the <code>n42-gateway-values.yaml</code> file if you want to preserve backward compatible metrics name:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">metrics</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">haproxyingress</span><span class="w">
 </span></span></span></code></pre></div><p>Add the N42 Gateway Helm chart repository:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add n42-gateway https://n42-gateway.github.io/charts
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm repo add n42 https://n42-gateway.github.io/charts
 </span></span></code></pre></div></li>
 <li>
 <p>Simpler and faster approach - drop first, install and test later</p>
 <p>Use this approach on environments that cannot deploy and serve more than one Ingress/Gateway controller at the same time, or the rollback operation, in case of a problem, can be slower and cause more outages without further impact.</p>
 <p>Remove HAProxy Ingress:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm delete haproxy-ingress
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm uninstall haproxy-ingress
 </span></span></code></pre></div><p>This approach allows to maintain the same Ingress and Gateway Class names, avoiding to patch the Ingress and Gateway resources. Configure <code>n42-gateway-values.yaml</code> accordingly if you want to preserve the name:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">controller</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClass</span><span class="p">:</span><span class="w"> </span><span class="l">haproxy</span><span class="w">
 </span></span></span></code></pre></div><p>Install N42 Gateway:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade n42-gateway n42-gateway/n42-gateway --install --namespace ingress-controller ... -f n42-gateway-values.yaml
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm upgrade n42 n42/n42-gateway <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --install --namespace n42-gateway-system ... <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -f n42-gateway-values.yaml
 </span></span></code></pre></div><p>If DNS is manually configured, update its entry to the IP of new service of type LoadBalancer if one is used to expose the proxy.</p>
 </li>
 <li>
@@ -521,7 +529,7 @@
 <h4 id="rollback-2">Rollback<a class="td-heading-self-link" href="#rollback-2" aria-label="Heading self-link"></a></h4>
 <p>This strategy describes a full replacement of HAProxy Ingress to N42 Gateway. If the new deployment does not work as expected:</p>
 <ul>
-<li>If using the simpler approach: remove N42 Gateway Helm release using <code>helm delete n42-gateway</code>, reinstall HAProxy Ingress, and revert the class name of Ingress and Gateway resources in case they were updated.</li>
+<li>If using the simpler approach: remove N42 Gateway Helm release using <code>helm uninstall n42</code>, reinstall HAProxy Ingress, and revert the class name of Ingress and Gateway resources in case they were updated.</li>
 <li>If using the safer approach: revert the class name of Ingress and Gateway resources before removing HAProxy Ingress deployment. This moves the configuration back to the HAProxy Ingress controller and reverts the status address if configured.</li>
 </ul>
 <p>Revert also the DNS entry if manually configured.</p>
@@ -533,7 +541,7 @@
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/c6d5a044351917a4d0155f403980487219c0c9eb">n42: add migration guide (c6d5a044)</a>
+  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/30a0587055beb4771a8fcfcafe5baaa68c406e8d">n42: add migration guide (30a05870)</a>
 </div>
 </div>
 

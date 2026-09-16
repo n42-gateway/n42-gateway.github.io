@@ -46,11 +46,11 @@
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="examples">
-		<meta property="article:modified_time" content="2026-08-22T15:26:16-03:00">
+		<meta property="article:modified_time" content="2026-09-12T09:46:35-03:00">
 
 	<meta itemprop="name" content="External haproxy">
 	<meta itemprop="description" content="Demonstrate how to configure N42 Gateway to use an external haproxy deployment.">
-	<meta itemprop="dateModified" content="2026-08-22T15:26:16-03:00">
+	<meta itemprop="dateModified" content="2026-09-12T09:46:35-03:00">
 	<meta itemprop="wordCount" content="987">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="External haproxy">
@@ -127,14 +127,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -383,22 +375,22 @@ to <code>:80</code> and <code>:443</code> without the need to run as root. Give 
 </ol>
 <h2 id="install-the-controller">Install the controller<a class="td-heading-self-link" href="#install-the-controller" aria-label="Heading self-link"></a></h2>
 <p>Add the N42 Gateway Helm repository if using N42 Gateway&rsquo; chart for the first time:</p>
-<pre tabindex="0"><code>$ helm repo add n42-gateway https://n42-gateway.github.io/charts
+<pre tabindex="0"><code>$ helm repo add n42 https://n42-gateway.github.io/charts
 </code></pre><p>Install or upgrade N42 Gateway using the <code>n42-gateway-values.yaml</code> parameters:</p>
-<pre tabindex="0"><code>$ helm upgrade n42-gateway n42-gateway/n42-gateway\
-  --install --create-namespace --namespace=ingress-controller\
+<pre tabindex="0"><code>$ helm upgrade n42 n42/n42-gateway\
+  --install --create-namespace --namespace=n42-gateway-system\
   -f n42-gateway-values.yaml
 </code></pre><p>Check if the controller successfully starts or restarts:</p>
-<pre tabindex="0"><code>$ kubectl --namespace ingress-controller get pod -w
+<pre tabindex="0"><code>$ kubectl --namespace n42-gateway-system get pod -w
 </code></pre><h2 id="test">Test<a class="td-heading-self-link" href="#test" aria-label="Heading self-link"></a></h2>
 <p>Open two distinct terminals to follow <code>n42-gateway</code> and <code>haproxy</code> logs:</p>
-<pre tabindex="0"><code>$ kubectl --namespace ingress-controller get pod
+<pre tabindex="0"><code>$ kubectl --namespace n42-gateway-system get pod
 NAME                           READY   STATUS    RESTARTS   AGE
 n42-gateway-6f8848d6fb-gxmrk   2/2     Running   0          13s
 
-$ kubectl --namespace ingress-controller logs -f n42-gateway-6f8848d6fb-gxmrk -c n42-gateway
+$ kubectl --namespace n42-gateway-system logs -f n42-gateway-6f8848d6fb-gxmrk -c n42-gateway
 </code></pre><p>and</p>
-<pre tabindex="0"><code>$ kubectl --namespace ingress-controller logs -f n42-gateway-6f8848d6fb-gxmrk -c haproxy
+<pre tabindex="0"><code>$ kubectl --namespace n42-gateway-system logs -f n42-gateway-6f8848d6fb-gxmrk -c haproxy
 </code></pre><p>Do some <code>curl</code> to any exposed application, or just use the controller or service loadbalancer
 IP like the example below:</p>
 <pre tabindex="0"><code>$ curl 192.168.1.11
@@ -451,7 +443,7 @@ check URI. This example changes the liveness probe from the N42 Gateway
 container to the haproxy one.</p>
 
 	<div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/8cf2a277ba53184f89f3a0e2e707337172e4fc80">ultimos (8cf2a277)</a>
+  Last modified September 12, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/279b2a18e2edb36f8ecf3062ffe697699fcb52d0">n42: update suggested namespace installation (279b2a18)</a>
 </div>
 
 </div>

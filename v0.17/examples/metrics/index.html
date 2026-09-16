@@ -46,11 +46,11 @@
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
 		<meta property="article:section" content="examples">
-		<meta property="article:modified_time" content="2026-08-22T10:57:47-03:00">
+		<meta property="article:modified_time" content="2026-09-12T09:46:35-03:00">
 
 	<meta itemprop="name" content="Metrics">
 	<meta itemprop="description" content="Demonstrate how to collect and expose ingress controller and haproxy metrics.">
-	<meta itemprop="dateModified" content="2026-08-22T10:57:47-03:00">
+	<meta itemprop="dateModified" content="2026-09-12T09:46:35-03:00">
 	<meta itemprop="wordCount" content="907">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Metrics">
@@ -127,14 +127,6 @@
       </li>
     <li>
         <a class="dropdown-item" href="/v0.13/docs">v0.13</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.12/docs">v0.12</a>
-        
-      </li>
-    <li>
-        <a class="dropdown-item" href="/v0.10/docs">v0.10</a>
         
       </li>
     
@@ -338,9 +330,9 @@
 <li>Added relabels to HAProxy and N42 Gateway metrics. The N42 Gateway dashboard uses <code>hostname</code> label as a way to distinguish two controller instances, and also <code>cluster</code> label to distinguish controllers running on distinct clusters. The source of the name can be adjusted but the label name should be the same.</li>
 </ul>
 <p>Now install or upgrade the chart:</p>
-<pre tabindex="0"><code>helm upgrade n42-gateway n42-gateway/n42-gateway\
+<pre tabindex="0"><code>helm upgrade n42 n42/n42-gateway\
   --install\
-  --create-namespace --namespace ingress-controller\
+  --create-namespace --namespace n42-gateway-system\
   -f n42-gateway-values.yaml
 </code></pre><h2 id="compatibility">Compatibility<a class="td-heading-self-link" href="#compatibility" aria-label="Heading self-link"></a></h2>
 <p>This dashboard works with HAProxy&rsquo;s internal Prometheus exporter. Follow these steps to adjust the scrape config and the dashboard if using <a href="https://github.com/prometheus/haproxy_exporter"target="_blank" rel="noopener">Prometheus&rsquo; HAProxy Exporter</a>:</p>
@@ -417,7 +409,7 @@ echo &#34;GET https://$IP&#34; |\
   vegeta report
 </code></pre>
 	<div class="td-page-meta__lastmod">
-  Last modified August 22, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/0fa18e99e979d22ef5e643f001c59b9ac04425c2">n42: update resource name in docs (0fa18e99)</a>
+  Last modified September 12, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/279b2a18e2edb36f8ecf3062ffe697699fcb52d0">n42: update suggested namespace installation (279b2a18)</a>
 </div>
 
 </div>
