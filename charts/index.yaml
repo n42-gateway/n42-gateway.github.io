@@ -2605,4 +2605,28 @@ entries:
     urls:
     - https://haproxy-ingress.github.io/charts/haproxy-ingress-0.0.27.tgz
     version: 0.0.27
-generated: "2026-05-17T11:12:57.339456-03:00"
+  n42-gateway:
+  - apiVersion: v2
+    appVersion: v0.17.0-alpha.3
+    created: "2026-09-16T08:31:08.171081-03:00"
+    description: N42 Gateway - Ingress and Gateway API controller built on HAProxy®
+    digest: ed10f6146cad7394f70e36346160a2fc03051a58d166ed47a6cef15779f2b9bd
+    home: https://n42-gateway.github.io
+    icon: https://n42-gateway.github.io/favicons/android-chrome-192x192.png
+    keywords:
+    - n42
+    - ingress
+    - gateway api
+    - haproxy
+    maintainers:
+    - email: jcmoraisjr@gmail.com
+      name: jcmoraisjr
+    name: n42-gateway
+    sources:
+    - https://github.com/n42-gateway/n42-gateway
+    - https://github.com/n42-gateway/charts
+    type: application
+    urls:
+    - https://github.com/n42-gateway/charts/releases/download/0.17.0-alpha.3/n42-gateway-0.17.0-alpha.3.tgz
+    version: 0.17.0-alpha.3
+generated: "2026-09-16T08:31:08.169106-03:00"
