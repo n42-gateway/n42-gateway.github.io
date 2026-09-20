@@ -1,0 +1,17 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HAProxy Ingress – Contribution Guidelines</title>
+    <link>/v0.13/docs/contribution-guidelines/</link>
+    <description>Recent content in Contribution Guidelines on HAProxy Ingress</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	  <atom:link href="/v0.13/docs/contribution-guidelines/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+  </channel>
+</rss>

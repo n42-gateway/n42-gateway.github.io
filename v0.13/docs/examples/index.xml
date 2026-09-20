@@ -1,0 +1,905 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HAProxy Ingress – Examples</title>
+    <link>/v0.13/docs/examples/</link>
+    <description>Recent content in Examples on HAProxy Ingress</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	  <atom:link href="/v0.13/docs/examples/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Docs: Blue/green</title>
+      <link>/v0.13/docs/examples/blue-green/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/v0.13/docs/examples/blue-green/</guid>
+      <description>
+        
+        
+        
+
+&lt;p&gt;This example demonstrates how to configure
+&lt;a href=&#34;https://www.martinfowler.com/bliki/BlueGreenDeployment.html&#34;&gt;blue/green deployment&lt;/a&gt;
+on HAProxy Ingress controller, in order to route requests based on distict weight on
+deployment groups as well as selecting a group based on http header or cookie value.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;This document has the following prerequisite:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A Kubernetes cluster with a running HAProxy Ingress controller v0.6 or above.
+See the &lt;a href=&#34;https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/setup-cluster.md#five-minutes-deployment&#34;&gt;five minutes deployment&lt;/a&gt;
+or the &lt;a href=&#34;https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/deployment&#34;&gt;deployment example&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;deploying-applications&#34;&gt;Deploying applications&lt;/h2&gt;
+
+&lt;p&gt;In order to the configuration have effect, at least two deployments, or daemon sets, or replication
+controllers should be used with at least two pairs of label name/value.&lt;/p&gt;
+
+&lt;p&gt;The following instructions create two deployment objects using &lt;code&gt;run&lt;/code&gt; label as the service selector
+and &lt;code&gt;group&lt;/code&gt; label as the blue/green deployment selector:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl run blue \
+  --image=jcmoraisjr/whoami \
+  --port=8000 --labels=run=bluegreen,group=blue
+deployment &amp;quot;blue&amp;quot; created
+
+$ kubectl run green \
+  --image=jcmoraisjr/whoami \
+  --port=8000 --labels=run=bluegreen,group=green
+deployment &amp;quot;green&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Certify that the pods are running and have the correct labels. Note that both &lt;code&gt;group&lt;/code&gt; and &lt;code&gt;run&lt;/code&gt;
+labels were applied:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl get pod -lrun=bluegreen --show-labels
+NAME                     READY     STATUS    RESTARTS   AGE       LABELS
+blue-79c9b67d5b-5hd2r    1/1       Running   0          35s       group=blue,pod-template-hash=3575623816,run=bluegreen
+green-7546d648c4-p7pmz   1/1       Running   0          28s       group=green,pod-template-hash=3102820470,run=bluegreen
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configure&#34;&gt;Configure&lt;/h2&gt;
+
+&lt;p&gt;Create a service that bind both deployments together using the &lt;code&gt;run&lt;/code&gt; label. The expose command need
+a deployment object, take anyone, we will override it&amp;rsquo;s selector:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl expose deploy blue --name bluegreen --selector=run=bluegreen
+service &amp;quot;bluegreen&amp;quot; exposed
+
+$ kubectl get svc bluegreen -otemplate --template &#39;{{.spec.selector}}&#39;
+map[run:bluegreen]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check also the endpoints, it should list both blue and green pods:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl get ep bluegreen
+NAME         ENDPOINTS                           AGE
+bluegreen    172.17.0.11:8000,172.17.0.19:8000   2m
+
+$ kubectl get pod -lrun=bluegreen -owide
+NAME                     READY     STATUS    RESTARTS   AGE       IP            NODE
+blue-79c9b67d5b-5hd2r    1/1       Running   0          2m        172.17.0.11   192.168.100.99
+green-7546d648c4-p7pmz   1/1       Running   0          2m        172.17.0.19   192.168.100.99
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure the ingress resource. No need to change the host below, &lt;code&gt;bluegreen.example.com&lt;/code&gt; is fine:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl create -f - &amp;lt;&amp;lt;EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    haproxy-ingress.github.io/balance-algorithm: roundrobin
+    haproxy-ingress.github.io/blue-green-deploy: group=blue=1,group=green=1
+    haproxy-ingress.github.io/blue-green-mode: pod
+    haproxy-ingress.github.io/ssl-redirect: &amp;quot;false&amp;quot;
+  name: bluegreen
+spec:
+  rules:
+  - host: bluegreen.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bluegreen
+            port:
+              number: 8000
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl get ing
+NAME        HOSTS                   ADDRESS   PORTS     AGE
+bluegreen   bluegreen.example.com             80        11s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;test-blue-green-balance&#34;&gt;Test blue/green balance&lt;/h2&gt;
+
+&lt;p&gt;Lets test! The following snippets use an alias &lt;code&gt;hareq&lt;/code&gt; declared below.
+Change &lt;code&gt;IP&lt;/code&gt; to your HAProxy Ingress controller IP address:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ IP=192.168.100.99
+$ alias hareq=&#39;echo Running 100 requests...; for i in `seq 1 100`; do
+    curl -fsS $IP -H &amp;quot;Host: bluegreen.example.com&amp;quot; | cut -d- -f1
+  done | sort | uniq -c&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BG Mode: pod&lt;/li&gt;
+&lt;li&gt;BG Balance: blue=1, green=1&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Replicas: blue=1, green=1&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+50 blue
+50 green
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Now changing green replicas to 3 and wait all the replicas to be running.
+BG Mode is pod, so the number of replicas will increase the load of the green deployment.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl scale deploy green --replicas=3
+$ kubectl get pod -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BG Mode: pod&lt;/li&gt;
+&lt;li&gt;BG Balance: blue=1, green=1&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Replicas: blue=1, green=3&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+25 blue
+75 green
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Changing to &lt;em&gt;deploy&lt;/em&gt; mode. This mode targets the balance config to the whole deployment
+instead of single pods.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; BG mode was added on v0.7. On v0.6, the only supported mode is &lt;code&gt;pod&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-mode=deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BG Mode: deploy&lt;/li&gt;
+&lt;li&gt;BG Balance: blue=1, green=1&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Replicas: blue=1, green=3&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+50 blue
+50 green
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Changing now the balance to &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; blue and &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; green:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-deploy=group=blue=1,group=green=2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BG Mode: deploy&lt;/li&gt;
+&lt;li&gt;BG Balance: blue=1, green=2&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Replicas: blue=1, green=3&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+33 blue
+67 green
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;The balance will be the same despite the number of replicas:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl scale deploy green --replicas=6
+$ kubectl get pod -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BG Mode: deploy&lt;/li&gt;
+&lt;li&gt;BG Balance: blue=1, green=2&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Replicas: blue=1, green=6&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+33 blue
+67 green
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;test-blue-green-selector&#34;&gt;Test blue/green selector&lt;/h2&gt;
+
+&lt;p&gt;Blue/green selector requires HAProxy Ingress controller v0.9 or above.&lt;/p&gt;
+
+&lt;p&gt;Follow the &lt;a href=&#34;#deploying-applications&#34;&gt;deployment&lt;/a&gt; and &lt;a href=&#34;#configure&#34;&gt;configuration&lt;/a&gt;
+instructions to deploy the sample application.&lt;/p&gt;
+
+&lt;p&gt;After that, add the following annotation:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-header=x-server:group
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Create (or update) the &lt;code&gt;hareq&lt;/code&gt; alias. Change &lt;code&gt;IP&lt;/code&gt; to your HAProxy Ingress controller
+IP address:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ IP=192.168.100.99
+$ alias hareq=&#39;echo Running 100 requests...; for i in `seq 1 100`; do
+    curl -fsS $IP -H &amp;quot;Host: bluegreen.example.com&amp;quot; -H &amp;quot;X-Server: $GROUP&amp;quot; | cut -d- -f1
+  done | sort | uniq -c&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Choose &lt;code&gt;blue&lt;/code&gt; group:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ GROUP=blue
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The envvar &lt;code&gt;GROUP&lt;/code&gt; will populate the &lt;code&gt;X-Server&lt;/code&gt; header with the value &lt;code&gt;blue&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Run the requests:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ hareq
+Running 100 requests...
+ 100 blue
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Choose &lt;code&gt;green&lt;/code&gt; group:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ GROUP=blue
+$ hareq
+Running 100 requests...
+ 100 green
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Choose an invalid group, the configured blue/green balance will be used:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-deploy=group=blue=1,group=green=3
+$ GROUP=invalid
+$ hareq
+Running 100 requests...
+  25 blue
+  75 green
+&lt;/code&gt;&lt;/pre&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: External haproxy</title>
+      <link>/v0.13/docs/examples/external-haproxy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/v0.13/docs/examples/external-haproxy/</guid>
+      <description>
+        
+        
+        
+
+&lt;p&gt;This example demonstrates how to configure HAProxy Ingress to manage an external
+haproxy instance deployed as a sidecar container. This approach decouple the
+controller and the running haproxy version, allowing the sysadmin to update any
+of them independently of the other.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;This document requires only a Kubernetes cluster. HAProxy Ingress doesn&amp;rsquo;t need to be
+installed, and if so, the installation process should use the
+&lt;a href=&#34;/v0.13/v0.13/docs/getting-started/#installation&#34;&gt;Helm chart&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-the-controller&#34;&gt;Configure the controller&lt;/h2&gt;
+
+&lt;p&gt;The easiest and recommended way to configure an external haproxy is using the Helm
+chart with a customized values file. Create the &lt;code&gt;haproxy-ingress-values.yaml&lt;/code&gt; file with the
+following content:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;config&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-endpoint&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;stdout&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-format&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;raw&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;haproxy&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;securityContext&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;runAsUser&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These parameters are configuring an external haproxy and configuring haproxy to log
+to stdout. Also, haproxy is configured as root so it has permission to bind ports &lt;code&gt;:80&lt;/code&gt;
+and &lt;code&gt;:443&lt;/code&gt;. By default haproxy container is started as UID &lt;code&gt;99&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;a-word-about-security&#34;&gt;A word about security&lt;/h3&gt;
+
+&lt;p&gt;haproxy historically started as root so it has the permissions needed to bind to privileged ports,
+configure chroot, configure file descriptor limits, and other administrative tasks. haproxy then
+drops its own privileges just before starting its event loop. See
+&lt;a href=&#34;https://docs.haproxy.org/2.4/management.html#13&#34;&gt;Security Considerations&lt;/a&gt; from the documentation.&lt;/p&gt;
+
+&lt;p&gt;Since 2.4, haproxy container has been started as UID &lt;code&gt;99&lt;/code&gt;. There are a few ways to give it
+permissions to bind privileged port, none of them is provided by default by HAProxy Ingress Helm
+chart because all of them has some sort of limitation. Choose one of the options below that best
+suits the needs of your environment:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Configure haproxy to start as root, This is the configuration provided above, but it will not
+work if cluster policies deny containers running as root.&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Some container runtime engines, like Docker &lt;code&gt;20.10&lt;/code&gt; or newer, or Containerd embedded in k3s,
+reconfigure the starting of unprivileged ports so haproxy should work out of the box listening
+to &lt;code&gt;:80&lt;/code&gt; and &lt;code&gt;:443&lt;/code&gt; without the need to run as root. Give it a try by removing the
+&lt;code&gt;securityContext&lt;/code&gt; configuration altogether:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;config&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-endpoint&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;stdout&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-format&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;raw&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;haproxy&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Change haproxy listening port to unprivileged ports, like &lt;code&gt;8080&lt;/code&gt; and &lt;code&gt;8443&lt;/code&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note that, if exposing haproxy via &lt;code&gt;hostNetwork&lt;/code&gt;, end users would need to connect to &lt;code&gt;:8443&lt;/code&gt; instead of the well known &lt;code&gt;:443&lt;/code&gt;, so this is only an option if the cluster provides LoadBalancer services&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;config&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-endpoint&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;stdout&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-format&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;raw&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;http-port&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;8080&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;https-port&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;8443&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;service&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;httpPorts&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;port&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;80&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;targetPort&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;8080&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;httpsPorts&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;port&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;443&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;targetPort&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;8443&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;type&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;LoadBalancer&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;haproxy&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Change the haproxy image by adding the &lt;code&gt;NET_BIND_SERVICE&lt;/code&gt;
+&lt;a href=&#34;https://man7.org/linux/man-pages/man7/capabilities.7.html&#34;&gt;capability&lt;/a&gt; to the haproxy binary:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-Dockerfile&#34; data-lang=&#34;Dockerfile&#34;&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt; haproxy:X.X-alpine&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;USER root&lt;span style=&#34;color:#a40000&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;RUN&lt;/span&gt; apk add -U libcap-utils&lt;span style=&#34;color:#a40000&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;RUN&lt;/span&gt; setcap &lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#39;cap_net_bind_service=+ep&amp;#39;&lt;/span&gt; /usr/local/sbin/haproxy&lt;span style=&#34;color:#a40000&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#a40000&#34;&gt;&lt;/span&gt;USER haproxy&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Reconfigure the start of unprivileged port to &lt;code&gt;80&lt;/code&gt; or below using the following configuration:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This configuration does not work if &lt;code&gt;hostNetwork&lt;/code&gt; is configured as &lt;code&gt;true&lt;/code&gt;, and does not work on Kernel versions older than 4.11.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;config&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-endpoint&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;stdout&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;syslog-format&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;raw&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;haproxy&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;securityContext&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;sysctls&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;name&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;net.ipv4.ip_unprivileged_port_start&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;value&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#4e9a06&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;install-the-controller&#34;&gt;Install the controller&lt;/h2&gt;
+
+&lt;p&gt;Add the HAProxy Ingress Helm repository if using HAProxy Ingress&amp;rsquo; chart for the first time:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install or upgrade HAProxy Ingress using the &lt;code&gt;haproxy-ingress-values.yaml&lt;/code&gt; parameters:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
+  --install --create-namespace --namespace=ingress-controller\
+  -f haproxy-ingress-values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check if the controller successfully starts or restarts:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl --namespace ingress-controller get pod -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;test&#34;&gt;Test&lt;/h2&gt;
+
+&lt;p&gt;Open two distinct terminals to follow &lt;code&gt;haproxy-ingress&lt;/code&gt; and &lt;code&gt;haproxy&lt;/code&gt; logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl --namespace ingress-controller get pod
+NAME                               READY   STATUS    RESTARTS   AGE
+haproxy-ingress-6f8848d6fb-gxmrk   2/2     Running   0          13s
+
+$ kubectl --namespace ingress-controller logs -f haproxy-ingress-6f8848d6fb-gxmrk -c haproxy-ingress
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl --namespace ingress-controller logs -f haproxy-ingress-6f8848d6fb-gxmrk -c haproxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Do some &lt;code&gt;curl&lt;/code&gt; to any exposed application, or just use the controller or service loadbalancer
+IP like the example below:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ curl 192.168.1.11
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HAProxy Ingress and the external haproxy should be logging their own events:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;haproxy-ingress&lt;/code&gt; container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+I0117 17:30:27.282701       6 controller.go:87] HAProxy Ingress successfully initialized
+I0117 17:30:27.282743       6 leaderelection.go:243] attempting to acquire leader lease  ingress-controller/ingress-controller-leader-haproxy...
+I0117 17:30:27.335674       6 status.go:177] new leader elected: haproxy-ingress-6f8848d6fb-cxb6w
+I0117 17:30:27.392372       6 controller.go:321] starting haproxy update id=1
+I0117 17:30:27.392463       6 ingress.go:153] using auto generated fake certificate
+I0117 17:30:27.437047       6 instance.go:309] haproxy successfully reloaded (external)
+I0117 17:30:27.437217       6 controller.go:353] finish haproxy update id=1: parse_ingress=0.143483ms write_maps=0.149637ms write_config=0.971026ms reload_haproxy=43.498718ms total=44.762864ms
+I0117 17:30:58.066768       6 leaderelection.go:253] successfully acquired lease ingress-controller/ingress-controller-leader-haproxy
+I0117 17:30:58.066867       6 status.go:177] new leader elected: haproxy-ingress-6f8848d6fb-gxmrk
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;haproxy&lt;/code&gt; container:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+192.168.1.10:61116 [17/Jan/2021:17:32:36.050] _front_http _error404/&amp;lt;lua.send-404&amp;gt; 0/0/0/0/0 404 190 - - LR-- 1/1/0/0/0 0/0 &amp;quot;GET / HTTP/1.1&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;what-was-changed&#34;&gt;What was changed?&lt;/h2&gt;
+
+&lt;p&gt;The sections below have details of what changed in the deployment compared with a
+default installation.&lt;/p&gt;
+
+&lt;h3 id=&#34;sidecar&#34;&gt;Sidecar&lt;/h3&gt;
+
+&lt;p&gt;This example configures 2 (two) new containers in the controllers&amp;rsquo; pod:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;haproxy&lt;/code&gt; is the external haproxy deployment with two mandatory arguments: &lt;code&gt;-S&lt;/code&gt; with the master CLI unix socket, and &lt;code&gt;-f&lt;/code&gt; with the configuration files path&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;init&lt;/code&gt;, a Kubernetes&amp;rsquo; &lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/pods/init-containers/&#34;&gt;initContainer&lt;/a&gt; used to create an initial and valid haproxy configuration.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code&gt;haproxy&lt;/code&gt; container references the official Alpine based image &lt;code&gt;haproxy:2.3.12-alpine&lt;/code&gt;,
+but can be any other, provided that it isn&amp;rsquo;t older than the minimal required version. The
+minimal version for the external HAProxy can be found in the
+&lt;a href=&#34;https://github.com/jcmoraisjr/haproxy-ingress/#use-haproxy-ingress&#34;&gt;README&lt;/a&gt; file.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;init&lt;/code&gt; container just copy a minimum and valid &lt;code&gt;haproxy.cfg&lt;/code&gt;. This file is used
+to properly starts haproxy and configures its master CLI that HAProxy Ingress uses
+to manage the instance.&lt;/p&gt;
+
+&lt;p&gt;A new command-line &lt;code&gt;--master-socket&lt;/code&gt; was also added to the HAProxy Ingress container.
+This option enables an external haproxy instance, pointing to the unix socket path
+of its master CLI.&lt;/p&gt;
+
+&lt;h3 id=&#34;shared-filesystem&#34;&gt;Shared filesystem&lt;/h3&gt;
+
+&lt;p&gt;HAProxy Ingress sends configuration files to the haproxy instance using a shared
+filesystem. A Kubernetes&amp;rsquo; &lt;a href=&#34;https://kubernetes.io/docs/concepts/storage/volumes/#emptydir&#34;&gt;&lt;code&gt;emptyDir&lt;/code&gt;&lt;/a&gt;
+works well.&lt;/p&gt;
+
+&lt;p&gt;The following directories must be shared:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/etc/haproxy&lt;/code&gt;: configuration and map files - &lt;code&gt;init&lt;/code&gt; and &lt;code&gt;haproxy-ingress&lt;/code&gt; need write access, &lt;code&gt;haproxy&lt;/code&gt; need read access.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/var/lib/haproxy&lt;/code&gt;: mostly ssl related files - &lt;code&gt;haproxy-ingress&lt;/code&gt; need write access, &lt;code&gt;haproxy&lt;/code&gt; need read access.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/var/run/haproxy&lt;/code&gt;: unix sockets - &lt;code&gt;haproxy-ingress&lt;/code&gt; and &lt;code&gt;haproxy&lt;/code&gt; need write access.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;liveness-probe&#34;&gt;Liveness probe&lt;/h3&gt;
+
+&lt;p&gt;Default HAProxy Ingress deployment has a liveness probe to an haproxy&amp;rsquo;s health
+check URI. This example changes the liveness probe from the HAProxy Ingress
+container to the haproxy one.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Metrics</title>
+      <link>/v0.13/docs/examples/metrics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/v0.13/docs/examples/metrics/</guid>
+      <description>
+        
+        
+        
+
+&lt;p&gt;This example demonstrates how to configure &lt;a href=&#34;https://prometheus.io&#34;&gt;Prometheus&lt;/a&gt; and &lt;a href=&#34;https://grafana.com&#34;&gt;Grafana&lt;/a&gt; to collect and expose HAProxy and HAProxy Ingress metrics using &lt;a href=&#34;https://prometheus-operator.dev&#34;&gt;Prometheus Operator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;This document requires only a Kubernetes cluster. HAProxy Ingress doesn&amp;rsquo;t need to be installed, and if so, the installation process should use the &lt;a href=&#34;/v0.13/v0.13/docs/getting-started/#installation&#34;&gt;Helm chart&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-prometheus-operator&#34;&gt;Configure Prometheus Operator&lt;/h2&gt;
+
+&lt;p&gt;This section can be skipped if the Kubernetes cluster has already a running Prometheus Operator.&lt;/p&gt;
+
+&lt;p&gt;HAProxy Ingress installation configures Prometheus using a ServiceMonitor custom resource. This resource is used by &lt;a href=&#34;https://prometheus-operator.dev&#34;&gt;Prometheus Operator&lt;/a&gt; to configure Prometheus instances. The following steps deploy Prometheus Operator via &lt;a href=&#34;https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack&#34;&gt;&lt;code&gt;kube-prometheus-stack&lt;/code&gt;&lt;/a&gt; Helm chart.&lt;/p&gt;
+
+&lt;p&gt;Create a file named &lt;code&gt;prometheus-operator-values.yaml&lt;/code&gt; - change both hostnames with a name that resolves to the Kubernetes cluster:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;grafana&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;ingress&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;annotations&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;kubernetes.io/ingress.class&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;haproxy&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;hosts&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;grafana&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;.192.168.0.11&lt;/span&gt;.nip.io&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;tls&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;hosts&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;grafana&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;.192.168.0.11&lt;/span&gt;.nip.io&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Add &lt;code&gt;kube-prometheus-stack&lt;/code&gt; helm repo:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install the chart:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;helm install prometheus prometheus-community/kube-prometheus-stack\
+  --create-namespace --namespace monitoring\
+  -f prometheus-operator-values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;div class=&#34;alert alert-primary&#34; role=&#34;alert&#34;&gt;
+&lt;h4 class=&#34;alert-heading&#34;&gt;Note&lt;/h4&gt;
+Bitnami has also a Prometheus Operator &lt;a href=&#34;https://github.com/bitnami/charts/tree/master/bitnami/kube-prometheus&#34;&gt;helm chart&lt;/a&gt; and it&amp;rsquo;s also a good option. Note however that the values file has a different syntax.
+&lt;/div&gt;
+
+
+&lt;h2 id=&#34;configure-haproxy-ingress&#34;&gt;Configure HAProxy Ingress&lt;/h2&gt;
+
+&lt;p&gt;The steps below configures HAProxy Ingress&amp;rsquo; Helm chart to add a new ServiceMonitor custom resource. This resource will be responsible for HAProxy and HAProxy Ingress metrics scrape.&lt;/p&gt;
+
+&lt;p&gt;Merge the content below to the actual &lt;code&gt;haproxy-ingress-values.yaml&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;stats&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;metrics&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;serviceMonitor&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;enabled&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#204a87;font-weight:bold&#34;&gt;true&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;labels&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;release&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;prometheus&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;metrics&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;relabelings&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;replacement&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;cl1&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;cluster&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;sourceLabels&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;__meta_kubernetes_pod_node_name&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;hostname&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;ctrlMetrics&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;relabelings&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;replacement&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;cl1&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;cluster&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;sourceLabels&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;__meta_kubernetes_pod_node_name&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;hostname&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;There are two important configurations in the snippet above:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Added a label &lt;code&gt;release: prometheus&lt;/code&gt; in the ServiceMonitor. HAProxy Ingress metrics will share the same Prometheus instance installed by Prometheus Operator. This can be changed to another dedicated instance, and must be checked if using another customized Prometheus Operator deployment.&lt;/li&gt;
+&lt;li&gt;Added relabels to HAProxy and HAProxy Ingress metrics. The HAProxy Ingress dashboard uses &lt;code&gt;hostname&lt;/code&gt; label as a way to distinguish two controller instances, and also &lt;code&gt;cluster&lt;/code&gt; label to distinguish controllers running on distinct clusters. The source of the name can be adjusted but the label name should be the same.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now upgrade the chart - change &lt;code&gt;upgrade&lt;/code&gt; to &lt;code&gt;install&lt;/code&gt; if HAProxy Ingress isn&amp;rsquo;t installed yet:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
+  --create-namespace --namespace ingress-controller\
+  -f haproxy-ingress-values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;compatibility&#34;&gt;Compatibility&lt;/h2&gt;
+
+&lt;p&gt;This dashboard works with HAProxy&amp;rsquo;s internal Prometheus exporter. Follow these steps to adjust the scrape config and the dashboard if using &lt;a href=&#34;https://github.com/prometheus/haproxy_exporter&#34;&gt;Prometheus&amp;rsquo; HAProxy Exporter&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;Change the metric name of &amp;ldquo;Backend status / Top 5 max/avg connection time&amp;rdquo; to &lt;code&gt;haproxy_backend_http_connect_time_average_seconds&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Add this relabel configuration in the &lt;code&gt;haproxy-ingress-values.yaml&lt;/code&gt; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;controller&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;...&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;serviceMonitor&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;...&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;    &lt;/span&gt;metrics&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;...&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;metricRelabelings&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;sourceLabels&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;frontend&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;proxy&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;      &lt;/span&gt;-&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;sourceLabels&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;[&lt;/span&gt;backend&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;]&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;        &lt;/span&gt;targetLabel&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;proxy&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;configure-the-dashboard&#34;&gt;Configure the dashboard&lt;/h2&gt;
+
+&lt;p&gt;Import &lt;a href=&#34;https://grafana.com/grafana/dashboards/12056&#34;&gt;this&lt;/a&gt; Grafana dashboard. If Grafana was deployed using the steps provided in this walktrought:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Open Grafana page - the URL is the same provided in the &lt;code&gt;prometheus-operator-values.yaml&lt;/code&gt; file and should resolve to the ingress deployment&lt;/li&gt;
+&lt;li&gt;Log in to Grafana, user is &lt;code&gt;admin&lt;/code&gt; and the first password is &lt;code&gt;prom-operator&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Click the big plus &lt;code&gt;+&lt;/code&gt; sign in the left side, Import, type &lt;code&gt;12056&lt;/code&gt; as the Grafana.com ID, Load, select a Prometheus datasource, Import&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If everything worked as expected, the dashboard should look like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/v0.13/docs/examples/metrics/dashboard-1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;test&#34;&gt;Test&lt;/h2&gt;
+
+&lt;p&gt;Lets make some noise and see what the dashboard tell us about our HAProxy Ingress cluster.&lt;/p&gt;
+
+&lt;p&gt;Deploy a demo application and a custom (self-signed) certificate:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;openssl req -x509 -subj &amp;quot;/CN=dory.localdomain&amp;quot; -nodes -days 30 -newkey rsa:2048 -keyout /tmp/h.key -out /tmp/h.crt
+kubectl --namespace default create secret tls dory --cert /tmp/h.crt --key /tmp/h.key
+rm -fv /tmp/h.crt /tmp/h.key
+kubectl --namespace default create deploy dory --image jcmoraisjr/dory
+kubectl --namespace default scale deploy dory --replicas=4
+kubectl --namespace default expose deploy dory --port 8000
+kubectl --namespace default create ingress dory\
+  --annotation kubernetes.io/ingress.class=haproxy\
+  --annotation haproxy-ingress.github.io/ssl-redirect=false\
+  --rule=&amp;quot;dory.localdomain/*=dory:8000,tls=dory&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check if the app is up and running:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;kubectl --namespace default get pod -lapp=dory -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Download &lt;a href=&#34;https://github.com/tsenart/vegeta/releases&#34;&gt;vegeta&lt;/a&gt; and place it in the path.&lt;/p&gt;
+
+&lt;p&gt;Make a test and check if everything is working as expected. Change IP below to the IP of a HAProxy Ingress node:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IP=192.168.0.11
+## Using Fish?
+# set IP 192.168.0.11
+echo &amp;quot;GET http://$IP&amp;quot; |\
+  vegeta attack -duration=1s -rate=1 -header &amp;quot;Host: dory.localdomain&amp;quot; -keepalive=true |\
+  vegeta report
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The output should look like this. The most important part is Success ratio=100% and an Error Set empty:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;...
+Success       [ratio]                    100.00%
+Status Codes  [code:count]               200:1
+Error Set:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now the real test. Adjust the duration and rate (number of requests per second) if needed. A dual core VM dedicated to HAProxy Ingress should accept a few thousands requests per second. Lets configure &lt;code&gt;200&lt;/code&gt; which should move some lines in the dashoard:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IP=192.168.0.11
+echo &amp;quot;GET http://$IP&amp;quot; |\
+  vegeta attack -duration=5m -rate=200 -header &amp;quot;Host: dory.localdomain&amp;quot; -keepalive=true |\
+  vegeta report
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Follow the dashboard while the test is running. Most metrics have its resolution in &lt;code&gt;1m&lt;/code&gt; (one minute) so wait at least this amount of time to see the correct conns/s, rps, proc use and so on.&lt;/p&gt;
+
+&lt;p&gt;What&amp;rsquo;s the impact of not using keepalive? Try the same test, changing only &lt;code&gt;-keepalive&lt;/code&gt; to  &lt;code&gt;false&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IP=192.168.0.11
+ulimit -n 2048 # avoids &#39;too many open files&#39; error in the client side
+echo &amp;quot;GET http://$IP&amp;quot; |\
+  vegeta attack -duration=5m -rate=200 -header &amp;quot;Host: dory.localdomain&amp;quot; -keepalive=false |\
+  vegeta report
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Last test: what about TLS connections without keepalive? Change &lt;code&gt;http&lt;/code&gt; to &lt;code&gt;https&lt;/code&gt; and add &lt;code&gt;-insecure&lt;/code&gt; command-line option to Vegeta:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IP=192.168.0.11
+ulimit -n 2048
+echo &amp;quot;GET https://$IP&amp;quot; |\
+  vegeta attack -insecure -duration=5m -rate=200 -header &amp;quot;Host: dory.localdomain&amp;quot; -keepalive=false |\
+  vegeta report
+&lt;/code&gt;&lt;/pre&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: ModSecurity</title>
+      <link>/v0.13/docs/examples/modsecurity/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/v0.13/docs/examples/modsecurity/</guid>
+      <description>
+        
+        
+        
+
+&lt;p&gt;This example demonstrates how to configure ModSecurity
+web application firewall on HAProxy Ingress controller.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;This document has the following prerequisites:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A Kubernetes cluster with a running HAProxy Ingress controller. See the &lt;a href=&#34;https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/setup-cluster.md#five-minutes-deployment&#34;&gt;five minutes deployment&lt;/a&gt; or the &lt;a href=&#34;https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/deployment&#34;&gt;deployment example&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ingress-controller&lt;/code&gt; namespace, the default of the five minutes deployment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;deploying-agent&#34;&gt;Deploying agent&lt;/h2&gt;
+
+&lt;p&gt;A ModSecurity agent can be deployed in a number of ways: as a sidecar container
+in the same HAProxy Ingress deployment/daemonset resource, as a standalone container
+in the same host of ingress, or in dedicated host(s), inside or outside a k8s cluster.
+The steps below will deploy ModSecurity in some dedicated hosts of a k8s cluster,
+adjust the steps to fit your need.&lt;/p&gt;
+
+&lt;p&gt;The ModSecurity agent used is &lt;a href=&#34;https://github.com/jcmoraisjr/modsecurity-spoa&#34;&gt;jcmoraisjr/modsecurity-spoa&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Create the ModSecurity agent deployment with 3 running pods:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl create -f https://haproxy-ingress.github.io/resources/modsecurity-deployment.yaml
+deployment.apps/modsecurity-spoa created
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+&lt;div class=&#34;alert alert-primary&#34; role=&#34;alert&#34;&gt;
+&lt;h4 class=&#34;alert-heading&#34;&gt;Note&lt;/h4&gt;
+This deployment configures a small amount of requests and limits resources,
+remember to adjust them before moving to production.
+&lt;/div&gt;
+
+
+&lt;p&gt;Check if the agent is up and running:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl -n ingress-controller get deployment modsecurity-spoa
+NAME                     READY     UP-TO-DATE   AVAILABLE  AGE  
+modsecurity-spoa         3/3       3            3          7s   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can now create the service that provides a ClusterIP address for the HAProxy ConfigMap.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl -n ingress-controller expose deployment modsecurity-spoa --port=12345 --type=ClusterIP
+service/modsecurity-spoa exposed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once the service is created, you can obtain the ClusterIP address to be used later in the ConfigMap.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl -n ingress-controller get service modsecurity-spoa
+NAME                     TYPE       CLUSTERIP        EXTERNAL-IP  PORT(S)     AGE
+modsecurity-spoa         ClusterIP  172.20.216.246   &amp;lt;none&amp;gt;       12345/TCP   7m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuring-haproxy-ingress&#34;&gt;Configuring HAProxy Ingress&lt;/h2&gt;
+
+&lt;p&gt;Add the ConfigMap key &lt;code&gt;modsecurity-endpoints&lt;/code&gt; with a comma-separated list of &lt;code&gt;IP:port&lt;/code&gt;
+of the ModSecurity agent server(s). The default port number of the agent is &lt;code&gt;12345&lt;/code&gt;.
+A &lt;code&gt;kubectl -n ingress-controller edit configmap haproxy-ingress&lt;/code&gt; should work.&lt;/p&gt;
+
+&lt;p&gt;Example of a ConfigMap content if the ModSecurity service has a ClusterIP of &lt;code&gt;172.20.216.246&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;apiVersion&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;v1&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;&lt;/span&gt;data&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;modsecurity-endpoints&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;172.20.216.246&lt;/span&gt;&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#0000cf;font-weight:bold&#34;&gt;12345&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;  &lt;/span&gt;...&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt;&lt;/span&gt;kind&lt;span style=&#34;color:#000;font-weight:bold&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f8f8f8;text-decoration:underline&#34;&gt; &lt;/span&gt;ConfigMap&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;test&#34;&gt;Test&lt;/h2&gt;
+
+&lt;p&gt;Deploy any application:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl run echo \
+  --image=gcr.io/google_containers/echoserver:1.3 \
+  --port=8080 \
+  --expose
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;hellip; and create its ingress resource. Remember to annotate waf as &lt;code&gt;modsecurity&lt;/code&gt;.
+No need to use a valid domain, &lt;code&gt;echo.domain&lt;/code&gt; below is fine:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;$ kubectl create -f - &amp;lt;&amp;lt;EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    haproxy-ingress.github.io/ssl-redirect: &amp;#34;false&amp;#34;
+    haproxy-ingress.github.io/waf: &amp;#34;modsecurity&amp;#34;
+  name: echo
+spec:
+  rules:
+  - host: echo.domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: echo
+            port:
+              number: 8080
+EOF&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Test with a simple request. Change the IP below to the IP of your Ingress controller:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ curl -I 192.168.100.99 -H &#39;Host: echo.domain&#39;
+HTTP/1.1 200 OK
+Server: nginx/1.9.11
+Date: Sun, 27 May 2018 23:28:58 GMT
+Content-Type: text/plain
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Test now with a malicious request:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -i &#39;192.168.100.99?p=/etc/passwd&#39; -H &#39;Host: echo.domain&#39;
+HTTP/1.0 403 Forbidden
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;h1&amp;gt;403 Forbidden&amp;lt;/h1&amp;gt;
+Request forbidden by administrative rules.
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Check the agent logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6f757ffd88-9qt2f   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-vwtzr   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-q4rvm   1/1     Running   0          11m
+...
+
+$ kubectl -n ingress-controller logs --tail=10 modsecurity-spoa-6f757ffd88-9qt2f
+...
+1527464273.942819 [00] [client 127.0.0.1] ModSecurity: Access denied with code 403 (phase 2). Matche
+d phrase &amp;quot;etc/passwd&amp;quot; at ARGS:p. [file &amp;quot;/etc/modsecurity/owasp-modsecurity-crs/rules/REQUEST-930-APP
+LICATION-ATTACK-LFI.conf&amp;quot;] [line &amp;quot;108&amp;quot;] [id &amp;quot;930120&amp;quot;] [rev &amp;quot;4&amp;quot;] [msg &amp;quot;OS File Access Attempt&amp;quot;] [data
+ &amp;quot;Matched Data: etc/passwd found within ARGS:p: /etc/passwd&amp;quot;] [severity &amp;quot;CRITICAL&amp;quot;] [ver &amp;quot;OWASP_CRS/
+3.0.0&amp;quot;] [maturity &amp;quot;9&amp;quot;] [accuracy &amp;quot;9&amp;quot;] [tag &amp;quot;application-multi&amp;quot;] [tag &amp;quot;language-multi&amp;quot;] [tag &amp;quot;platfor
+m-multi&amp;quot;] [tag &amp;quot;attack-lfi&amp;quot;] [tag &amp;quot;OWASP_CRS/WEB_ATTACK/FILE_INJECTION&amp;quot;] [tag &amp;quot;WASCTC/WASC-33&amp;quot;] [tag
+ &amp;quot;OWASP_TOP_10/A4&amp;quot;] [tag &amp;quot;PCI/6.5.4&amp;quot;] [hostname &amp;quot;ingress.localdomain&amp;quot;] [uri &amp;quot;http://echo.domain/&amp;quot;] [
+unique_id &amp;quot;&amp;quot;]
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs&#34;&gt;Deploy ModSecurity Agent With a Sidecar Container for Audit Logs&lt;/h2&gt;
+
+&lt;p&gt;A ModSecurity agent can be deployed with an additional sidecar container so you can have access to the logs stored in the AuditLog file. If you are using the default configuration of the ModSecurity agent, the logs written to the AuditLog specified are not reachable in the agent container&amp;rsquo;s STDOUT.&lt;/p&gt;
+
+&lt;p&gt;In order to read information written to that file, you must add a sidecar container to the method of deployment of the ModSecurity agent in Kubernetes. This is especially useful if you set the SecRuleEngine configuration to DetectionOnly.&lt;/p&gt;
+
+&lt;p&gt;Update the ModSecurity agent deployment to have a sidecar container to read the audit log file to STDOUT&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl apply -f https://haproxy-ingress.github.io/resources/modsecurity-deployment-auditlog-sidecar.yaml
+deployment &amp;quot;modsecurity-spoa&amp;quot; configured
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now the ModSecurity agent pods will have two containers to get logs from: one for the traditional ModSecurity logs and one for the logs written to the AuditLog file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6596c6b444-cht27   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-kw2tr   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-mkndw   2/2     Running   0          14m
+&lt;/code&gt;&lt;/pre&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>
