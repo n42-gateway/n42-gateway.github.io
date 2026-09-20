@@ -1,0 +1,497 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+
+
+<link rel="shortcut icon" href="/v0.15/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/v0.15/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/v0.15/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/v0.15/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-192x192.png" sizes="192x192">
+
+<title>Blue/green | HAProxy Ingress</title>
+<meta name="description" content="Demonstrate how to configure blue/green deployment, with and without header or cookie selection.">
+<meta property="og:url" content="/v0.15/docs/examples/blue-green/">
+  <meta property="og:site_name" content="HAProxy Ingress">
+  <meta property="og:title" content="Blue/green">
+  <meta property="og:description" content="Demonstrate how to configure blue/green deployment, with and without header or cookie selection.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2024-06-11T21:43:02-03:00">
+
+  <meta itemprop="name" content="Blue/green">
+  <meta itemprop="description" content="Demonstrate how to configure blue/green deployment, with and without header or cookie selection.">
+  <meta itemprop="dateModified" content="2024-06-11T21:43:02-03:00">
+  <meta itemprop="wordCount" content="778">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Blue/green">
+  <meta name="twitter:description" content="Demonstrate how to configure blue/green deployment, with and without header or cookie selection.">
+<link rel="preload" href="/v0.15/scss/main.min.f6d3e8849a5e99b37e83bc70bd16082aa071af817139d05c9c1b47e6c0f9df45.css" as="style" integrity="sha256-9tPohJpembN&#43;g7xwvRYIKqBxr4FxOdBcnBtH5sD530U=" crossorigin="anonymous">
+<link href="/v0.15/scss/main.min.f6d3e8849a5e99b37e83bc70bd16082aa071af817139d05c9c1b47e6c0f9df45.css" rel="stylesheet" integrity="sha256-9tPohJpembN&#43;g7xwvRYIKqBxr4FxOdBcnBtH5sD530U=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-page">
+    <header>
+      <nav class="td-navbar js-navbar-scroll" data-bs-theme="dark">
+<div class="container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/v0.15/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="1e3 15893 12742 12808" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="#FFF" stroke="none" d="M27e2 16421c-212 0-419 56-603 161-183 106-335 258-441 442-105 183-161 390-161 602v9341c0 212 56 419 161 603 106 183 258 335 442 441 183 105 390 161 602 161h9341c212 0 419-56 603-161 183-106 335-258 441-441 105-184 161-391 161-603V17626c0-212-56-419-161-602-106-184-258-336-441-442-184-105-391-161-603-161H27e2zm4080 1084 1167 1095c-605 1626-1266 3168-1899 4559l2564-391 1704-4531 1162 1167-1439 3043 1417-445c-234 5e2-537 1014-878 1340l-1060 152c-617 1274-1268 2531-1947 3678-213-245-459-441-741-561-186-1192-626-2017-1050-2855L4154 26991l-804-598c1459-2883 2450-5827 3430-8888zM2619 15893h1c-284 0-564 75-810 217s-451 347-593 593-217 526-217 810v9567c0 284 75 564 217 810s347 451 593 593 526 217 810 217h95e2 1c284 0 564-75 810-217s451-347 593-593 217-526 217-810l-1-9567h1c0-284-75-564-217-810s-347-451-593-593-526-217-810-217H2619zm3787 7994c602-70 1205-141 1807-211l-936 2055c-248-669-532-1229-871-1844z"/></g></g></g></svg></span><span class="navbar-brand__name">HAProxy Ingress</span></a>
+  <div class="td-navbar-nav-scroll ms-md-auto" id="main_navbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.15/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/v0.15/docs/"><span>Documentation</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.15/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item dropdown d-none d-lg-block">
+        <div class="dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">v0.15</a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/docs">Latest</a></li>
+    <li><a class="dropdown-item" href="/v0.15/docs">v0.15</a></li>
+    <li><a class="dropdown-item" href="/v0.14/docs">v0.14</a></li>
+    <li><a class="dropdown-item" href="/v0.13/docs">v0.13</a></li>
+    <li><a class="dropdown-item" href="/v0.12/docs">v0.12</a></li>
+    <li><a class="dropdown-item" href="/v0.10/docs">v0.10</a></li>
+    </ul>
+</div></li>
+      <li class="td-light-dark-menu nav-item dropdown">
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        data-bs-display="static"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+
+      </li>
+      </ul>
+  </div>
+  <div class="d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ms-3 fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v015docs-li">
+  <a href="/v0.15/docs/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-v015docs"><span class="">Documentation</span></a>
+  <ul class="ul-1">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsoverview-li">
+  <a href="/v0.15/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsoverview"><span class="">Overview</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsgetting-started-li">
+  <a href="/v0.15/docs/getting-started/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsgetting-started"><span class="">Getting Started</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v015docsexamples-li">
+  <a href="/v0.15/docs/examples/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsexamples"><span class="">Examples</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-v015docsexamplesblue-green-li">
+  <a href="/v0.15/docs/examples/blue-green/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesblue-green"><span class="td-sidebar-nav-active-item">Blue/green</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesexternal-haproxy-li">
+  <a href="/v0.15/docs/examples/external-haproxy/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesexternal-haproxy"><span class="">External haproxy</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesmetrics-li">
+  <a href="/v0.15/docs/examples/metrics/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesmetrics"><span class="">Metrics</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesmodsecurity-li">
+  <a href="/v0.15/docs/examples/modsecurity/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesmodsecurity"><span class="">ModSecurity</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-v015docsconfiguration-li">
+  <a href="/v0.15/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsconfiguration"><span class="">Configuration</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationgateway-api-li">
+  <a href="/v0.15/docs/configuration/gateway-api/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationgateway-api"><span class="">Gateway API</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationkeys-li">
+  <a href="/v0.15/docs/configuration/keys/" title="Configuration keys" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationkeys"><span class="">Keys</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationcommand-line-li">
+  <a href="/v0.15/docs/configuration/command-line/" title="Command-line options" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationcommand-line"><span class="">Command-line</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationtemplate-li">
+  <a href="/v0.15/docs/configuration/template/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationtemplate"><span class="">Template</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsfaq-li">
+  <a href="/v0.15/docs/faq/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsfaq"><span class="">FAQ</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docscontribution-guidelines-li">
+  <a href="/v0.15/docs/contribution-guidelines/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docscontribution-guidelines"><span class="">Contribution Guidelines</span></a>
+</li>
+  </ul>
+</li>
+    </ul>
+  </nav>
+</div>
+
+          </aside>
+          <aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/docs/content/en/docs/examples/blue-green.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/edit/master/docs/content/en/docs/examples/blue-green.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/new/master/docs/content/en/docs/examples?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60getting-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/issues/new?title=Blue/green" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#deploying-applications">Deploying applications</a></li>
+    <li><a href="#configure">Configure</a></li>
+    <li><a href="#test-bluegreen-balance">Test blue/green balance</a></li>
+    <li><a href="#test-bluegreen-selector">Test blue/green selector</a></li>
+  </ul>
+</nav>
+      </div>
+    
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+  
+
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/v0.15/docs/">Documentation</a></li>
+  <li class="breadcrumb-item">
+    <a href="/v0.15/docs/examples/">Examples</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Blue/green</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>Blue/green</h1>
+	<div class="lead">Demonstrate how to configure blue/green deployment, with and without header or cookie selection.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>This example demonstrates how to configure
+<a href="https://www.martinfowler.com/bliki/BlueGreenDeployment.html"target="_blank" rel="noopener">blue/green deployment</a>
+on HAProxy Ingress controller, in order to route requests based on distinct weight on
+deployment groups as well as selecting a group based on http header or cookie value.</p>
+<h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
+<p>This document has the following prerequisite:</p>
+<ul>
+<li>A Kubernetes cluster with a running HAProxy Ingress controller v0.6 or above.
+See the <a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/setup-cluster.md#five-minutes-deployment"target="_blank" rel="noopener">five minutes deployment</a>
+or the <a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/deployment"target="_blank" rel="noopener">deployment example</a></li>
+</ul>
+<h2 id="deploying-applications">Deploying applications<a class="td-heading-self-link" href="#deploying-applications" aria-label="Heading self-link"></a></h2>
+<p>In order to the configuration have effect, at least two deployments, or daemon sets, or replication
+controllers should be used with at least two pairs of label name/value.</p>
+<p>The following instructions create two deployment objects using <code>run</code> label as the service selector
+and <code>group</code> label as the blue/green deployment selector:</p>
+<pre tabindex="0"><code>$ kubectl run blue \
+  --image=jcmoraisjr/whoami \
+  --port=8000 --labels=run=bluegreen,group=blue
+deployment &#34;blue&#34; created
+
+$ kubectl run green \
+  --image=jcmoraisjr/whoami \
+  --port=8000 --labels=run=bluegreen,group=green
+deployment &#34;green&#34; created
+</code></pre><p>Certify that the pods are running and have the correct labels. Note that both <code>group</code> and <code>run</code>
+labels were applied:</p>
+<pre tabindex="0"><code>$ kubectl get pod -lrun=bluegreen --show-labels
+NAME                     READY     STATUS    RESTARTS   AGE       LABELS
+blue-79c9b67d5b-5hd2r    1/1       Running   0          35s       group=blue,pod-template-hash=3575623816,run=bluegreen
+green-7546d648c4-p7pmz   1/1       Running   0          28s       group=green,pod-template-hash=3102820470,run=bluegreen
+</code></pre><h2 id="configure">Configure<a class="td-heading-self-link" href="#configure" aria-label="Heading self-link"></a></h2>
+<p>Create a service that bind both deployments together using the <code>run</code> label. The expose command need
+a deployment object, take anyone, we will override it&rsquo;s selector:</p>
+<pre tabindex="0"><code>$ kubectl expose deploy blue --name bluegreen --selector=run=bluegreen
+service &#34;bluegreen&#34; exposed
+
+$ kubectl get svc bluegreen -otemplate --template &#39;{{.spec.selector}}&#39;
+map[run:bluegreen]
+</code></pre><p>Check also the endpoints, it should list both blue and green pods:</p>
+<pre tabindex="0"><code>$ kubectl get ep bluegreen
+NAME         ENDPOINTS                           AGE
+bluegreen    172.17.0.11:8000,172.17.0.19:8000   2m
+
+$ kubectl get pod -lrun=bluegreen -owide
+NAME                     READY     STATUS    RESTARTS   AGE       IP            NODE
+blue-79c9b67d5b-5hd2r    1/1       Running   0          2m        172.17.0.11   192.168.100.99
+green-7546d648c4-p7pmz   1/1       Running   0          2m        172.17.0.19   192.168.100.99
+</code></pre><p>Configure the ingress resource. No need to change the host below, <code>bluegreen.example.com</code> is fine:</p>
+<pre tabindex="0"><code>$ kubectl create -f - &lt;&lt;EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    haproxy-ingress.github.io/balance-algorithm: roundrobin
+    haproxy-ingress.github.io/blue-green-deploy: group=blue=1,group=green=1
+    haproxy-ingress.github.io/blue-green-mode: pod
+    haproxy-ingress.github.io/ssl-redirect: &#34;false&#34;
+  name: bluegreen
+spec:
+  rules:
+  - host: bluegreen.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bluegreen
+            port:
+              number: 8000
+EOF
+</code></pre><pre tabindex="0"><code>$ kubectl get ing
+NAME        HOSTS                   ADDRESS   PORTS     AGE
+bluegreen   bluegreen.example.com             80        11s
+</code></pre><h2 id="test-bluegreen-balance">Test blue/green balance<a class="td-heading-self-link" href="#test-bluegreen-balance" aria-label="Heading self-link"></a></h2>
+<p>Lets test! The following snippets use an alias <code>hareq</code> declared below.
+Change <code>IP</code> to your HAProxy Ingress controller IP address:</p>
+<pre tabindex="0"><code>$ IP=192.168.100.99
+$ alias hareq=&#39;echo Running 100 requests...; for i in `seq 1 100`; do
+    curl -fsS $IP -H &#34;Host: bluegreen.example.com&#34; | cut -d- -f1
+  done | sort | uniq -c&#39;
+</code></pre><ul>
+<li>BG Mode: pod</li>
+<li>BG Balance: blue=1, green=1</li>
+<li>Replicas: blue=1, green=1</li>
+</ul>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+  50 blue
+  50 green
+</code></pre><hr>
+<p>Now changing green replicas to 3 and wait all the replicas to be running.
+BG Mode is pod, so the number of replicas will increase the load of the green deployment.</p>
+<pre tabindex="0"><code>$ kubectl scale deploy green --replicas=3
+$ kubectl get pod -w
+</code></pre><ul>
+<li>BG Mode: pod</li>
+<li>BG Balance: blue=1, green=1</li>
+<li>Replicas: blue=1, green=3</li>
+</ul>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+  25 blue
+  75 green
+</code></pre><hr>
+<p>Changing to <em>deploy</em> mode. This mode targets the balance config to the whole deployment
+instead of single pods.</p>
+<p><strong>Note:</strong> BG mode was added on v0.7. On v0.6, the only supported mode is <code>pod</code>.</p>
+<pre tabindex="0"><code>$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-mode=deploy
+</code></pre><ul>
+<li>BG Mode: deploy</li>
+<li>BG Balance: blue=1, green=1</li>
+<li>Replicas: blue=1, green=3</li>
+</ul>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+  50 blue
+  50 green
+</code></pre><hr>
+<p>Changing now the balance to 1/3 blue and 2/3 green:</p>
+<pre tabindex="0"><code>$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-deploy=group=blue=1,group=green=2
+</code></pre><ul>
+<li>BG Mode: deploy</li>
+<li>BG Balance: blue=1, green=2</li>
+<li>Replicas: blue=1, green=3</li>
+</ul>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+  33 blue
+  67 green
+</code></pre><hr>
+<p>The balance will be the same despite the number of replicas:</p>
+<pre tabindex="0"><code>$ kubectl scale deploy green --replicas=6
+$ kubectl get pod -w
+</code></pre><ul>
+<li>BG Mode: deploy</li>
+<li>BG Balance: blue=1, green=2</li>
+<li>Replicas: blue=1, green=6</li>
+</ul>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+  33 blue
+  67 green
+</code></pre><h2 id="test-bluegreen-selector">Test blue/green selector<a class="td-heading-self-link" href="#test-bluegreen-selector" aria-label="Heading self-link"></a></h2>
+<p>Blue/green selector requires HAProxy Ingress controller v0.9 or above.</p>
+<p>Follow the <a href="#deploying-applications">deployment</a> and <a href="#configure">configuration</a>
+instructions to deploy the sample application.</p>
+<p>After that, add the following annotation:</p>
+<pre tabindex="0"><code>$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-header=x-server:group
+</code></pre><p>Create (or update) the <code>hareq</code> alias. Change <code>IP</code> to your HAProxy Ingress controller
+IP address:</p>
+<pre tabindex="0"><code>$ IP=192.168.100.99
+$ alias hareq=&#39;echo Running 100 requests...; for i in `seq 1 100`; do
+    curl -fsS $IP -H &#34;Host: bluegreen.example.com&#34; -H &#34;X-Server: $GROUP&#34; | cut -d- -f1
+  done | sort | uniq -c&#39;
+</code></pre><p>Choose <code>blue</code> group:</p>
+<pre tabindex="0"><code>$ GROUP=blue
+</code></pre><p>The envvar <code>GROUP</code> will populate the <code>X-Server</code> header with the value <code>blue</code>.</p>
+<p>Run the requests:</p>
+<pre tabindex="0"><code>$ hareq
+Running 100 requests...
+ 100 blue
+</code></pre><p>Choose <code>green</code> group:</p>
+<pre tabindex="0"><code>$ GROUP=green
+$ hareq
+Running 100 requests...
+ 100 green
+</code></pre><p>Choose an invalid group, the configured blue/green balance will be used:</p>
+<pre tabindex="0"><code>$ kubectl annotate --overwrite ingress bluegreen \
+  haproxy-ingress.github.io/blue-green-deploy=group=blue=1,group=green=3
+$ GROUP=invalid
+$ hareq
+Running 100 requests...
+  25 blue
+  75 green
+</code></pre>
+	<div class="td-page-meta__lastmod">
+  Last modified June 11, 2024: <a data-proofer-ignore href="https://github.com/jcmoraisjr/haproxy-ingress/commit/232de55a12102f63a2f3204131096e0386d77cad">update docsy from v0.6.0 to v0.10.0 (232de55a)</a>
+</div>
+
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a target="_blank" rel="noopener" href="https://kubernetes.slack.com/channels/haproxy-ingress" aria-label="Slack">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Users mailing list" aria-label="Users mailing list">
+    <a target="_blank" rel="noopener" href="https://groups.google.com/forum/#!forum/haproxy-ingress" aria-label="Users mailing list">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Stack Overflow" aria-label="Stack Overflow">
+    <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/haproxy-ingress" aria-label="Stack Overflow">
+      <i class="fab fa-stack-overflow"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a target="_blank" rel="noopener" href="https://github.com/jcmoraisjr/haproxy-ingress" aria-label="GitHub">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The HAProxy Ingress Controller Authors
+  | Image by <a href="https://pixabay.com/users/TheDigitalArtist-202249/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank" rel="noopener">Pete Linforth</a>
+    from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank" rel="noopener">Pixabay</a>
+</small>
+<p class="td-footer__about mt-2"><a href="/v0.15/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/v0.15/js/main.min.25bfbcec02244bb78eb05c49eed9e6154823760a463e31f7979354fad331a67f.js" integrity="sha256-Jb&#43;87AIkS7eOsFxJ7tnmFUgjdgpGPjH3l5NU&#43;tMxpn8=" crossorigin="anonymous"></script>
+<script defer src="/v0.15/js/click-to-copy.min.73478a7d4807698aed7e355eb23f9890ca18fea3158604c8471746d046702bad.js" integrity="sha256-c0eKfUgHaYrtfjVesj&#43;YkMoY/qMVhgTIRxdG0EZwK60=" crossorigin="anonymous"></script>
+<script src='/v0.15/js/tabpane-persist.js'></script>
+
+  </body>
+</html>

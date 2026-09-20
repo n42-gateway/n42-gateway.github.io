@@ -1,0 +1,424 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+
+
+<link rel="shortcut icon" href="/v0.15/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/v0.15/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/v0.15/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/v0.15/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/v0.15/favicons/android-192x192.png" sizes="192x192">
+
+<title>Getting Started | HAProxy Ingress</title>
+<meta name="description" content="How to install HAProxy Ingress and expose the first service.">
+<meta property="og:url" content="/v0.15/docs/getting-started/">
+  <meta property="og:site_name" content="HAProxy Ingress">
+  <meta property="og:title" content="Getting Started">
+  <meta property="og:description" content="How to install HAProxy Ingress and expose the first service.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+
+  <meta itemprop="name" content="Getting Started">
+  <meta itemprop="description" content="How to install HAProxy Ingress and expose the first service.">
+  <meta itemprop="dateModified" content="2026-09-20T07:56:08-03:00">
+  <meta itemprop="wordCount" content="833">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Getting Started">
+  <meta name="twitter:description" content="How to install HAProxy Ingress and expose the first service.">
+<link rel="preload" href="/v0.15/scss/main.min.f6d3e8849a5e99b37e83bc70bd16082aa071af817139d05c9c1b47e6c0f9df45.css" as="style" integrity="sha256-9tPohJpembN&#43;g7xwvRYIKqBxr4FxOdBcnBtH5sD530U=" crossorigin="anonymous">
+<link href="/v0.15/scss/main.min.f6d3e8849a5e99b37e83bc70bd16082aa071af817139d05c9c1b47e6c0f9df45.css" rel="stylesheet" integrity="sha256-9tPohJpembN&#43;g7xwvRYIKqBxr4FxOdBcnBtH5sD530U=" crossorigin="anonymous">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"></script>
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-section">
+    <header>
+      <nav class="td-navbar js-navbar-scroll" data-bs-theme="dark">
+<div class="container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/v0.15/"><span class="navbar-brand__logo navbar-logo"><svg version="1.2" width="36" height="36" viewBox="1e3 15893 12742 12808" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g class="Page"><g class="com.sun.star.drawing.ClosedBezierShape"><g id="id3"><path fill="#FFF" stroke="none" d="M27e2 16421c-212 0-419 56-603 161-183 106-335 258-441 442-105 183-161 390-161 602v9341c0 212 56 419 161 603 106 183 258 335 442 441 183 105 390 161 602 161h9341c212 0 419-56 603-161 183-106 335-258 441-441 105-184 161-391 161-603V17626c0-212-56-419-161-602-106-184-258-336-441-442-184-105-391-161-603-161H27e2zm4080 1084 1167 1095c-605 1626-1266 3168-1899 4559l2564-391 1704-4531 1162 1167-1439 3043 1417-445c-234 5e2-537 1014-878 1340l-1060 152c-617 1274-1268 2531-1947 3678-213-245-459-441-741-561-186-1192-626-2017-1050-2855L4154 26991l-804-598c1459-2883 2450-5827 3430-8888zM2619 15893h1c-284 0-564 75-810 217s-451 347-593 593-217 526-217 810v9567c0 284 75 564 217 810s347 451 593 593 526 217 810 217h95e2 1c284 0 564-75 810-217s451-347 593-593 217-526 217-810l-1-9567h1c0-284-75-564-217-810s-347-451-593-593-526-217-810-217H2619zm3787 7994c602-70 1205-141 1807-211l-936 2055c-248-669-532-1229-871-1844z"/></g></g></g></svg></span><span class="navbar-brand__name">HAProxy Ingress</span></a>
+  <div class="td-navbar-nav-scroll ms-md-auto" id="main_navbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.15/about/"><span>About</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/v0.15/docs/"><span>Documentation</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/v0.15/community/"><span>Community</span></a>
+      </li>
+      <li class="nav-item dropdown d-none d-lg-block">
+        <div class="dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">v0.15</a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/docs">Latest</a></li>
+    <li><a class="dropdown-item" href="/v0.15/docs">v0.15</a></li>
+    <li><a class="dropdown-item" href="/v0.14/docs">v0.14</a></li>
+    <li><a class="dropdown-item" href="/v0.13/docs">v0.13</a></li>
+    <li><a class="dropdown-item" href="/v0.12/docs">v0.12</a></li>
+    <li><a class="dropdown-item" href="/v0.10/docs">v0.10</a></li>
+    </ul>
+</div></li>
+      <li class="td-light-dark-menu nav-item dropdown">
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+
+<button class="btn btn-link nav-link dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        data-bs-display="static"
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg>
+</button>
+<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+
+      </li>
+      </ul>
+  </div>
+  <div class="d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ms-3 fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-v015docs-li">
+  <a href="/v0.15/docs/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-v015docs"><span class="">Documentation</span></a>
+  <ul class="ul-1">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsoverview-li">
+  <a href="/v0.15/docs/overview/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsoverview"><span class="">Overview</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-v015docsgetting-started-li">
+  <a href="/v0.15/docs/getting-started/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__section" id="m-v015docsgetting-started"><span class="td-sidebar-nav-active-item">Getting Started</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-v015docsexamples-li">
+  <a href="/v0.15/docs/examples/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsexamples"><span class="">Examples</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesblue-green-li">
+  <a href="/v0.15/docs/examples/blue-green/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesblue-green"><span class="">Blue/green</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesexternal-haproxy-li">
+  <a href="/v0.15/docs/examples/external-haproxy/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesexternal-haproxy"><span class="">External haproxy</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesmetrics-li">
+  <a href="/v0.15/docs/examples/metrics/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesmetrics"><span class="">Metrics</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsexamplesmodsecurity-li">
+  <a href="/v0.15/docs/examples/modsecurity/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsexamplesmodsecurity"><span class="">ModSecurity</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-v015docsconfiguration-li">
+  <a href="/v0.15/docs/configuration/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsconfiguration"><span class="">Configuration</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationgateway-api-li">
+  <a href="/v0.15/docs/configuration/gateway-api/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationgateway-api"><span class="">Gateway API</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationkeys-li">
+  <a href="/v0.15/docs/configuration/keys/" title="Configuration keys" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationkeys"><span class="">Keys</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationcommand-line-li">
+  <a href="/v0.15/docs/configuration/command-line/" title="Command-line options" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationcommand-line"><span class="">Command-line</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsconfigurationtemplate-li">
+  <a href="/v0.15/docs/configuration/template/" class="align-left ps-0 td-sidebar-link td-sidebar-link__page" id="m-v015docsconfigurationtemplate"><span class="">Template</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docsfaq-li">
+  <a href="/v0.15/docs/faq/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docsfaq"><span class="">FAQ</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-v015docscontribution-guidelines-li">
+  <a href="/v0.15/docs/contribution-guidelines/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-v015docscontribution-guidelines"><span class="">Contribution Guidelines</span></a>
+</li>
+  </ul>
+</li>
+    </ul>
+  </nav>
+</div>
+
+          </aside>
+          <aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none">
+            <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/docs/content/en/docs/getting-started/_index.md" class="td-page-meta--view td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines fa-fw"></i> View page source</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/edit/master/docs/content/en/docs/getting-started/_index.md" class="td-page-meta--edit td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Edit this page</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/new/master/docs/content/en/docs/getting-started?filename=change-me.md&amp;value=---%0Atitle%3A&#43;%22Long&#43;Page&#43;Title%22%0AlinkTitle%3A&#43;%22Short&#43;Nav&#43;Title%22%0Aweight%3A&#43;100%0Adescription%3A&#43;%3E-%0A&#43;&#43;&#43;&#43;&#43;Page&#43;description&#43;for&#43;heading&#43;and&#43;indexes.%0A---%0A%0A%23%23&#43;Heading%0A%0AEdit&#43;this&#43;template&#43;to&#43;create&#43;your&#43;new&#43;page.%0A%0A%2A&#43;Give&#43;it&#43;a&#43;good&#43;name%2C&#43;ending&#43;in&#43;%60.md%60&#43;-&#43;e.g.&#43;%60getting-started.md%60%0A%2A&#43;Edit&#43;the&#43;%22front&#43;matter%22&#43;section&#43;at&#43;the&#43;top&#43;of&#43;the&#43;page&#43;%28weight&#43;controls&#43;how&#43;its&#43;ordered&#43;amongst&#43;other&#43;pages&#43;in&#43;the&#43;same&#43;directory%3B&#43;lowest&#43;number&#43;first%29.%0A%2A&#43;Add&#43;a&#43;good&#43;commit&#43;message&#43;at&#43;the&#43;bottom&#43;of&#43;the&#43;page&#43;%28%3C80&#43;characters%3B&#43;use&#43;the&#43;extended&#43;description&#43;field&#43;for&#43;more&#43;detail%29.%0A%2A&#43;Create&#43;a&#43;new&#43;branch&#43;so&#43;you&#43;can&#43;preview&#43;your&#43;new&#43;file&#43;and&#43;request&#43;a&#43;review&#43;via&#43;Pull&#43;Request.%0A" class="td-page-meta--child td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-pen-to-square fa-fw"></i> Create child page</a>
+  <a href="https://github.com/jcmoraisjr/haproxy-ingress/issues/new?title=Getting%20Started" class="td-page-meta--issue td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create doc issue</a>
+  
+</div>
+
+            <div class="td-toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#deploy-and-expose">Deploy and expose</a></li>
+    <li><a href="#whats-next">What&rsquo;s next</a></li>
+  </ul>
+</nav>
+      </div>
+    
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+  
+
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="/v0.15/docs/">Documentation</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Getting Started</li>
+  </ol>
+</nav>
+<div class="td-content">
+	<h1>Getting Started</h1>
+  <div class="lead">How to install HAProxy Ingress and expose the first service.</div>
+	<header class="article-meta">
+		
+</header>
+	<p>The following sections walk through steps to have HAProxy Ingress working, watching ingress resources and exposing services.</p>
+<h2 id="prerequisites">Prerequisites<a class="td-heading-self-link" href="#prerequisites" aria-label="Heading self-link"></a></h2>
+<p>HAProxy Ingress needs a running Kubernetes cluster. Controller version v0.15 needs Kubernetes 1.21 or newer, see other supported versions in the <a href="https://github.com/jcmoraisjr/haproxy-ingress/#use-haproxy-ingress"target="_blank" rel="noopener">README</a> file. HAProxy Ingress also works fine on local k8s deployments like <a href="https://minikube.sigs.k8s.io"target="_blank" rel="noopener">minikube</a>, <a href="https://kind.sigs.k8s.io"target="_blank" rel="noopener">kind</a>, <a href="https://k3s.io"target="_blank" rel="noopener">k3s</a>, <a href="https://k3d.io"target="_blank" rel="noopener">k3d</a> or <a href="https://github.com/abiosoft/colima"target="_blank" rel="noopener">colima</a>.</p>
+<p>An ingress controller works exposing internal services to the external world, so another pre-requisite is that at least one cluster node is accessible externally. On cloud environments, a cloud load balancer can be configured to reach the ingress controller nodes.</p>
+<p>HAProxy Ingress uses <a href="https://en.wikipedia.org/wiki/Server_Name_Indication"target="_blank" rel="noopener">TLS SNI extension</a> and the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host"target="_blank" rel="noopener">Host header</a> to associate requests and ingress&rsquo; <code>host</code>s. The easiest way to accomplish this on local environment is using <a href="https://nip.io"target="_blank" rel="noopener">nip.io</a>. A production environment should consider a <a href="https://en.wikipedia.org/wiki/Dynamic_DNS"target="_blank" rel="noopener">dynamic DNS</a> solution or a <a href="https://en.wikipedia.org/wiki/Wildcard_DNS_record"target="_blank" rel="noopener">wildcard DNS record</a>.</p>
+<h2 id="installation">Installation<a class="td-heading-self-link" href="#installation" aria-label="Heading self-link"></a></h2>
+<p>HAProxy Ingress uses <a href="https://helm.sh"target="_blank" rel="noopener">Helm</a> chart to install and configure the controller. See below some deployment instructions:</p>
+<ol>
+<li>
+<p>Install <code>helm</code>, HAProxy Ingress requires version 3. See the installation instructions <a href="https://helm.sh/docs/intro/install/"target="_blank" rel="noopener">here</a>.</p>
+</li>
+<li>
+<p>Add the HAProxy Ingress&rsquo; Helm repository. This will instruct Helm to find all available packages:</p>
+<pre tabindex="0"><code>$ helm repo add haproxy-ingress https://haproxy-ingress.github.io/charts
+</code></pre></li>
+<li>
+<p>Check if kubeconfig points to the right cluster:</p>
+<pre tabindex="0"><code>$ kubectl cluster-info
+</code></pre><p>The default cluster can be changed either via <code>kubectl config set-context &lt;cluster-context&gt;</code> or adding <code>--kube-context &lt;cluster-context&gt;</code> in the helm command-line options.</p>
+<p>Note that the user needs administrative privileges in the cluster to properly install the controller.</p>
+</li>
+<li>
+<p>Create a <code>haproxy-ingress-values.yaml</code> file with custom parameters:</p>
+<blockquote>
+<p>Use the content below if HAProxy Ingress should expose HAProxy via a service loadbalancer, like ELB, kube-vip, ServiceLB (k3s), etc.</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via a service loadbalancer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>Use the content below to expose HAProxy via host port on all cluster nodes.</p></blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># Expose HAProxy via host port on all cluster nodes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">controller</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ingressClassResource</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">DaemonSet</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">daemonset</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">useHostPort</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
+</span></span></span></code></pre></div><p>HAProxy Ingress chart <a href="https://github.com/haproxy-ingress/charts/blob/release-0.15/haproxy-ingress/README.md#configuration"target="_blank" rel="noopener">documentation</a> has all the available options. See also further documentation in the <a href="https://github.com/haproxy-ingress/charts/blob/release-0.15/haproxy-ingress/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+</li>
+<li>
+<p>Install HAProxy Ingress using <code>haproxy-ingress</code> as the release name and <code>haproxy-ingress-values.yaml</code> file as the custom parameters:</p>
+<pre tabindex="0"><code>$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
+  --install\
+  --create-namespace --namespace ingress-controller\
+  --version 0.15.5\
+  -f haproxy-ingress-values.yaml
+</code></pre><blockquote>
+<p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new HAProxy Ingress deployment if it is missing, or starts a rolling update if HAProxy Ingress is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;haproxy-ingress-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p></blockquote>
+</li>
+</ol>
+<p>The controller should be running in a few seconds. There are four important customizations made in the example above:</p>
+<ul>
+<li><code>--version</code>: a good practice, this will ensure that you&rsquo;ll have the same version installed even if a new release issued.</li>
+<li><code>--namespace</code>: we&rsquo;re instructing helm to install HAProxy Ingress in the <code>ingress-controller</code> namespace. This namespace will be created if it does not exist yet. The default behavior, if namespace is not provided, is to deploy the controller in the kubectl&rsquo;s current namespace.</li>
+<li><code>ingressClassResource.enabled</code>: This causes the helm chart to apply an <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class"target="_blank" rel="noopener">IngressClass</a> to your cluster. IngressClasses are how HAProxy Ingress knows which of your Ingresses it should control. IngressClasses replace the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation"target="_blank" rel="noopener">kubernetes.io/ingress.class</a> annotation used in Kubernetes versions before v1.18.</li>
+<li><code>kind</code>, <code>daemonset.useHostPort</code> and <code>service.type</code>, only used when service loadbalancer should not be used: disables service load balancer and exposes HAProxy via host port on all cluster nodes.</li>
+</ul>
+<p>HAProxy Ingress&rsquo; Helm chart has a few more configuration options, see all of them in the chart <a href="https://github.com/haproxy-ingress/charts/blob/release-0.15/haproxy-ingress/README.md"target="_blank" rel="noopener">documentation</a> and in the <a href="https://github.com/haproxy-ingress/charts/blob/release-0.15/haproxy-ingress/values.yaml"target="_blank" rel="noopener">default values</a> file.</p>
+<h2 id="deploy-and-expose">Deploy and expose<a class="td-heading-self-link" href="#deploy-and-expose" aria-label="Heading self-link"></a></h2>
+<p>The following steps deploy an echoserver image and exposes it in the current namespace using an Ingress resource. See <a href="/v0.15/docs/configuration/gateway-api/">here</a> how to expose using Gateway API.</p>
+<ol>
+<li>
+<p>Create the echoserver&rsquo;s deployment and service:</p>
+<pre tabindex="0"><code>$ kubectl --namespace default create deployment echoserver --image k8s.gcr.io/echoserver:1.3
+$ kubectl --namespace default expose deployment echoserver --port=8080
+</code></pre></li>
+<li>
+<p>Check if echoserver is up and running:</p>
+<pre tabindex="0"><code>$ kubectl -n default get pod -w
+NAME                          READY   STATUS    RESTARTS   AGE
+echoserver-5b6fb6dd96-68jwp   1/1     Running   0          27s
+</code></pre></li>
+<li>
+<p>Make HAProxy Ingress expose the echoserver service. Change <code>echoserver.local</code> value in the <code>--rule</code> option below to a hostname that resolves to an ingress controller node.</p>
+<blockquote>
+<p>Obs.: <code>nip.io</code> is a convenient service which converts a valid domain name to any IP, either public or local. See <a href="https://nip.io"target="_blank" rel="noopener">here</a> how it works.</p></blockquote>
+<pre tabindex="0"><code>$ kubectl --namespace default create ingress echoserver \
+  --class=haproxy \
+  --rule=&#34;echoserver.local/*=echoserver:8080,tls&#34;
+</code></pre></li>
+<li>
+<p>Send a request to our echoserver.</p>
+<pre tabindex="0"><code>$ curl -k https://echoserver.local
+$ wget -qO- --no-check-certificate https://echoserver.local
+</code></pre></li>
+</ol>
+<h2 id="whats-next">What&rsquo;s next<a class="td-heading-self-link" href="#whats-next" aria-label="Heading self-link"></a></h2>
+<p>Expose HAProxy Ingress metrics:</p>
+<ul>
+<li>See the <a href="/v0.15/docs/examples/metrics/">metrics example page</a></li>
+</ul>
+<p>See what differs to expose services using Gateway API:</p>
+<ul>
+<li><a href="https://gateway-api.sigs.k8s.io/"target="_blank" rel="noopener">Gateway API introduction</a> from Kubernetes&rsquo; SIG-Network documentation</li>
+<li><a href="/v0.15/docs/configuration/gateway-api/">Getting started</a> with Gateway API and HAProxy Ingress</li>
+</ul>
+<p>Learn more about Ingress and IngressClass resources:</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/"target="_blank" rel="noopener">Ingress and IngressClass resources</a> from Kubernetes docs</li>
+</ul>
+<p>HAProxy Ingress has lots of configuration options. See the following tips to get started faster:</p>
+<ul>
+<li>Follow some configuration instruction from the <a href="/v0.15/docs/examples/">examples</a> page</li>
+<li>See how HAProxy Ingress uses ingress objects: <a href="/v0.15/docs/configuration/keys/">configuration keys</a></li>
+<li>Get started with all the configuration options: <a href="/v0.15/docs/configuration/">configuration</a></li>
+</ul>
+
+	<div class="section-index">
+    
+    
+    </div>
+<div class="td-page-meta__lastmod">
+  Last modified September 20, 2026: <a data-proofer-ignore href="https://github.com/jcmoraisjr/haproxy-ingress/commit/7a7e263193798a2c3e55735950d2caa57ce069fe">update to v0.15.5 (7a7e2631)</a>
+</div>
+</div>
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="td-footer__left col-6 col-sm-2 order-sm-1">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Slack" aria-label="Slack">
+    <a target="_blank" rel="noopener" href="https://kubernetes.slack.com/channels/haproxy-ingress" aria-label="Slack">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Users mailing list" aria-label="Users mailing list">
+    <a target="_blank" rel="noopener" href="https://groups.google.com/forum/#!forum/haproxy-ingress" aria-label="Users mailing list">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="Stack Overflow" aria-label="Stack Overflow">
+    <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/haproxy-ingress" aria-label="Stack Overflow">
+      <i class="fab fa-stack-overflow"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__right col-6 col-sm-2 order-sm-3">
+        <ul class="td-footer__links-list">
+  
+  <li class="td-footer__links-item" data-bs-toggle="tooltip" title="GitHub" aria-label="GitHub">
+    <a target="_blank" rel="noopener" href="https://github.com/jcmoraisjr/haproxy-ingress" aria-label="GitHub">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+      </div>
+      <div class="td-footer__center col-12 col-sm-8 py-2 order-sm-2">
+        <small class="td-footer__authors">
+  Made with <div class="fa fa-heart"></div> &amp; <div class="fa fa-coffee"></div>
+  | &copy; 2017&ndash;2026 The HAProxy Ingress Controller Authors
+  | Image by <a href="https://pixabay.com/users/TheDigitalArtist-202249/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank" rel="noopener">Pete Linforth</a>
+    from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank" rel="noopener">Pixabay</a>
+</small>
+<p class="td-footer__about mt-2"><a href="/v0.15/about/">About</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <script src="/v0.15/js/main.min.25bfbcec02244bb78eb05c49eed9e6154823760a463e31f7979354fad331a67f.js" integrity="sha256-Jb&#43;87AIkS7eOsFxJ7tnmFUgjdgpGPjH3l5NU&#43;tMxpn8=" crossorigin="anonymous"></script>
+<script defer src="/v0.15/js/click-to-copy.min.73478a7d4807698aed7e355eb23f9890ca18fea3158604c8471746d046702bad.js" integrity="sha256-c0eKfUgHaYrtfjVesj&#43;YkMoY/qMVhgTIRxdG0EZwK60=" crossorigin="anonymous"></script>
+<script src='/v0.15/js/tabpane-persist.js'></script>
+
+  </body>
+</html>
