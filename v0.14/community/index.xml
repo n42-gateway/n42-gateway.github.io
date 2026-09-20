@@ -1,0 +1,17 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HAProxy Ingress – Community</title>
+    <link>/v0.14/community/</link>
+    <description>Recent content in Community on HAProxy Ingress</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	  <atom:link href="/v0.14/community/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+  </channel>
+</rss>

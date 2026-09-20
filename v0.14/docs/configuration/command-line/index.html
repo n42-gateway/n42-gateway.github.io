@@ -1,0 +1,1672 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.58.3" />
+
+<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+
+
+
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/v0.14/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-192x192.png" sizes="192x192">
+
+<title>Command-line options | HAProxy Ingress</title><meta property="og:title" content="Command-line options" />
+<meta property="og:description" content="Static command-line configuration options.
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/v0.14/docs/configuration/command-line/" />
+<meta property="article:modified_time" content="2026-04-22T19:31:35-03:00" /><meta property="og:site_name" content="HAProxy Ingress" />
+<meta itemprop="name" content="Command-line options">
+<meta itemprop="description" content="Static command-line configuration options.
+">
+
+
+<meta itemprop="dateModified" content="2026-04-22T19:31:35-03:00" />
+<meta itemprop="wordCount" content="4080">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Command-line options"/>
+<meta name="twitter:description" content="Static command-line configuration options.
+"/>
+
+
+
+
+
+
+
+<link rel="preload" href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" as="style">
+<link href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" rel="stylesheet" integrity="">
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+    <title>Command-line options | HAProxy Ingress</title>
+  </head>
+  <body class="td-page">
+    <header>
+      
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar">
+        <a class="navbar-brand" href="/v0.14/">
+		<span class="navbar-logo"></span><span class="text-uppercase font-weight-bold">HAProxy Ingress</span>
+	</a>
+	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0">
+			
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/about/" ><span>About</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link active" href="/v0.14/docs/" ><span class="active">Documentation</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/community/" ><span>Community</span></a>
+			</li>
+			
+			
+			<li class="nav-item dropdown d-none d-lg-block">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	v0.14
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	
+	<a class="dropdown-item" href="/docs">Latest</a>
+	
+	<a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+	
+	<a class="dropdown-item" href="/v0.13/docs">v0.13</a>
+	
+	<a class="dropdown-item" href="/v0.12/docs">v0.12</a>
+	
+	<a class="dropdown-item" href="/v0.10/docs">v0.10</a>
+	
+</div>
+
+			</li>
+			
+			
+		</ul>
+	</div>
+	<div class="navbar-nav d-none d-lg-block"></div>
+</nav>
+
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            
+
+
+
+
+<div id="td-sidebar-menu" class="td-sidebar__inner">
+  
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ml-3 fas fa-bars" type="button" data-toggle="collapse" data-target="#td-section-nav" aria-controls="td-docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  
+  <nav class="collapse td-sidebar-nav pt-2 pl-4" id="td-section-nav">
+    
+    
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/" class="align-left pl-0 pr-2 td-sidebar-link td-sidebar-link__section">Documentation</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="v0-14-docs">
+      
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/overview/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Overview</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-overview">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/getting-started/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Getting Started</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-getting-started">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/examples/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Examples</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-examples">
+      
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-blue-green" href="/v0.14/docs/examples/blue-green/">Blue/green</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-external-haproxy" href="/v0.14/docs/examples/external-haproxy/">External haproxy</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-metrics" href="/v0.14/docs/examples/metrics/">Metrics</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-modsecurity" href="/v0.14/docs/examples/modsecurity/">ModSecurity</a>
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/configuration/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Configuration</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="v0-14-docs-configuration">
+      
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-gateway-api" href="/v0.14/docs/configuration/gateway-api/">Gateway API</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-keys" href="/v0.14/docs/configuration/keys/">Keys</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page  active" id="m-v0-14-docs-configuration-command-line" href="/v0.14/docs/configuration/command-line/">Command-line</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-template" href="/v0.14/docs/configuration/template/">Template</a>
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/faq/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">FAQ</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-faq">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/contribution-guidelines/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-contribution-guidelines">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+    </li>
+  </ul>
+</ul>
+
+  </nav>
+</div>
+
+
+
+
+          </div>
+          <div class="d-none d-xl-block col-xl-2 td-toc d-print-none">
+            
+
+
+
+
+
+<div class="td-page-meta ml-2 pb-1 pt-2 mb-0">
+
+
+
+
+
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/edit/master/docs/content/en/docs/configuration/command-line.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/issues/new?title=Command-line%20options" target="_blank"><i class="fab fa-github fa-fw"></i> Create doc issue</a>
+
+</div>
+
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#acme">Acme</a></li>
+<li><a href="#allow-cross-namespace">&ndash;allow-cross-namespace</a></li>
+<li><a href="#annotations-prefix">&ndash;annotations-prefix</a></li>
+<li><a href="#apiserver-host">&ndash;apiserver-host</a></li>
+<li><a href="#backend-shards">&ndash;backend-shards</a></li>
+<li><a href="#buckets-response-time">&ndash;buckets-response-time</a></li>
+<li><a href="#configmap">&ndash;configmap</a></li>
+<li><a href="#default-backend-service">&ndash;default-backend-service</a></li>
+<li><a href="#default-ssl-certificate">&ndash;default-ssl-certificate</a></li>
+<li><a href="#disable-api-warnings">&ndash;disable-api-warnings</a></li>
+<li><a href="#disable-config-keywords">&ndash;disable-config-keywords</a></li>
+<li><a href="#disable-external-name">&ndash;disable-external-name</a></li>
+<li><a href="#disable-pod-list">&ndash;disable-pod-list</a></li>
+<li><a href="#election-id">&ndash;election-id</a></li>
+<li><a href="#enable-endpointslices-api">&ndash;enable-endpointslices-api</a></li>
+<li><a href="#force-namespace-isolation">&ndash;force-namespace-isolation</a></li>
+<li><a href="#ingress-class">Ingress Class</a></li>
+<li><a href="#kubeconfig">&ndash;kubeconfig</a></li>
+<li><a href="#local-filesystem-prefix">&ndash;local-filesystem-prefix</a></li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#master-socket">&ndash;master-socket</a></li>
+<li><a href="#master-worker">&ndash;master-worker</a></li>
+<li><a href="#max-old-config-files">&ndash;max-old-config-files</a></li>
+<li><a href="#publish-service">&ndash;publish-service</a></li>
+<li><a href="#rate-limit-update">&ndash;rate-limit-update</a></li>
+<li><a href="#reload-interval">&ndash;reload-interval</a></li>
+<li><a href="#reload-strategy">&ndash;reload-strategy</a></li>
+<li><a href="#report-node-internal-ip-address">&ndash;report-node-internal-ip-address</a></li>
+<li><a href="#sort-backends">&ndash;sort-backends</a></li>
+<li><a href="#sort-endpoints-by">&ndash;sort-endpoints-by</a></li>
+<li><a href="#stats">Stats</a></li>
+<li><a href="#sync-period">&ndash;sync-period</a></li>
+<li><a href="#tcp-services-configmap">&ndash;tcp-services-configmap</a></li>
+<li><a href="#timeout">Timeout</a></li>
+<li><a href="#track-old-instances">&ndash;track-old-instances</a></li>
+<li><a href="#update-status">&ndash;update-status</a></li>
+<li><a href="#update-status-on-shutdown">&ndash;update-status-on-shutdown</a></li>
+<li><a href="#validate-config">&ndash;validate-config</a></li>
+<li><a href="#verify-hostname">&ndash;verify-hostname</a></li>
+<li><a href="#version">&ndash;version</a></li>
+<li><a href="#wait-before-shutdown">&ndash;wait-before-shutdown</a></li>
+<li><a href="#wait-before-update">&ndash;wait-before-update</a></li>
+<li><a href="#watch-gateway">&ndash;watch-gateway</a></li>
+<li><a href="#watch-namespace">&ndash;watch-namespace</a></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+          </div>
+          <main class="col-12 col-md-9 col-xl-8 pl-md-5" role="main">
+            <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+	<ol class="breadcrumb spb-1">
+		
+
+
+
+
+
+
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="/v0.14/docs/">Documentation</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="/v0.14/docs/configuration/">Configuration</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item active" aria-current="page">
+	<a href="/v0.14/docs/configuration/command-line/">Command-line</a>
+</li>
+
+	</ol>
+</nav	>
+
+            
+<div class="td-content">
+	<h1>Command-line options</h1>
+	<div class="lead">Static command-line configuration options.</div>
+	
+
+<p>The following command-line options are supported:</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Since</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="#acme"><code>--acme-check-period</code></a></td>
+<td>time</td>
+<td><code>24h</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-election-id</code></a></td>
+<td>[namespace]/configmap-name</td>
+<td><code>acme-leader</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-fail-initial-duration</code></a></td>
+<td>time</td>
+<td><code>5m</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-fail-max-duration</code></a></td>
+<td>time</td>
+<td><code>8h</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-secret-key-name</code></a></td>
+<td>[namespace]/secret-name</td>
+<td><code>acme-private-key</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-server</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-token-configmap-name</code></a></td>
+<td>[namespace]/configmap-name</td>
+<td><code>acme-validation-tokens</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#acme"><code>--acme-track-tls-annotation</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.9</td>
+</tr>
+
+<tr>
+<td><a href="#allow-cross-namespace"><code>--allow-cross-namespace</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#annotations-prefix"><code>--annotations-prefix</code></a></td>
+<td>prefix list without <code>/</code></td>
+<td><code>haproxy-ingress.github.io,ingress.kubernetes.io</code></td>
+<td>v0.8</td>
+</tr>
+
+<tr>
+<td><a href="#apiserver-host"><code>--apiserver-host</code></a></td>
+<td>address of K8s API server</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#backend-shards"><code>--backend-shards</code></a></td>
+<td>int</td>
+<td><code>0</code></td>
+<td>v0.11</td>
+</tr>
+
+<tr>
+<td><a href="#buckets-response-time"><code>--buckets-response-time</code></a></td>
+<td>float64 slice</td>
+<td><code>.0005,.001,.002,.005,.01</code></td>
+<td>v0.10</td>
+</tr>
+
+<tr>
+<td><a href="#configmap"><code>--configmap</code></a></td>
+<td>namespace/configmapname</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#timeout"><code>--connection-timeout</code></a></td>
+<td>duration</td>
+<td><code>30s</code></td>
+<td>v0.14.11</td>
+</tr>
+
+<tr>
+<td><a href="#ingress-class"><code>--controller-class</code></a></td>
+<td>suffix</td>
+<td><code>&quot;&quot;</code></td>
+<td>v0.12</td>
+</tr>
+
+<tr>
+<td><a href="#default-backend-service"><code>--default-backend-service</code></a></td>
+<td>namespace/servicename</td>
+<td>haproxy&rsquo;s 404 page</td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#default-ssl-certificate"><code>--default-ssl-certificate</code></a></td>
+<td>namespace/secretname</td>
+<td>fake, auto generated</td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#disable-api-warnings"><code>--disable-api-warnings</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.12</td>
+</tr>
+
+<tr>
+<td><a href="#disable-config-keywords"><code>--disable-config-keywords</code></a></td>
+<td>comma-separated list of keywords</td>
+<td><code>&quot;&quot;</code></td>
+<td>v0.10</td>
+</tr>
+
+<tr>
+<td><a href="#disable-external-name"><code>--disable-external-name</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.10</td>
+</tr>
+
+<tr>
+<td><a href="#disable-pod-list"><code>--disable-pod-list</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.11</td>
+</tr>
+
+<tr>
+<td><a href="#election-id"><code>--election-id</code></a></td>
+<td>identifier</td>
+<td><code>ingress-controller-leader</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#enable-endpointslices-api"><code>--enable-endpointslices-api</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14.3</td>
+</tr>
+
+<tr>
+<td><a href="#force-namespace-isolation"><code>--force-namespace-isolation</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#stats"><code>--health-check-path</code></a></td>
+<td>path</td>
+<td><code>/healthz</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#stats"><code>--healthz-port</code></a></td>
+<td>port number</td>
+<td><code>10254</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#ingress-class"><code>--ingress-class</code></a></td>
+<td>name</td>
+<td><code>haproxy</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#ingress-class"><code>--ingress-class-precedence</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.13.5</td>
+</tr>
+
+<tr>
+<td><a href="#kubeconfig"><code>--kubeconfig</code></a></td>
+<td>/path/to/kubeconfig</td>
+<td>in cluster config</td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#local-filesystem-prefix"><code>--local-filesystem-prefix</code></a></td>
+<td>temporary base directory</td>
+<td></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-zap</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-dev</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-caller</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-enable-stacktrace</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-encoder</code></a></td>
+<td>encoder name</td>
+<td><code>json</code> (prod), <code>console</code> (dev)</td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--log-encode-time</code></a></td>
+<td>encoder name</td>
+<td><code>rfc3339nano</code> (prod), <code>iso8601</code> (dev)</td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#master-socket"><code>--master-socket</code></a></td>
+<td>socket path</td>
+<td>use embedded haproxy</td>
+<td>v0.12</td>
+</tr>
+
+<tr>
+<td><a href="#master-worker"><code>--master-worker</code></a></td>
+<td>[true|false]</td>
+<td>false</td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#max-old-config-files"><code>--max-old-config-files</code></a></td>
+<td>num of files</td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#stats"><code>--profiling</code></a></td>
+<td>[true|false]</td>
+<td><code>true</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#publish-service"><code>--publish-service</code></a></td>
+<td>namespace/servicename</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#rate-limit-update"><code>--rate-limit-update</code></a></td>
+<td>uploads per second (float)</td>
+<td><code>0.5</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#reload-interval"><code>--reload-interval</code></a></td>
+<td>time</td>
+<td><code>0</code></td>
+<td>v0.13</td>
+</tr>
+
+<tr>
+<td><a href="#reload-strategy"><code>--reload-strategy</code></a></td>
+<td>[native|reusesocket]</td>
+<td><code>reusesocket</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#report-node-internal-ip-address"><code>--report-node-internal-ip-address</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#sort-backends"><code>--sort-backends</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#sort-endpoints-by"><code>--sort-endpoints-by</code></a></td>
+<td>[endpoint|ip|name|random]</td>
+<td><code>endpoint</code></td>
+<td>v0.11</td>
+</tr>
+
+<tr>
+<td><a href="#stats"><code>--stats-collect-processing-period</code></a></td>
+<td>time</td>
+<td><code>500ms</code></td>
+<td>v0.10</td>
+</tr>
+
+<tr>
+<td><a href="#sync-period"><code>--sync-period</code></a></td>
+<td>time</td>
+<td><code>10m</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#tcp-services-configmap"><code>--tcp-services-configmap</code></a></td>
+<td>namespace/configmapname</td>
+<td>no tcp svc</td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#track-old-instances"><code>--track-old-instances</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.14</td>
+</tr>
+
+<tr>
+<td><a href="#update-status"><code>--update-status</code></a></td>
+<td>[true|false]</td>
+<td><code>true</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#update-status-on-shutdown"><code>--update-status-on-shutdown</code></a></td>
+<td>[true|false]</td>
+<td><code>true</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#logging"><code>--v</code></a></td>
+<td>log level as integer</td>
+<td><code>2</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#validate-config"><code>--validate-config</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#verify-hostname"><code>--verify-hostname</code></a></td>
+<td>[true|false]</td>
+<td><code>true</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#version"><code>--version</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="#wait-before-shutdown"><code>--wait-before-shutdown</code></a></td>
+<td>seconds as integer</td>
+<td><code>0</code></td>
+<td>v0.8</td>
+</tr>
+
+<tr>
+<td><a href="#wait-before-update"><code>--wait-before-update</code></a></td>
+<td>duration</td>
+<td><code>200ms</code></td>
+<td>v0.11</td>
+</tr>
+
+<tr>
+<td><a href="#watch-gateway"><code>--watch-gateway</code></a></td>
+<td>[true|false]</td>
+<td><code>true</code></td>
+<td>v0.13</td>
+</tr>
+
+<tr>
+<td><a href="#ingress-class"><code>--watch-ingress-without-class</code></a></td>
+<td>[true|false]</td>
+<td><code>false</code></td>
+<td>v0.12</td>
+</tr>
+
+<tr>
+<td><a href="#watch-namespace"><code>--watch-namespace</code></a></td>
+<td>namespace</td>
+<td>all namespaces</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2 id="acme">Acme</h2>
+
+<p>Configures the acme server and other static options used to authorize and sign certificates
+against a server which implements the acme protocol, version 2.</p>
+
+<p>Supported acme command-line options:</p>
+
+<ul>
+<li><code>--acme-check-period</code>: interval between checks for expiring certificates. Defaults to <code>24h</code>.</li>
+<li><code>--acme-election-id</code>: prefix of the ConfigMap name used to store the leader election data. Only the leader of a haproxy-ingress cluster should start the authorization and sign certificate process. Defaults to <code>acme-leader</code>.</li>
+<li><code>--acme-fail-initial-duration</code>: the starting time to wait and retry after a failed authorization and sign process. Defaults to <code>5m</code>.</li>
+<li><code>--acme-fail-max-duration</code>: the time between retries of failed authorization will exponentially grow up to the max duration time. Defaults to <code>8h</code>.</li>
+<li><code>--acme-secret-key-name</code>: secret name used to store the client private key. Defaults to <code>acme-private-key</code>. A new key, hence a new client, is created if the secret does not exist.</li>
+<li><code>--acme-server</code>: mandatory, starts a local server used to answer challenges from the acme environment. This option should be provided on all haproxy-ingress instances to the certificate signing work properly.</li>
+<li><code>--acme-token-configmap-name</code>: the ConfigMap name used to store temporary tokens generated during the challenge. Defaults to <code>acme-validation-tokens</code>. Such tokens need to be stored in k8s because any haproxy-ingress instance might receive the request from the acme environment.</li>
+<li><code>--acme-track-tls-annotation</code>: defines if ingress objects with annotation <code>kubernetes.io/tls-acme: &quot;true&quot;</code> should also be tracked. Defaults to <code>false</code>.</li>
+</ul>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#acme">acme configuration keys</a> doc, which has also an overview on how acme works on haproxy-ingress</li>
+</ul>
+
+<hr />
+
+<h2 id="allow-cross-namespace">&ndash;allow-cross-namespace</h2>
+
+<p><code>--allow-cross-namespace</code> argument, if added, will allow reading secrets from one namespace to an
+ingress resource of another namespace. The default behavior is to deny such cross namespace reading.
+This adds a breaking change from <code>v0.4</code> to <code>v0.5</code> on <code>haproxy-ingress.github.io/auth-tls-secret</code>
+annotation, where cross namespace reading were allowed without any configuration.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#cross-namespace">cross namespace</a> configuration keys.</li>
+</ul>
+
+<hr />
+
+<h2 id="annotations-prefix">&ndash;annotations-prefix</h2>
+
+<p>Configures a comma-separated list of annotations prefix that the controller should look for when
+parsing services and ingress objects. The default value is <code>haproxy-ingress.github.io,ingress.kubernetes.io</code>.
+The default configuration means declare eg a SSL Redirect annotation with
+<code>haproxy-ingress.github.io/ssl-redirect: &quot;true&quot;</code> or <code>ingress.kubernetes.io/ssl-redirect: &quot;true&quot;</code>.</p>
+
+<p>The order of the declaration is used to prioritize one of them if the same configuration key is
+declared twice - if two distinct prefix is used to configure the same key in the same ingress or
+service resource, the value of the annotation with the prefix that was configured first in this
+command-line option is used.</p>
+
+<p>Annotations with other prefix or without any prefix are ignored. This allows to use HAProxy Ingress
+with other ingress controllers that shares ingress and service resources without conflicting each
+other.</p>
+
+<hr />
+
+<h2 id="apiserver-host">&ndash;apiserver-host</h2>
+
+<p>Allows you to specify an explicit host for the Kubernetes API server, in the format of
+<code>protocol://address:port</code>, e.g., <code>http://localhost:8080</code>.  If this value isn&rsquo;t specified, the
+assumption is that the binary is running inside a Kubernetes cluster and local discovery will be
+attempted.</p>
+
+<hr />
+
+<h2 id="backend-shards">&ndash;backend-shards</h2>
+
+<p>Defines how many files should be used to configure the haproxy backends. The default value is
+0 (zero) which uses one single file to configure the whole haproxy process. Values greater than
+0 (zero) splits the backend configuration into separated files. Only files with changed backends
+are parsed and written to disk, reducing io and cpu usage on big clusters - about 1000 or more
+services.</p>
+
+<hr />
+
+<h2 id="buckets-response-time">&ndash;buckets-response-time</h2>
+
+<p>Configures the buckets of the histogram <code>haproxyingress_haproxy_response_time_seconds</code>, used to compute the response time of the haproxy&rsquo;s admin socket. The response time unit is in seconds. The default value is <code>.0005,.001,.002,.005,.01</code> (<code>500µs</code>, <code>1ms</code>, <code>2ms</code>, <code>5ms</code>, <code>10ms</code>) if not configured.</p>
+
+<hr />
+
+<h2 id="configmap">&ndash;configmap</h2>
+
+<p>The name of the ConfigMap that contains the custom configuration to use, in the format
+<code>namespace/configmapname</code>.  Beware that in version 0.12 and below, an incorrect value here will
+silently fail.  Version 0.13 and later will crash if the ConfigMap is unreadable or nonexistent.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="https://github.com/jcmoraisjr/haproxy-ingress/blob/master/examples/custom-configuration/README.md">custom-configuration example using <code>--configmap</code></a></li>
+</ul>
+
+<hr />
+
+<h2 id="default-backend-service">&ndash;default-backend-service</h2>
+
+<p>Defines the <code>namespace/servicename</code> that should be used if the incoming request doesn&rsquo;t match any
+hostname, or the requested path doesn&rsquo;t match any location within the desired hostname. An internal
+404 error page is used if not declared.</p>
+
+<hr />
+
+<h2 id="default-ssl-certificate">&ndash;default-ssl-certificate</h2>
+
+<p>Defines the <code>namespace/secretname</code> of the default certificate that should be used if ingress
+resources using TLS configuration doesn&rsquo;t provide it&rsquo;s own certificate.  A filename prefixed
+with <code>file://</code> can be used, containing both certificate and private key in PEM format, eg
+<code>file:///dir/crt.pem</code>.</p>
+
+<p>A self-signed fake certificate is used if not declared, the secret or the file is not found.</p>
+
+<hr />
+
+<h2 id="disable-api-warnings">&ndash;disable-api-warnings</h2>
+
+<p>Since v0.12.4</p>
+
+<p>Disable warning logs sent from the API server. Most of the warnings are related with API
+deprecation. The default behavior is to log all API server warnings.</p>
+
+<hr />
+
+<h2 id="disable-config-keywords">&ndash;disable-config-keywords</h2>
+
+<p>Since v0.10.9</p>
+
+<p>Defines a comma-separated list of HAProxy keywords that should not be used on annotation based configuration snippets. Configuration snippets added as a global config does not follow this option. Use an asterisk <code>*</code> to disable configuration snippets using annotations.</p>
+
+<p>Every keyword in the configuration will be compared with the first token of every configuration line, ignoring tabs and spaces. If a match occur, all the configuration snippet will be ignored and a warning is logged.</p>
+
+<p>The default value is an empty string, enabling the configuration and accepting any HAProxy keyword.</p>
+
+<hr />
+
+<h2 id="disable-external-name">&ndash;disable-external-name</h2>
+
+<p>Since v0.10.9</p>
+
+<p>Services of type ExternalName uses DNS lookup to define the target server IP list. Declare <code>--disable-external-name</code> to disable a DNS based target IP list, refusing services of type ExternalName.</p>
+
+<hr />
+
+<h2 id="disable-pod-list">&ndash;disable-pod-list</h2>
+
+<p>Since v0.11</p>
+
+<p>Disables in memory pod list and also pod watch for changes. Pod list and watch is used by the <code>drain-support</code> and <code>assign-backend-server-id</code> options, which will not work if pod list is disabled. Blue/green and <code>session-cookie-value-strategy</code> set to <code>pod-uid</code> also use pod list if enabled, otherwise k8s api is called if needed. The default value is <code>false</code>, which means pods will be watched and listed in memory.</p>
+
+<hr />
+
+<h2 id="election-id">&ndash;election-id</h2>
+
+<p>The ID to be used for electing ingress controller leader.  Defaults to <code>ingress-controller-leader</code>.</p>
+
+<hr />
+
+<h2 id="enable-endpointslices-api">&ndash;enable-endpointslices-api</h2>
+
+<p>Since v0.14.3</p>
+
+<p>Uses EndpointSlices API info, rather than Endpoints API, to fetch service endpoints info. By default it is disabled. EndpointSlices API was stablised from Kubernetes v1.21.</p>
+
+<hr />
+
+<h2 id="force-namespace-isolation">&ndash;force-namespace-isolation</h2>
+
+<p>Whether to force namespace isolation.  This flag is required to avoid the reference of secrets,
+configmaps or the default backend service located in a different namespace than specified in the
+flag <code>--watch-namespace</code> (which defaults to all namespaces, so you will probably want to set that
+flag, too).</p>
+
+<hr />
+
+<h2 id="ingress-class">Ingress Class</h2>
+
+<p>More than one ingress controller is supported per Kubernetes cluster. These options allow to
+override the class of ingress resources that this instance of the controller should listen to.
+Classes that match will be used in the HAProxy configuration, other classes will be ignored.
+Ingress resources without class name and without class annotation is also ignored since v0.12,
+add the command-line option <code>--watch-ingress-without-class</code> to also listen to these ingress.</p>
+
+<p>These options have a new behavior since v0.12, see the corresponding documentation if using an
+older controller version.</p>
+
+<ul>
+<li><code>--ingress-class</code>: defines the value of <code>kubernetes.io/ingress.class</code> annotation this controller
+should listen to. The default value is <code>haproxy</code> if not declared.</li>
+<li><code>--controller-class</code>: by default, HAProxy Ingress will watch IngressClasses whose
+<code>spec.controller</code> name is <code>haproxy-ingress.github.io/controller</code>. All ingress resources that
+link to these IngressClasses will be added to the configuration. The <code>--controller-class</code>
+command-line option customizes the controller name, allowing to run more than one HAProxy Ingress
+in the same cluster. Configuring <code>--controller-class=staging</code> would listen to IngressClasses whose
+controller name is <code>haproxy-ingress.github.io/controller/staging</code>.</li>
+<li><code>--ingress-class-precedence</code>: defines if IngressClass resource should take precedence over
+kubernetes.io/ingress.class annotation if both are defined and conflicting.</li>
+<li><code>--watch-ingress-without-class</code>: defines if this controller should also listen to ingress resources
+that doesn&rsquo;t declare neither the <code>kubernetes.io/ingress.class</code> annotation nor the
+<code>&lt;ingress&gt;.spec.ingressClassName</code> field. The default since v0.12 is to ignore ingress without class
+annotation and class name.</li>
+<li><code>--ignore-ingress-without-class</code>: this option is ignored since v0.12. Use
+<code>--watch-ingress-without-class</code> instead.</li>
+</ul>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#class-matter">Class matter</a> in the Configuration Keys doc</li>
+<li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class">https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class</a></li>
+</ul>
+
+<hr />
+
+<h2 id="kubeconfig">&ndash;kubeconfig</h2>
+
+<p>Ingress controller will try to connect to the Kubernetes master using environment variables and a
+service account. This behavior can be changed using <code>--kubeconfig</code> argument that reference a
+kubeconfig file with master endpoint and credentials. This is a mandatory argument if the controller
+is deployed outside of the Kubernetes cluster.</p>
+
+<hr />
+
+<h2 id="local-filesystem-prefix">&ndash;local-filesystem-prefix</h2>
+
+<p>Since v0.14</p>
+
+<p>Enables HAProxy Ingress to run in local mode. Define <code>--local-filesystem-prefix</code> with a temporary
+directory HAProxy Ingress should create and maintain all the configuration files. Useful for local
+deployment. Start HAProxy Ingress in the root directory of the repository when using
+<code>--local-filesystem-prefix</code>, or simply use via <code>make run</code>.</p>
+
+<hr />
+
+<h2 id="logging">Logging</h2>
+
+<p>Since v0.14</p>
+
+<p>Logging configuration options.</p>
+
+<ul>
+<li><code>--log-zap</code>: Configures <a href="https://pkg.go.dev/go.uber.org/zap">zap</a> as the controller&rsquo;s logger sink. <a href="https://github.com/kubernetes/klog">klog</a> output is used if not enabled. Most of the logging options need zap enabled.</li>
+<li><code>--log-dev</code>: Defines if development style logging should be used. Defaults to production. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-caller</code>: Defines if the log output should add a reference of the caller with file name and line number. Defaults to not add. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-enable-stacktrace</code>: Defines if error output should add stracktraces. Defaults to not add. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-encoder</code>: Defines the log encoder. Options are: <code>console</code> or <code>json</code>. Defaults to <code>json</code> if <code>--log-dev</code> is disabled and <code>console</code> if <code>--log-dev</code> is enabled. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--log-encode-time</code>: Configures the encode time used in the logs. Options are: <code>rfc3339nano</code>, <code>rfc3339</code>, <code>iso8601</code>, <code>millis</code>, <code>nanos</code>. Defaults to <code>rfc3339nano</code> if <code>--log-dev</code> is disabled and <code>iso8601</code> if <code>--log-dev</code> is enabled. Needs <code>--log-zap</code> enabled.</li>
+<li><code>--v</code>: Number of the log level verbosity. 1: info; 2: add low verbosity debug. Defaults to 2.</li>
+</ul>
+
+<hr />
+
+<h2 id="master-socket">&ndash;master-socket</h2>
+
+<p>Since v0.12</p>
+
+<p>Configures HAProxy Ingress to use an external haproxy deployment in master-worker mode. This option
+receives the unix socket of the master CLI. The default value is an empty string, which will
+instruct the controller to start and manage the embedded haproxy instead of an external instance.</p>
+
+<p>The following conditions should be satisfied in order to an external haproxy work properly:</p>
+
+<ol>
+<li>The following paths should be shared between HAProxy Ingress and the external haproxy: <code>/etc/haproxy</code>, <code>/var/lib/haproxy</code>, <code>/var/run/haproxy</code>. HAProxy Ingress must have write access to all of them, external haproxy should have write access to <code>/var/run/haproxy</code>. This can be made using a sidecar container and k8s&rsquo; emptyDir, or a remote file system provided that it updates synchronously and supports unix sockets</li>
+<li>Start the external haproxy with:
+
+<ul>
+<li><code>-S /var/run/haproxy/master.sock,mode,600</code>. <code>mode 600</code> isn&rsquo;t mandatory but recommended;</li>
+<li><code>-f /etc/haproxy</code></li>
+</ul></li>
+<li>HAProxy Ingress image has a <code>--init</code> command-line option which creates an initial valid configuration file, this allows the external haproxy to bootstraps successfully. This option can be used as an init container.</li>
+</ol>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/examples/external-haproxy/">example</a> page.</li>
+<li><a href="/v0.14/docs/configuration/keys/#external">External</a> and <a href="/v0.14/docs/configuration/keys/#master-worker">Master-worker</a> configuration keys</li>
+</ul>
+
+<hr />
+
+<h2 id="master-worker">&ndash;master-worker</h2>
+
+<p>Since v0.14</p>
+
+<p>Defines if haproxy should be configured in master-worker mode. If <code>false</code>, one single process
+is forked in the background. If <code>true</code>, a master process is started in the foreground and can
+be used to manage current and old worker processes. The default value is <code>false</code>, which
+preserves historical behavior of HAProxy Ingress. External HAProxy deployment needs
+master-worker mode and will enforce <code>--master-worker</code> as <code>true</code> if configured.</p>
+
+<hr />
+
+<h2 id="max-old-config-files">&ndash;max-old-config-files</h2>
+
+<p>Everytime a configuration change need to update HAProxy, a configuration file is rewritten even if
+dynamic update is used. By default the same file is recreated and the old configuration is lost.
+Use <code>--max-old-config-files</code> to configure after how much files Ingress controller should start to
+remove old configuration files. If <code>0</code>, the default value, a single <code>haproxy.cfg</code> is used.</p>
+
+<hr />
+
+<h2 id="publish-service">&ndash;publish-service</h2>
+
+<p>Some infrastructure tools like <code>external-DNS</code> relay in the ingress status to created access routes to the services exposed with ingress object.</p>
+
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+...
+status:
+  loadBalancer:
+    ingress:
+    - hostname: &lt;ingressControllerLoadbalancerFQDN&gt;
+</code></pre>
+
+<p>Use <code>--publish-service=namespace/servicename</code> to indicate the services fronting the ingress controller. The controller mirrors the address of this service&rsquo;s endpoints to the load-balancer status of all Ingress objects it satisfies.</p>
+
+<hr />
+
+<h2 id="rate-limit-update">&ndash;rate-limit-update</h2>
+
+<p>Use <code>--rate-limit-update</code> to change how much time to wait between two consecutive configuration updates.
+A configuration update is the process of read all enqueued Kubernetes events, reflect in the HAProxy
+model and immediately apply everything that does not need a reload, eg server certificate endpoint
+updates. Note that the first configuration update is always immediate, the delay will only prevent
+two or more consecutive updates in the same time frame - the second update will be enqueued and
+processed later, satisfying the rate limit configuration. Moreover, updates will only happen if
+Kubernetes reports changing events. The default value is <code>0.5</code> which means to wait two seconds between
+two consecutive configuration changes.</p>
+
+<p>Up to v0.12 this was the only way to limit how often HAProxy would be reloaded, but this also prevents
+to dynamically update HAProxy as fast as possible. v0.13 adds <a href="#reload-interval"><code>--reload-interval</code></a>,
+which allows a higher rate limit update with a lower rate of reloads.</p>
+
+<p>See also <a href="#reload-interval"><code>--reload-interval</code></a>.</p>
+
+<hr />
+
+<h2 id="reload-interval">&ndash;reload-interval</h2>
+
+<p>Since v0.13</p>
+
+<p>Configures the minimal time between two consecutive HAProxy reloads. The default value is <code>0</code>,
+which means to always reload HAProxy just after a configuration change requires a reload. The
+interval should be configured with a time suffix, e.g., <code>30s</code> means that if two distinct and
+consecutive configuration changes enforce a reload, the second reload will be enqueued until 30
+seconds have passed from the first one, applying every new configuration changes made between
+this interval.</p>
+
+<p>Higher values help to limit the number of active instances and save some memory on large clusters
+with long connections. Note however that, if two consecutive updates require a reload, the second
+one will delay up to the configured duration to be reflected by HAProxy.</p>
+
+<hr />
+
+<h2 id="reload-strategy">&ndash;reload-strategy</h2>
+
+<p>The <code>--reload-strategy</code> command-line argument is used to select which reload strategy
+HAProxy should use. The following options are available:</p>
+
+<ul>
+<li><code>native</code>: Uses native HAProxy reload option <code>-sf</code>.</li>
+<li><code>reusesocket</code>: (starting on v0.6) Uses HAProxy <code>-x</code> command-line option to pass the listening sockets between old and new HAProxy process, allowing hitless reloads. This is the default option since v0.8.</li>
+<li><code>multibinder</code>: (deprecated on v0.6) Uses GitHub&rsquo;s <a href="https://github.com/github/multibinder">multibinder</a>. This <a href="https://githubengineering.com/glb-part-2-haproxy-zero-downtime-zero-delay-reloads-with-multibinder/">link</a>
+describes how it works.</li>
+</ul>
+
+<hr />
+
+<h2 id="report-node-internal-ip-address">&ndash;report-node-internal-ip-address</h2>
+
+<p>Sets whether the node&rsquo;s IP address returned in the ingress status should be the node&rsquo;s internal
+instead of the external IP address.  Defaults to <code>false</code>.</p>
+
+<hr />
+
+<h2 id="sort-backends">&ndash;sort-backends</h2>
+
+<p>Defines if backend&rsquo;s endpoints should be sorted by name. Since v0.8 the endpoints will stay in the
+same order found in the Kubernetes&rsquo; endpoint objects if <code>--sort-backends</code> is missing. This option
+has less precedence than <code>--sort-endpoints-by</code> if both are declared.</p>
+
+<p>In v0.7 and older version, if <code>--sort-backends</code> is missing, HAProxy Ingress randomly shuffle endpoints
+on each reload in order to avoid requesting always the same backends just after haproxy reloads.</p>
+
+<p>Sorting backends by name has a real effect only if using a distinct <a href="/v0.14/docs/configuration/keys/#backend-server-naming">backend-server-naming</a>
+option, because the default value builds the server name using a numeric sequence.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#backend-server-naming">backend-server-naming</a> configuration key</li>
+<li><a href="#sort-endpoints-by">sort-endpoints-by</a> command-line option</li>
+</ul>
+
+<hr />
+
+<h2 id="sort-endpoints-by">&ndash;sort-endpoints-by</h2>
+
+<p>Since v0.11</p>
+
+<p>Defines in which order the endpoints of a backend should be sorted.</p>
+
+<ul>
+<li><code>endpoint</code>: this is the default value, uses the same order declared in the Kubernetes&rsquo; Endpoint objects. <code>ep</code> is an alias to <code>endpoint</code></li>
+<li><code>ip</code>: sort endpoints by the IP and port of the destination server</li>
+<li><code>name</code>: sort the endpoints by the name given to the server, see also <a href="/v0.14/docs/configuration/keys/#backend-server-naming">backend-server-naming</a></li>
+<li><code>random</code>: randomly shuffle the endpoints every time haproxy needs to be reloaded, this option avoids to always send requests to the same endpoints depending on the balancing algorithm</li>
+</ul>
+
+<hr />
+
+<h2 id="stats">Stats</h2>
+
+<p>Configures an endpoint with statistics, debugging and health checks. The following URIs are provided:</p>
+
+<ul>
+<li><code>/healthz</code>: a healthz URI for the haproxy-ingress</li>
+<li><code>/metrics</code>: Prometheus compatible metrics exporter</li>
+<li><code>/acme/check</code> (<code>POST</code>): starts check for missing, expiring or outdated certificates controlled by acme client. Should be issued in the leader.</li>
+<li><code>/debug/pprof</code>: profiling tools</li>
+<li><code>/build</code>: build information - controller name, version, git commit hash and repository</li>
+<li><code>/stop</code>: stops haproxy-ingress controller</li>
+</ul>
+
+<p>Options:</p>
+
+<ul>
+<li><code>--health-check-path</code>: Defines the URL to be used as a health check for the default server.  Defaults to <code>/healthz</code>.</li>
+<li><code>--healthz-port</code>: Defines the port number haproxy-ingress should listen to. Defaults to <code>10254</code>.</li>
+<li><code>--profiling</code>: Configures if the profiling URI should be enabled. Defaults to <code>true</code>.</li>
+<li><code>--stats-collect-processing-period</code>: Defines the interval between two consecutive readings of haproxy&rsquo;s <code>Idle_pct</code>, used to generate <code>haproxy_processing_seconds_total</code> metric. haproxy updates Idle_pct every <code>500ms</code>, which makes that the best configuration value, and it&rsquo;s also the default if not configured. Values higher than <code>500ms</code> will produce a less accurate collect. Change to 0 (zero) to disable this metric.</li>
+</ul>
+
+<hr />
+
+<h2 id="sync-period">&ndash;sync-period</h2>
+
+<p>Configures the default resync period of the Kubernetes client&rsquo;s informer factory. Defaults to 10
+minutes.</p>
+
+<hr />
+
+<h2 id="tcp-services-configmap">&ndash;tcp-services-configmap</h2>
+
+<p>Configure <code>--tcp-services-configmap</code> argument with <code>namespace/configmapname</code> resource with TCP
+services and ports that HAProxy should listen to. Use the HAProxy&rsquo;s port number as the key of the
+ConfigMap.</p>
+
+
+
+<div class="alert alert-primary" role="alert">
+<h4 class="alert-heading">Note</h4>
+<p>Starting on v0.13, <code>--tcp-services-configmap</code> is deprecated. Use <a href="/v0.14/docs/configuration/keys/#tcp-services"><code>tcp-service-port</code></a> configuration key instead.</p>
+
+<p>The documentation refers to &ldquo;ConfigMap based TCP&rdquo; when taking about this configuration options, and it refers to &ldquo;TCP Service&rdquo; when talking about to the new, annotation based TCP configuration.</p>
+
+</div>
+
+
+<p>The value of the ConfigMap entry is a colon separated list of the following arguments:</p>
+
+<ol>
+<li><code>&lt;namespace&gt;/&lt;service-name&gt;</code>, mandatory, is the well known notation of the service that will receive incoming connections.</li>
+<li><code>&lt;portnumber&gt;</code>, mandatory, is the port number the upstream service is listening - this is not related to the listening port of HAProxy.</li>
+<li><code>&lt;in-proxy&gt;</code>, optional, should be defined as <code>PROXY</code> if HAProxy should expect requests using the <a href="https://www.haproxy.org/download/2.0/doc/proxy-protocol.txt">PROXY</a> protocol. Leave empty to not use PROXY protocol. This is usually used only if there is another load balancer in front of HAProxy which supports the PROXY protocol. PROXY protocol v1 and v2 are supported.</li>
+<li><code>&lt;out-proxy&gt;</code>, optional, should be defined as <code>PROXY</code> or <code>PROXY-V2</code> if the upstream service expect connections using the PROXY protocol v2. Use <code>PROXY-V1</code> instead if the upstream service only support v1 protocol. Leave empty to connect without using the PROXY protocol.</li>
+<li><code>&lt;namespace/secret-name&gt;</code>, optional, used to configure SSL/TLS over the TCP connection. Secret should have <code>tls.crt</code> and <code>tls.key</code> pair used on TLS handshake. Leave empty to not use ssl-offload. A filename prefixed with <code>file://</code> can be used containing both certificate and private key in PEM format, eg <code>file:///dir/crt.pem</code>.</li>
+<li><code>&lt;check-interval&gt;</code>, added in v0.10, optional and defaults to <code>2s</code>, configures a TCP check interval. Declare <code>-</code> (one single dash) as the time to disable it. Valid time is a number and a mandatory suffix: <code>us</code>, <code>ms</code>, <code>s</code>, <code>m</code>, <code>h</code> or <code>d</code>.</li>
+<li><code>&lt;namespace/secret-name&gt;</code>, added in v0.10, optional, used to configure SSL/TLS client verification over the TCP connection. Secret should have <code>ca.crt</code> and optional <code>ca.crl</code>. Leave empty to not use ssl client verification. A filename prefixed with <code>file://</code> can be used containing the CA bundle in PEM format, and optionally followed by a comma and the filename with the crl, eg <code>file:///dir/ca.pem</code> or <code>file:///dir/ca.pem,/dir/crl.pem</code>.</li>
+</ol>
+
+<p>Optional fields can be skipped using consecutive colons.</p>
+
+<p>In the example below:</p>
+
+<pre><code>...
+data:
+  &quot;3306&quot;: &quot;default/mysql:3306::::-&quot;
+  &quot;5432&quot;: &quot;default/pgsql:5432::::1s&quot;
+  &quot;8000&quot;: &quot;system-prod/http:8000::PROXY-V1&quot;
+  &quot;9900&quot;: &quot;system-prod/admin:9900:PROXY::system-prod/tcp-9900&quot;
+  &quot;9990&quot;: &quot;system-prod/admin:9999::PROXY-V2&quot;
+  &quot;9995&quot;: &quot;system-prod/admin:9900:::system-prod/tcp-9995::system-prod/tcp-9995-ca&quot;
+  &quot;9999&quot;: &quot;system-prod/admin:9999:PROXY:PROXY&quot;
+</code></pre>
+
+<p>HAProxy will listen 7 new ports:</p>
+
+<ul>
+<li><code>3306</code> will proxy to a <code>mysql</code> service on <code>default</code> namespace. Check interval is disabled.</li>
+<li><code>5432</code> will proxy to a <code>pgsql</code> service on <code>default</code> namespace. Check interval is defined to run on every second.</li>
+<li><code>8000</code> will proxy to <code>http</code> service, port <code>8000</code>, on the <code>system-prod</code> namespace. The upstream service will expect connections using the PROXY protocol but it only supports v1.</li>
+<li><code>9900</code> will proxy to <code>admin</code> service, port <code>9900</code>, on the <code>system-prod</code> namespace. Clients should connect using the PROXY protocol v1 or v2. Upcoming connections should be encrypted, HAProxy will ssl-offload data using crt/key provided by <code>system-prod/tcp-9900</code> secret.</li>
+<li><code>9990</code> and <code>9999</code> will proxy to the same <code>admin</code> service and <code>9999</code> port and the upstream service will expect connections using the PROXY protocol v2. The HAProxy frontend, however, will only expect PROXY protocol v1 or v2 on it&rsquo;s port <code>9999</code>.</li>
+<li><code>9995</code> will proxy to <code>admin</code> service, port <code>9900</code>, on the <code>system-prod</code> namespace. Upcoming connections should be encrypted, HAProxy will ssl-offload data using crt/key provided by <code>system-prod/tcp-9995</code> secret. Furthermore, clients must present a certificate that will be valid under the certificate authority (and optional certificate revocation list) provided in the <code>system-prod/tcp-9995-ca</code> secret.</li>
+</ul>
+
+<p>Note: Check interval was added in v0.10 and defaults to <code>2s</code>. All declared services has check interval enabled, except <code>3306</code> which disabled it.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#tcp-services">TCP Services</a> configuration keys</li>
+</ul>
+
+<hr />
+
+<h2 id="timeout">Timeout</h2>
+
+<p>Timeout configuration.</p>
+
+<ul>
+<li><code>--connection-timeout</code>: (since v0.14.11) Defines the maximum amount of time HAProxy Ingress should wait for HAProxy responses when connecting to its master or admin sockets. This configuration is specially useful on HAProxy v2.7+ and large configurations, since its <code>reload</code> command became synchronous and should take some time to finish. Defaults to <code>30s</code> if not configured.</li>
+</ul>
+
+<hr />
+
+<h2 id="track-old-instances">&ndash;track-old-instances</h2>
+
+<p>Since v0.14</p>
+
+<p>Creates an internal list of connections to old HAProxy instances. These connections are used to
+read or send data to stopping instances, which is usually serving long lived connections like
+TCP services or websockets.</p>
+
+<p>Enabling this option will make old HAProxy instances to not stop before <code>timeout-stop</code> timeout,
+even if all the remaining sessions finish, so only enable it if using a feature that requests
+it.</p>
+
+<p>See also:</p>
+
+<ul>
+<li><a href="/v0.14/docs/configuration/keys/#close-sessions-duration"><code>close-sessions-duration</code></a> configuration key</li>
+</ul>
+
+<hr />
+
+<h2 id="update-status">&ndash;update-status</h2>
+
+<p>Indicates whether the ingress controller should update the <code>status</code> attribute of all the Ingress
+resources that this controller is tracking.  Defaults to <code>true</code>.</p>
+
+<hr />
+
+<h2 id="update-status-on-shutdown">&ndash;update-status-on-shutdown</h2>
+
+<p>Indicates whether the ingress controller should update the <code>status</code> attribute of all the Ingress
+resources that this controller is tracking when the controller is being stopped.  Defaults to
+<code>true</code>.</p>
+
+<hr />
+
+<h2 id="validate-config">&ndash;validate-config</h2>
+
+<p>Determines whether the resulting configuration files should be validated when a dynamic update was
+applied. Default value is <code>false</code>, which means the validation will only happen when HAProxy needs to
+be reloaded.</p>
+
+<p>If validation fails, HAProxy Ingress will log the error and set the metric
+<code>haproxyingress_update_success</code> to zero, indicating failure.</p>
+
+<hr />
+
+<h2 id="verify-hostname">&ndash;verify-hostname</h2>
+
+<p>Ingress resources has <code>spec/tls[]/secretName</code> attribute to override the default X509 certificate.
+As a default behavior the certificates are validated against the hostname in order to match the
+SAN extension or CN (CN only up to <code>v0.4</code>). Invalid certificates, ie certificates which doesn&rsquo;t
+match the hostname are discarded and a warning is logged into the ingress controller logging.</p>
+
+<p>Use <code>--verify-hostname=false</code> argument to bypass this validation. If used, HAProxy will provide
+the certificate declared in the <code>secretName</code> ignoring if the certificate is or is not valid.</p>
+
+<hr />
+
+<h2 id="version">&ndash;version</h2>
+
+<p>Show release information about the ingress controller.</p>
+
+<hr />
+
+<h2 id="wait-before-shutdown">&ndash;wait-before-shutdown</h2>
+
+<p>If argument <code>--wait-before-shutdown</code> is defined, controller will wait defined time in seconds
+before it starts shutting down components when SIGTERM was received. By default, it&rsquo;s 0, which means
+the controller starts shutting down itself right after signal was sent.</p>
+
+<hr />
+
+<h2 id="wait-before-update">&ndash;wait-before-update</h2>
+
+<p>Since v0.11</p>
+
+<p>Defines the amount of time to wait before start a reconciliation event and update haproxy.
+The purpose of this delay is to group all the notifications of a batch update and apply pending
+changes in one single shot. The default value is <code>200ms</code>.</p>
+
+<hr />
+
+<h2 id="watch-gateway">&ndash;watch-gateway</h2>
+
+<p>Since v0.13</p>
+
+<p>Enables Gateway API watch and parse. This option is enabled by default since v0.14 and controller
+will start the listener only if the Gateway API CRDs are found. Add <code>--watch-gateway=false</code>
+option to instruct the controller to not try to listen to the CRDs. The controller should be
+restarted if the CRDs are installed after starting the controller. See also the Gateway API
+configuration <a href="/v0.14/docs/configuration/gateway-api/">doc</a>.</p>
+
+<hr />
+
+<h2 id="watch-namespace">&ndash;watch-namespace</h2>
+
+<p>By default the proxy will be configured using all namespaces from the Kubernetes cluster. Use
+<code>--watch-namespace</code> with the name of a namespace to watch and build the configuration of a
+single namespace.</p>
+
+<p>You may also want to use <code>--force-namespace-isolation</code> to completely disallow referencing secrets,
+configmaps or the default backend service located in a different namespace than specified with
+<code>--watch-namespace</code>.</p>
+
+	
+	
+	<div class="text-muted mt-5 pt-3 border-top">Last modified April 22, 2026: <a  href="https://github.com/jcmoraisjr/haproxy-ingress/commit/82d28aa74ff9ae8c8419d1d65f0627ed88966791">doc: fix default value for watch gateway (#1457) (82d28aa7)</a>
+</div>
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      
+<footer class="bg-dark py-5 row d-print-none">
+  <div class="container-fluid mx-sm-5">
+    <div class="row">
+      <div class="col-6 col-sm-2 text-xs-center order-sm-2">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Slack" aria-label="Slack">
+    <a class="text-white" target="_blank" href="https://kubernetes.slack.com/channels/haproxy-ingress">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Users mailing list" aria-label="Users mailing list">
+    <a class="text-white" target="_blank" href="https://groups.google.com/forum/#!forum/haproxy-ingress">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Stack Overflow" aria-label="Stack Overflow">
+    <a class="text-white" target="_blank" href="https://stackoverflow.com/questions/tagged/haproxy-ingress">
+      <i class="fab fa-stack-overflow"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="GitHub" aria-label="GitHub">
+    <a class="text-white" target="_blank" href="https://github.com/jcmoraisjr/haproxy-ingress">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-12 col-sm-8 text-center py-2 order-sm-2">
+        
+          <small class="text-white">Made with <div class="fa fa-heart"></div> & <div class="fa fa-coffee"></div> | &copy; 2026 The HAProxy Ingress Controller Authors</small>
+        
+        <small class="text-white"> | Image by <a href="https://pixabay.com/users/TheDigitalArtist-202249/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pete Linforth</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pixabay</a></small>
+        
+	
+		<p class="mt-2"><a href="/v0.14/about/">About</a></p>
+	
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+<script src="/v0.14/js/main.min.3222aec2516d367812142eec37b3c25adc0677e5ef51390339939e57a4e82ddf.js" integrity="sha256-MiKuwlFtNngSFC7sN7PCWtwGd&#43;XvUTkDOZOeV6ToLd8=" crossorigin="anonymous"></script>
+
+
+
+  </body>
+</html>

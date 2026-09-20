@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.58.3" />
+
+<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+
+<link rel="alternate" type="application/rss&#43;xml" href="/v0.14/index.xml">
+
+
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/v0.14/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-192x192.png" sizes="192x192">
+
+<title>HAProxy Ingress</title><meta property="og:title" content="HAProxy Ingress" />
+<meta property="og:description" content="Ingress controller implementation for HAProxy load balancer" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/v0.14/" />
+<meta property="og:site_name" content="HAProxy Ingress" />
+<meta itemprop="name" content="HAProxy Ingress">
+<meta itemprop="description" content="Ingress controller implementation for HAProxy load balancer">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HAProxy Ingress"/>
+<meta name="twitter:description" content="Ingress controller implementation for HAProxy load balancer"/>
+
+
+
+
+
+
+
+<link rel="preload" href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" as="style">
+<link href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" rel="stylesheet" integrity="">
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+  </head>
+  <body class="td-home">
+    <header>
+      
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark  td-navbar-cover flex-column flex-md-row td-navbar">
+        <a class="navbar-brand" href="/v0.14/">
+		<span class="navbar-logo"></span><span class="text-uppercase font-weight-bold">HAProxy Ingress</span>
+	</a>
+	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0">
+			
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/about/" ><span>About</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/docs/" ><span>Documentation</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/community/" ><span>Community</span></a>
+			</li>
+			
+			
+			<li class="nav-item dropdown d-none d-lg-block">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	v0.14
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	
+	<a class="dropdown-item" href="/docs">Latest</a>
+	
+	<a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+	
+	<a class="dropdown-item" href="/v0.13/docs">v0.13</a>
+	
+	<a class="dropdown-item" href="/v0.12/docs">v0.12</a>
+	
+	<a class="dropdown-item" href="/v0.10/docs">v0.10</a>
+	
+</div>
+
+			</li>
+			
+			
+		</ul>
+	</div>
+	<div class="navbar-nav d-none d-lg-block"></div>
+</nav>
+
+    </header>
+    <div class="container-fluid td-default td-outer">
+      <main role="main" class="td-main">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="preload" as="image" href="/v0.14/earth-background_hu92fd41c39d22f547216042d2e6e7b55d_484009_960x540_fill_q75_catmullrom_top.jpg" media="(max-width: 1200px)">
+<link rel="preload" as="image" href="/v0.14/earth-background_hu92fd41c39d22f547216042d2e6e7b55d_484009_1920x1080_fill_q75_catmullrom_top.jpg" media="(min-width: 1200px)">
+<style>
+#td-cover-block-0 {
+    background-image: url(/v0.14/earth-background_hu92fd41c39d22f547216042d2e6e7b55d_484009_960x540_fill_q75_catmullrom_top.jpg); 
+}
+@media only screen and (min-width: 1200px) {
+    #td-cover-block-0 {
+        background-image: url(/v0.14/earth-background_hu92fd41c39d22f547216042d2e6e7b55d_484009_1920x1080_fill_q75_catmullrom_top.jpg); 
+    }
+}
+</style>
+
+<section id="td-cover-block-0" class="row td-cover-block td-cover-block--height-full js-td-cover td-overlay td-overlay--dark -bg-orange">
+  <div class="container td-overlay__inner">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center">
+          <h1 class="display-1 mt-0 mt-md-5 pb-4">Welcome to HAProxy Ingress!</h1>
+          
+          <div class="pt-3 lead">
+            <div class="mx-auto">
+    <a class="btn btn-lg btn-primary mr-3 mb-4" href="/v0.14/docs/">
+        Learn More <i class="fas fa-arrow-alt-circle-right ml-2"></i>
+    </a>
+    <p class="lead mt-5">The first and most complete ingress controller implementation for HAProxy.</p>
+    <div class="mx-auto mt-5">
+        
+
+
+<a class="btn btn-link text-info" href="#td-block-1"><i class="fa fa-chevron-circle-down" style="font-size: 400%"></i></a>
+
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<a id="td-block-1" class="td-offset-anchor"></a>
+<section class="row td-box td-box--primary position-relative td-box--gradient td-box--height-auto">
+	<div class="container text-center td-arrow-down">
+		<span class="h4 mb-0">
+			<div class="col-12">
+    <h1 class="text-center">Why HAProxy Ingress</h1>
+</div>
+		</span>
+	</div>
+</section>
+
+
+
+
+
+ 
+<a id="td-block-2" class="td-offset-anchor"></a>
+<section class="row td-box td-box--dark td-box--gradient td-box--height-auto">
+	<div class="col">
+		<div class="row ">
+			<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fas fa fa-bolt"></i>
+  </div>
+  <h4 class="h3">Fast</h4>
+  <p class="mb-0"><p>Carefully built on top of the battle-tested HAProxy load balancer.</p>
+</p>
+  
+</div>
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fas fa fa-shield-alt"></i>
+  </div>
+  <h4 class="h3">Reliable</h4>
+  <p class="mb-0"><p>Making uptime happen across mission-critical clusters and services around the world.</p>
+</p>
+  
+</div>
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fas fa fa-cogs"></i>
+  </div>
+  <h4 class="h3">Highly customizable</h4>
+  <p class="mb-0"><p>200+ configuration options and growing. Ingress and Gateway API resources.</p>
+</p>
+  <p><a href="/docs/configuration">Read more …</a></p>
+</div>
+
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+ 
+<a id="td-block-3" class="td-offset-anchor"></a>
+<section class="row td-box td-box--3 td-box--gradient td-box--height-auto">
+	<div class="col">
+		<div class="row ">
+			<div class="col-12">
+    <h1 class="text-center">Get involved!</h1>
+</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+ 
+<a id="td-block-4" class="td-offset-anchor"></a>
+<section class="row td-box td-box--4 td-box--gradient td-box--height-auto">
+	<div class="col">
+		<div class="row ">
+			<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fab fa-slack"></i>
+  </div>
+  <h4 class="h3">Slack</h4>
+  <p class="mb-0"><p>We&rsquo;re in the #haproxy-ingress channel on Kubernetes Slack. Take an invite <a target="_blank" href="https://slack.k8s.io">here</a> if not subscribed yet.</p>
+</p>
+  <p><a href="https://kubernetes.slack.com/channels/haproxy-ingress">Read more …</a></p>
+</div>
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fas fa fa-envelope"></i>
+  </div>
+  <h4 class="h3">Mailing list</h4>
+  <p class="mb-0"><p>Follow announcements and mailing discussion.</p>
+</p>
+  <p><a href="https://groups.google.com/forum/#!forum/haproxy-ingress">Read more …</a></p>
+</div>
+
+<div class="col-lg-4 mb-5 mb-lg-0 text-center ">
+  <div class="mb-4 h1">
+    <i class="fab fa-github"></i>
+  </div>
+  <h4 class="h3">Contributions welcome!</h4>
+  <p class="mb-0"><p>We do a <a href="https://github.com/jcmoraisjr/haproxy-ingress/pulls">Pull Request</a> contributions workflow on <strong>GitHub</strong>. New users are always welcome!</p>
+</p>
+  <p><a href="https://github.com/jcmoraisjr/haproxy-ingress">Read more …</a></p>
+</div>
+
+		</div>
+	</div>
+</section>
+
+
+
+
+
+
+ 
+<a id="td-block-5" class="td-offset-anchor"></a>
+<section class="row td-box td-box--5 td-box--gradient td-box--height-auto">
+	<div class="col">
+		<div class="row ">
+			<div class="col-12">
+    <h1 class="text-center">See HAProxy Ingress in action</h1>
+</div>
+<div class="mx-auto">
+    <a class="btn btn-lg btn-secondary mr-3 mb-4" href="/v0.14/docs/getting-started/">
+        Get started! <i class="fas fa-arrow-alt-circle-right ml-2"></i>
+    </a>
+</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+      </main>
+      
+<footer class="bg-dark py-5 row d-print-none">
+  <div class="container-fluid mx-sm-5">
+    <div class="row">
+      <div class="col-6 col-sm-2 text-xs-center order-sm-2">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Slack" aria-label="Slack">
+    <a class="text-white" target="_blank" href="https://kubernetes.slack.com/channels/haproxy-ingress">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Users mailing list" aria-label="Users mailing list">
+    <a class="text-white" target="_blank" href="https://groups.google.com/forum/#!forum/haproxy-ingress">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Stack Overflow" aria-label="Stack Overflow">
+    <a class="text-white" target="_blank" href="https://stackoverflow.com/questions/tagged/haproxy-ingress">
+      <i class="fab fa-stack-overflow"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="GitHub" aria-label="GitHub">
+    <a class="text-white" target="_blank" href="https://github.com/jcmoraisjr/haproxy-ingress">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-12 col-sm-8 text-center py-2 order-sm-2">
+        
+          <small class="text-white">Made with <div class="fa fa-heart"></div> & <div class="fa fa-coffee"></div> | &copy; 2026 The HAProxy Ingress Controller Authors</small>
+        
+        <small class="text-white"> | Image by <a href="https://pixabay.com/users/TheDigitalArtist-202249/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pete Linforth</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pixabay</a></small>
+        
+	
+		<p class="mt-2"><a href="/v0.14/about/">About</a></p>
+	
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+<script src="/v0.14/js/main.min.3222aec2516d367812142eec37b3c25adc0677e5ef51390339939e57a4e82ddf.js" integrity="sha256-MiKuwlFtNngSFC7sN7PCWtwGd&#43;XvUTkDOZOeV6ToLd8=" crossorigin="anonymous"></script>
+
+
+
+  </body>
+</html>

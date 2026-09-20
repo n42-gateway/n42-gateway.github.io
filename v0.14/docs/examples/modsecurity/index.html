@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.58.3" />
+
+<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+
+
+
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/v0.14/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/v0.14/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/v0.14/favicons/android-192x192.png" sizes="192x192">
+
+<title>ModSecurity | HAProxy Ingress</title><meta property="og:title" content="ModSecurity" />
+<meta property="og:description" content="Demonstrate how to configure ModSecurity web application firewall.
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/v0.14/docs/examples/modsecurity/" />
+<meta property="article:modified_time" content="2022-11-23T12:29:22-05:00" /><meta property="og:site_name" content="HAProxy Ingress" />
+<meta itemprop="name" content="ModSecurity">
+<meta itemprop="description" content="Demonstrate how to configure ModSecurity web application firewall.
+">
+
+
+<meta itemprop="dateModified" content="2022-11-23T12:29:22-05:00" />
+<meta itemprop="wordCount" content="959">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ModSecurity"/>
+<meta name="twitter:description" content="Demonstrate how to configure ModSecurity web application firewall.
+"/>
+
+
+
+
+
+
+
+<link rel="preload" href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" as="style">
+<link href="/v0.14/scss/main.min.09e7d522d5846094a77df8fe690c2672d05ec6a02218a7463cb37d7c6962580c.css" rel="stylesheet" integrity="">
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+
+<script>
+  var _paq = window._paq = window._paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tags.joaomora.is/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//tags.joaomora.is/matomo.php?idsite=3&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+    <title>ModSecurity | HAProxy Ingress</title>
+  </head>
+  <body class="td-page">
+    <header>
+      
+<nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar">
+        <a class="navbar-brand" href="/v0.14/">
+		<span class="navbar-logo"></span><span class="text-uppercase font-weight-bold">HAProxy Ingress</span>
+	</a>
+	<div class="td-navbar-nav-scroll ml-md-auto" id="main_navbar">
+		<ul class="navbar-nav mt-2 mt-lg-0">
+			
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/about/" ><span>About</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link active" href="/v0.14/docs/" ><span class="active">Documentation</span></a>
+			</li>
+			
+			<li class="nav-item mr-4 mb-2 mb-lg-0">
+				
+				
+				
+				
+				
+				
+				<a class="nav-link" href="/v0.14/community/" ><span>Community</span></a>
+			</li>
+			
+			
+			<li class="nav-item dropdown d-none d-lg-block">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	v0.14
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	
+	<a class="dropdown-item" href="/docs">Latest</a>
+	
+	<a class="dropdown-item" href="/v0.14/docs">v0.14</a>
+	
+	<a class="dropdown-item" href="/v0.13/docs">v0.13</a>
+	
+	<a class="dropdown-item" href="/v0.12/docs">v0.12</a>
+	
+	<a class="dropdown-item" href="/v0.10/docs">v0.10</a>
+	
+</div>
+
+			</li>
+			
+			
+		</ul>
+	</div>
+	<div class="navbar-nav d-none d-lg-block"></div>
+</nav>
+
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <div class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            
+
+
+
+
+<div id="td-sidebar-menu" class="td-sidebar__inner">
+  
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ml-3 fas fa-bars" type="button" data-toggle="collapse" data-target="#td-section-nav" aria-controls="td-docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  
+  <nav class="collapse td-sidebar-nav pt-2 pl-4" id="td-section-nav">
+    
+    
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/" class="align-left pl-0 pr-2 td-sidebar-link td-sidebar-link__section">Documentation</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="v0-14-docs">
+      
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/overview/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Overview</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-overview">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/getting-started/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Getting Started</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-getting-started">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/examples/" class="align-left pl-0 pr-2 active td-sidebar-link td-sidebar-link__section">Examples</a>
+  </li>
+  <ul>
+    <li class="collapse show" id="v0-14-docs-examples">
+      
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-blue-green" href="/v0.14/docs/examples/blue-green/">Blue/green</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-external-haproxy" href="/v0.14/docs/examples/external-haproxy/">External haproxy</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-examples-metrics" href="/v0.14/docs/examples/metrics/">Metrics</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page  active" id="m-v0-14-docs-examples-modsecurity" href="/v0.14/docs/examples/modsecurity/">ModSecurity</a>
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/configuration/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Configuration</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-configuration">
+      
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-gateway-api" href="/v0.14/docs/configuration/gateway-api/">Gateway API</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-keys" href="/v0.14/docs/configuration/keys/">Keys</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-command-line" href="/v0.14/docs/configuration/command-line/">Command-line</a>
+      
+      
+      
+      
+      
+      <a class="td-sidebar-link td-sidebar-link__page " id="m-v0-14-docs-configuration-template" href="/v0.14/docs/configuration/template/">Template</a>
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/faq/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">FAQ</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-faq">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+      
+      
+
+
+
+
+
+
+<ul class="td-sidebar-nav__section pr-md-3">
+  <li class="td-sidebar-nav__section-title">
+    <a  href="/v0.14/docs/contribution-guidelines/" class="align-left pl-0 pr-2 collapsed td-sidebar-link td-sidebar-link__section">Contribution Guidelines</a>
+  </li>
+  <ul>
+    <li class="collapse " id="v0-14-docs-contribution-guidelines">
+      
+      
+      
+    </li>
+  </ul>
+</ul>
+
+      
+      
+    </li>
+  </ul>
+</ul>
+
+  </nav>
+</div>
+
+
+
+
+          </div>
+          <div class="d-none d-xl-block col-xl-2 td-toc d-print-none">
+            
+
+
+
+
+
+<div class="td-page-meta ml-2 pb-1 pt-2 mb-0">
+
+
+
+
+
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/edit/master/docs/content/en/docs/examples/modsecurity.md" target="_blank"><i class="fa fa-edit fa-fw"></i> Edit this page</a>
+<a href="https://github.com/jcmoraisjr/haproxy-ingress/issues/new?title=ModSecurity" target="_blank"><i class="fab fa-github fa-fw"></i> Create doc issue</a>
+
+</div>
+
+
+
+
+
+
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#deploying-agent">Deploying agent</a></li>
+<li><a href="#configuring-haproxy-ingress">Configuring HAProxy Ingress</a></li>
+<li><a href="#test">Test</a></li>
+<li><a href="#deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs">Deploy ModSecurity Agent With a Sidecar Container for Audit Logs</a></li>
+<li><a href="#using-coraza-instead-of-modsecurity">Using Coraza instead of ModSecurity</a>
+<ul>
+<li><a href="#troubleshooting-coraza">Troubleshooting Coraza</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+
+
+
+          </div>
+          <main class="col-12 col-md-9 col-xl-8 pl-md-5" role="main">
+            <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+	<ol class="breadcrumb spb-1">
+		
+
+
+
+
+
+
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="/v0.14/docs/">Documentation</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item" >
+	<a href="/v0.14/docs/examples/">Examples</a>
+</li>
+
+
+
+
+<li class="breadcrumb-item active" aria-current="page">
+	<a href="/v0.14/docs/examples/modsecurity/">ModSecurity</a>
+</li>
+
+	</ol>
+</nav	>
+
+            
+<div class="td-content">
+	<h1>ModSecurity</h1>
+	<div class="lead">Demonstrate how to configure ModSecurity web application firewall.</div>
+	
+
+<p>This example demonstrates how to configure ModSecurity
+web application firewall on HAProxy Ingress controller.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>This document has the following prerequisites:</p>
+
+<ul>
+<li>A Kubernetes cluster with a running HAProxy Ingress controller. See the <a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/setup-cluster.md#five-minutes-deployment">five minutes deployment</a> or the <a href="https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/deployment">deployment example</a></li>
+<li><code>ingress-controller</code> namespace, the default of the five minutes deployment</li>
+</ul>
+
+<h2 id="deploying-agent">Deploying agent</h2>
+
+<p>A ModSecurity agent can be deployed in a number of ways: as a sidecar container
+in the same HAProxy Ingress deployment/daemonset resource, as a standalone container
+in the same host of ingress, or in dedicated host(s), inside or outside a k8s cluster.
+The steps below will deploy ModSecurity in some dedicated hosts of a k8s cluster,
+adjust the steps to fit your need.</p>
+
+<p>The ModSecurity agent used is <a href="https://github.com/jcmoraisjr/modsecurity-spoa">jcmoraisjr/modsecurity-spoa</a>.</p>
+
+<p>Create the ModSecurity agent deployment with 3 running pods:</p>
+
+<pre><code>$ kubectl create -f https://haproxy-ingress.github.io/resources/modsecurity-deployment.yaml
+deployment.apps/modsecurity-spoa created
+</code></pre>
+
+
+
+<div class="alert alert-primary" role="alert">
+<h4 class="alert-heading">Note</h4>
+This deployment configures a small amount of requests and limits resources,
+remember to adjust them before moving to production.
+</div>
+
+
+<p>Check if the agent is up and running:</p>
+
+<pre><code>$ kubectl -n ingress-controller get deployment modsecurity-spoa
+NAME                     READY     UP-TO-DATE   AVAILABLE  AGE
+modsecurity-spoa         3/3       3            3          7s
+</code></pre>
+
+<p>You can now create the service that provides a ClusterIP address for the HAProxy ConfigMap.</p>
+
+<pre><code>$ kubectl -n ingress-controller expose deployment modsecurity-spoa --port=12345 --type=ClusterIP
+service/modsecurity-spoa exposed
+</code></pre>
+
+<p>Once the service is created, you can obtain the ClusterIP address to be used later in the ConfigMap.</p>
+
+<pre><code>$ kubectl -n ingress-controller get service modsecurity-spoa
+NAME                     TYPE       CLUSTERIP        EXTERNAL-IP  PORT(S)     AGE
+modsecurity-spoa         ClusterIP  172.20.216.246   &lt;none&gt;       12345/TCP   7m
+</code></pre>
+
+<h2 id="configuring-haproxy-ingress">Configuring HAProxy Ingress</h2>
+
+<p>Add the ConfigMap key <code>modsecurity-endpoints</code> with a comma-separated list of <code>IP:port</code>
+of the ModSecurity agent server(s). The default port number of the agent is <code>12345</code>.
+A <code>kubectl -n ingress-controller edit configmap haproxy-ingress</code> should work.</p>
+
+<p>Example of a ConfigMap content if the ModSecurity service has a ClusterIP of <code>172.20.216.246</code>:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>v1<span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline"></span>data<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>modsecurity-endpoints<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">172.20.216.246</span><span style="color:#000;font-weight:bold">:</span><span style="color:#0000cf;font-weight:bold">12345</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>...<span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline"></span>kind<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>ConfigMap</code></pre></div>
+<h2 id="test">Test</h2>
+
+<p>Deploy any application:</p>
+
+<pre><code>$ kubectl run echo \
+  --image=gcr.io/google_containers/echoserver:1.3 \
+  --port=8080 \
+  --expose
+</code></pre>
+
+<p>&hellip; and create its ingress resource. Remember to annotate waf as <code>modsecurity</code>.
+No need to use a valid domain, <code>echo.domain</code> below is fine:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-console" data-lang="console">$ kubectl create -f - &lt;&lt;EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    haproxy-ingress.github.io/ssl-redirect: &#34;false&#34;
+    haproxy-ingress.github.io/waf: &#34;modsecurity&#34;
+  name: echo
+spec:
+  rules:
+  - host: echo.domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: echo
+            port:
+              number: 8080
+EOF</code></pre></div>
+<p>Test with a simple request. Change the IP below to the IP of your Ingress controller:</p>
+
+<pre><code>$ curl -I 192.168.100.99 -H 'Host: echo.domain'
+HTTP/1.1 200 OK
+Server: nginx/1.9.11
+Date: Sun, 27 May 2018 23:28:58 GMT
+Content-Type: text/plain
+</code></pre>
+
+<p>Test now with a malicious request:</p>
+
+<pre><code>curl -i '192.168.100.99?p=/etc/passwd' -H 'Host: echo.domain'
+HTTP/1.0 403 Forbidden
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;403 Forbidden&lt;/h1&gt;
+Request forbidden by administrative rules.
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Check the agent logs:</p>
+
+<pre><code>$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6f757ffd88-9qt2f   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-vwtzr   1/1     Running   0          11m
+modsecurity-spoa-6f757ffd88-q4rvm   1/1     Running   0          11m
+...
+
+$ kubectl -n ingress-controller logs --tail=10 modsecurity-spoa-6f757ffd88-9qt2f
+...
+1527464273.942819 [00] [client 127.0.0.1] ModSecurity: Access denied with code 403 (phase 2). Matche
+d phrase &quot;etc/passwd&quot; at ARGS:p. [file &quot;/etc/modsecurity/owasp-modsecurity-crs/rules/REQUEST-930-APP
+LICATION-ATTACK-LFI.conf&quot;] [line &quot;108&quot;] [id &quot;930120&quot;] [rev &quot;4&quot;] [msg &quot;OS File Access Attempt&quot;] [data
+ &quot;Matched Data: etc/passwd found within ARGS:p: /etc/passwd&quot;] [severity &quot;CRITICAL&quot;] [ver &quot;OWASP_CRS/
+3.0.0&quot;] [maturity &quot;9&quot;] [accuracy &quot;9&quot;] [tag &quot;application-multi&quot;] [tag &quot;language-multi&quot;] [tag &quot;platfor
+m-multi&quot;] [tag &quot;attack-lfi&quot;] [tag &quot;OWASP_CRS/WEB_ATTACK/FILE_INJECTION&quot;] [tag &quot;WASCTC/WASC-33&quot;] [tag
+ &quot;OWASP_TOP_10/A4&quot;] [tag &quot;PCI/6.5.4&quot;] [hostname &quot;ingress.localdomain&quot;] [uri &quot;http://echo.domain/&quot;] [
+unique_id &quot;&quot;]
+...
+</code></pre>
+
+<h2 id="deploy-modsecurity-agent-with-a-sidecar-container-for-audit-logs">Deploy ModSecurity Agent With a Sidecar Container for Audit Logs</h2>
+
+<p>A ModSecurity agent can be deployed with an additional sidecar container so you can have access to the logs stored in the AuditLog file. If you are using the default configuration of the ModSecurity agent, the logs written to the AuditLog specified are not reachable in the agent container&rsquo;s STDOUT.</p>
+
+<p>In order to read information written to that file, you must add a sidecar container to the method of deployment of the ModSecurity agent in Kubernetes. This is especially useful if you set the SecRuleEngine configuration to DetectionOnly.</p>
+
+<p>Update the ModSecurity agent deployment to have a sidecar container to read the audit log file to STDOUT</p>
+
+<pre><code>$ kubectl apply -f https://haproxy-ingress.github.io/resources/modsecurity-deployment-auditlog-sidecar.yaml
+deployment &quot;modsecurity-spoa&quot; configured
+</code></pre>
+
+<p>Now the ModSecurity agent pods will have two containers to get logs from: one for the traditional ModSecurity logs and one for the logs written to the AuditLog file.</p>
+
+<pre><code>$ kubectl -n ingress-controller get pod -lrun=modsecurity-spoa
+NAME                                READY   STATUS    RESTARTS   AGE
+modsecurity-spoa-6596c6b444-cht27   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-kw2tr   2/2     Running   0          14m
+modsecurity-spoa-6596c6b444-mkndw   2/2     Running   0          14m
+</code></pre>
+
+<h2 id="using-coraza-instead-of-modsecurity">Using Coraza instead of ModSecurity</h2>
+
+<p>Since the maintainers of ModSecurity are dropping support in 2024, <a href="https://coreruleset.org/20211222/talking-about-modsecurity-and-the-new-coraza-waf/">OWASP has created a replacement called Coraza</a> which is a drop-in replacement for ModSecurity.</p>
+
+<p>In order to use Coraza, the process is essentially the same as described in the above sections, with a few exceptions. First, in the haproxy-ingress ConfigMap, add the following two additional keys:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f8f8f8;text-decoration:underline">  </span>modsecurity-use-coraza<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">true</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>modsecurity-args<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;app=hdr(host) id=unique-id src-ip=src src-port=src_port dst-ip=dst dst-port=dst_port method=method path=path query=query version=req.ver headers=req.hdrs body=req.body&#34;</span></code></pre></div>
+<p>You may require different <code>modsecurity-args</code> depending on your Coraza config and your version of coraza-spoa. Check the <a href="https://github.com/corazawaf/coraza-spoa">coraza-spoa README</a> for full details.</p>
+
+<p>Second, you&rsquo;ll need to change the spoa-modsecurity container image to a coraza-spoa image and create a configmap to hold the Coraza config.yaml. A complete example with all the changes can be found <a href="/resources/coraza-deployment.yaml">here</a>.</p>
+
+
+
+<div class="alert alert-warning" role="alert">
+<h4 class="alert-heading">Warning</h4>
+The coraza-spoa image that we provide in the above example is based on <a href="https://github.com/corazawaf/coraza-spoa/pull/36">an experimental branch of coraza-spoa</a>. For production environments, it would be best to wait until the experimental changes are merged and <a href="https://github.com/corazawaf/coraza-spoa/issues/37">an official image is released</a>.
+</div>
+
+
+<h3 id="troubleshooting-coraza">Troubleshooting Coraza</h3>
+
+<ul>
+<li>Ensure that the <code>bind</code> port in Coraza&rsquo;s config.yaml matches the port in <code>modsecurity-endpoints</code>.</li>
+<li>Pay close attention to the <code>modsecurity-args</code> (specifically the <code>app</code> arg) and make sure they are set according to the coraza-spoa docs since the exact args may vary depending on your version of coraza-spoa.</li>
+<li>For more complex issues, it may help to set <code>log_level: debug</code> in Coraza.</li>
+</ul>
+
+	
+	
+	<div class="text-muted mt-5 pt-3 border-top">Last modified November 23, 2022: <a  href="https://github.com/jcmoraisjr/haproxy-ingress/commit/781eb0f1c5145905612331f559edb3e9e7edc7f8">Add support for Coraza via &#39;modsecurity-use-coraza&#39; (781eb0f1)</a>
+</div>
+</div>
+
+
+          </main>
+        </div>
+      </div>
+      
+<footer class="bg-dark py-5 row d-print-none">
+  <div class="container-fluid mx-sm-5">
+    <div class="row">
+      <div class="col-6 col-sm-2 text-xs-center order-sm-2">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Slack" aria-label="Slack">
+    <a class="text-white" target="_blank" href="https://kubernetes.slack.com/channels/haproxy-ingress">
+      <i class="fab fa-slack"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Users mailing list" aria-label="Users mailing list">
+    <a class="text-white" target="_blank" href="https://groups.google.com/forum/#!forum/haproxy-ingress">
+      <i class="fa fa-envelope"></i>
+    </a>
+  </li>
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="Stack Overflow" aria-label="Stack Overflow">
+    <a class="text-white" target="_blank" href="https://stackoverflow.com/questions/tagged/haproxy-ingress">
+      <i class="fab fa-stack-overflow"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-6 col-sm-2 text-right text-xs-center order-sm-3">
+        
+        
+        
+<ul class="list-inline mb-0">
+  
+  <li class="list-inline-item mx-2 h3" data-toggle="tooltip" data-placement="top" title="GitHub" aria-label="GitHub">
+    <a class="text-white" target="_blank" href="https://github.com/jcmoraisjr/haproxy-ingress">
+      <i class="fab fa-github"></i>
+    </a>
+  </li>
+  
+</ul>
+
+        
+        
+      </div>
+      <div class="col-12 col-sm-8 text-center py-2 order-sm-2">
+        
+          <small class="text-white">Made with <div class="fa fa-heart"></div> & <div class="fa fa-coffee"></div> | &copy; 2026 The HAProxy Ingress Controller Authors</small>
+        
+        <small class="text-white"> | Image by <a href="https://pixabay.com/users/TheDigitalArtist-202249/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pete Linforth</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3866609" target="_blank">Pixabay</a></small>
+        
+	
+		<p class="mt-2"><a href="/v0.14/about/">About</a></p>
+	
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+<script src="/v0.14/js/main.min.3222aec2516d367812142eec37b3c25adc0677e5ef51390339939e57a4e82ddf.js" integrity="sha256-MiKuwlFtNngSFC7sN7PCWtwGd&#43;XvUTkDOZOeV6ToLd8=" crossorigin="anonymous"></script>
+
+
+
+  </body>
+</html>
