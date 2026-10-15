@@ -48,8 +48,8 @@
 
 	<meta itemprop="name" content="Overview">
 	<meta itemprop="description" content="What N42 Gateway is and how it works.">
-	<meta itemprop="dateModified" content="2026-06-14T09:20:40-03:00">
-	<meta itemprop="wordCount" content="150">
+	<meta itemprop="dateModified" content="2026-10-14T02:39:40+02:00">
+	<meta itemprop="wordCount" content="355">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Overview">
 	<meta name="twitter:description" content="What N42 Gateway is and how it works.">
@@ -253,7 +253,11 @@
   <ul>
     <li><a href="#haproxy">HAProxy</a></li>
     <li><a href="#ingress-controllers">Ingress Controllers</a></li>
-    <li><a href="#releases">Releases</a></li>
+    <li><a href="#releases">Releases</a>
+      <ul>
+        <li><a href="#signatures-and-attestations">Signatures and attestations</a></li>
+      </ul>
+    </li>
     <li><a href="#where-should-i-go-next">Where should I go next?</a></li>
   </ul>
 </nav>
@@ -302,6 +306,32 @@ point to the latest beta-quality and release-candidate versions.</p>
 <p>Before the beta-quality releases, the source code could also be tagged and images deployed.
 The <code>snapshot</code> tag will always point to the latest tagged version, which could be a release,
 a beta-quality or a development version.</p>
+<h3 id="signatures-and-attestations">Signatures and attestations<a class="td-heading-self-link" href="#signatures-and-attestations" aria-label="Heading self-link"></a></h3>
+<p>Every image is signed with <a href="https://docs.sigstore.dev/cosign/"target="_blank" rel="noopener">cosign</a> keyless signing
+and comes with signed attestations: a <a href="https://slsa.dev/"target="_blank" rel="noopener">SLSA</a> build provenance and an
+<a href="https://spdx.dev/"target="_blank" rel="noopener">SPDX</a> SBOM (Software Bill of Materials). They let you check that
+an image was built by the N42 Gateway GitHub Workflow from this repository, which
+commit it was built from, and which packages and Go modules it contains, e.g. to scan
+it for vulnerabilities or to enforce an admission policy in your cluster. Signatures
+and attestations are stored next to the image in both registries, the attestations
+on GitHub as well.</p>
+<p>Verify the signature, issued to the image workflow running on a tag:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">cosign verify ghcr.io/n42-gateway/n42-gateway:&lt;tag&gt; <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --certificate-oidc-issuer https://token.actions.githubusercontent.com <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --certificate-identity-regexp <span class="s1">&#39;^https://github\.com/n42-gateway/n42-gateway/\.github/workflows/image\.yaml@refs/tags/&#39;</span>
+</span></span></code></pre></div><p>Verify the build provenance attestation, using the <a href="https://cli.github.com/"target="_blank" rel="noopener">GitHub CLI</a>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gh attestation verify oci://ghcr.io/n42-gateway/n42-gateway:&lt;tag&gt; <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --repo n42-gateway/n42-gateway
+</span></span></code></pre></div><p>Verify the SBOM attestation and print the SBOM, the one of the <code>linux/amd64</code> image:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">gh attestation verify oci://ghcr.io/n42-gateway/n42-gateway:&lt;tag&gt; <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --repo n42-gateway/n42-gateway <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --predicate-type https://spdx.dev/Document/v2.3 <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --format json --jq <span class="s1">&#39;.[].verificationResult.statement.predicate&#39;</span>
+</span></span></code></pre></div><p>Every platform&rsquo;s image also has its own, unsigned, SBOM and build provenance in the
+image index, covered by the image signature. Read the SBOM of a platform:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">docker buildx imagetools inspect ghcr.io/n42-gateway/n42-gateway:&lt;tag&gt; <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --format <span class="s1">&#39;{{ json (index .SBOM &#34;linux/amd64&#34;).SPDX }}&#39;</span>
+</span></span></code></pre></div><p>The same commands apply to <code>quay.io/n42-gateway/n42-gateway</code>.</p>
 <h2 id="where-should-i-go-next">Where should I go next?<a class="td-heading-self-link" href="#where-should-i-go-next" aria-label="Heading self-link"></a></h2>
 <ul>
 <li><a href="/v0.17/docs/getting-started/">Getting Started</a>: Get started with N42 Gateway!</li>
@@ -312,7 +342,7 @@ a beta-quality or a development version.</p>
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified June 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/12d4a100aa758c7af7251bcbd75f1fe787d6a175">n42: n42 gateway name migration in documentation (12d4a100)</a>
+  Last modified October 14, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/dc28758d09aec8c91a8c58225c80ffd19b765435">ci(image): sign images with cosign keyless signing (#1554) (dc28758d)</a>
 </div>
 </div>
 

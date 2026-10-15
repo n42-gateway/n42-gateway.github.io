@@ -48,7 +48,7 @@
 
 	<meta itemprop="name" content="Getting Started">
 	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
-	<meta itemprop="dateModified" content="2026-09-16T08:31:05-03:00">
+	<meta itemprop="dateModified" content="2026-10-15T08:10:31-03:00">
 	<meta itemprop="wordCount" content="954">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Getting Started">
@@ -337,7 +337,7 @@
 <pre tabindex="0"><code>$ helm upgrade n42 n42/n42-gateway\
   --install\
   --create-namespace --namespace n42-gateway-system\
-  --version 0.17.0-alpha.3 --devel\
+  --version 0.17.0-beta.1 --devel\
   -f n42-gateway-values.yaml
 </code></pre><blockquote>
 <p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;n42-gateway-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
@@ -417,7 +417,7 @@ $ wget -qO- --no-check-certificate https://echoserver.local
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified September 16, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/c6c0c8c44aa6f98cc1167d1bc3198b5d633f22c0">update to v0.17.0-alpha.3 (c6c0c8c4)</a>
+  Last modified October 15, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/b0273692bc8bfab7519ca3fa1a3bb51e9d71652b">update to v0.17.0-beta.1 (b0273692)</a>
 </div>
 </div>
 
