@@ -48,7 +48,7 @@
 
 	<meta itemprop="name" content="Getting Started">
 	<meta itemprop="description" content="How to install N42 Gateway and expose the first service.">
-	<meta itemprop="dateModified" content="2026-09-20T08:03:42-03:00">
+	<meta itemprop="dateModified" content="2026-10-26T07:55:41-03:00">
 	<meta itemprop="wordCount" content="857">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="Getting Started">
@@ -326,7 +326,7 @@
 <pre tabindex="0"><code>$ helm upgrade haproxy-ingress haproxy-ingress/haproxy-ingress\
   --install\
   --create-namespace --namespace ingress-controller\
-  --version 0.16.2\
+  --version 0.16.3\
   -f haproxy-ingress-values.yaml
 </code></pre><blockquote>
 <p>Note that the command <code>upgrade</code> above, along with the <code>--install</code> command-line option, starts a new N42 Gateway deployment if it is missing, or starts a rolling update if N42 Gateway is already installed. <code>template</code> can be used instead to generate the manifests without installing them - add either a redirect <code>... &gt;haproxy-ingress-install.yaml</code> to save the output, or <code>--output-dir output/</code> command line option to save one file per manifest.</p>
@@ -401,7 +401,7 @@ $ wget -qO- --no-check-certificate https://echoserver.local
     
     </div>
 <div class="td-page-meta__lastmod">
-  Last modified September 20, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/dcff778d08d186fab5f115b37e6d2343975edcbf">update to v0.16.2 (dcff778d)</a>
+  Last modified October 26, 2026: <a data-proofer-ignore href="https://github.com/n42-gateway/n42-gateway/commit/40d64bd82b774c3dbc22fbb5fbbfcf824268ef2f">update to v0.16.3 (40d64bd8)</a>
 </div>
 </div>
 
